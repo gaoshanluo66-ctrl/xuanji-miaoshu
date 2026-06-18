@@ -2662,6 +2662,34 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     } else {
       l.push('<p class="warning">● 月日阴阳相同（均为'+yueYY+'）：缺少阴阳互补之象，婚姻或晚或不顺。</p>');
     }
+    // 年月日时克冲绝 婚姻不顺二婚
+    var hasKeChongJue=false;
+    for(var pi=0;pi<len-1;pi++){
+      var a=xianAll[pi],b=xianAll[pi+1],ha=houAll[pi],hb=houAll[pi+1];
+      if(a!==0&&b!==0){
+        var sk=getShengKe(getWuXing(a),getWuXing(b));
+        if(sk==='克'||sk==='被克'||isLiuChong(a,b)||isBaJue(a,b)){
+          hasKeChongJue=true;
+          var kc=[];
+          if(sk==='克'||sk==='被克')kc.push(getWuXing(a)+getWuXing(b)+'相克');
+          if(isLiuChong(a,b))kc.push(a+'-'+b+'六冲');
+          if(isBaJue(a,b))kc.push(a+'-'+b+'八绝');
+          l.push('<p class="warning">⚠ '+pillarNames[pi]+pillarNames[pi+1]+'先天 '+kc.join('、')+'</p>');
+        }
+      }
+      if(ha!==-1&&hb!==-1){
+        var skh=getShengKe(getWuXing(ha),getWuXing(hb));
+        if(skh==='克'||skh==='被克'||isLiuChong(ha,hb)||isBaJue(ha,hb)){
+          hasKeChongJue=true;
+          var kch=[];
+          if(skh==='克'||skh==='被克')kch.push(getWuXing(ha)+getWuXing(hb)+'相克');
+          if(isLiuChong(ha,hb))kch.push(ha+'-'+hb+'六冲');
+          if(isBaJue(ha,hb))kch.push(ha+'-'+hb+'八绝');
+          l.push('<p class="warning">⚠ '+pillarNames[pi]+pillarNames[pi+1]+'后天 '+kch.join('、')+'</p>');
+        }
+      }
+    }
+    if(hasKeChongJue){l.push('<p class="warning" style="font-size:15px;font-weight:700;">⚠ 年月日时出现克冲绝，婚姻不顺，易二婚。</p>');}
   } else {
     l.push('<p>● 八字不足四柱，缺少日柱配偶位，婚姻信息有限。</p>');
   }
