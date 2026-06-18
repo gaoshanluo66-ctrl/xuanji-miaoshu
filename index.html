@@ -3434,7 +3434,7 @@ for(var i=0;i<xianAll.length;i++){if(uniqueNums.indexOf(xianAll[i])<0)uniqueNums
 for(var i=0;i<houAll.length;i++){if(houAll[i]!==-1&&uniqueNums.indexOf(houAll[i])<0)uniqueNums.push(houAll[i]);}
 l.push('<p style="margin-top:6px;font-size:11px;color:var(--ink3);">● 八字中出现的关键流年数字：'+uniqueNums.sort(function(a,b){return a-b;}).join('、')+'。对应生肖年份：1鼠(2020)、2牛(2021)、3虎(2022)、4兔(2023)、5龙(2024)、6蛇(2025)、7马(2026)、8羊(2027)、9猴(2028)、10鸡(2029)、11狗(2030)、12猪(2031)——遇到这些年份运势会有明显变化。</p>');
 var dayunChartId="dayunChart_"+(window._dcc=((window._dcc||0)+1));
-l.push('<canvas id="'+dayunChartId+'" width="740" height="240" style="width:100%;max-width:740px;height:auto;border:1px solid var(--ink-border);border-radius:8px;margin:10px 0;display:block;"></canvas>');
+l.push('<canvas id="'+dayunChartId+'" width="740" height="300" style="width:100%;max-width:740px;height:auto;border:1px solid var(--ink-border);border-radius:8px;margin:10px 0;display:block;"></canvas>');
 l.push('<div style="font-size:10px;color:var(--ink3);text-align:center;margin-top:-6px;">▲ 大运时间轴 · 横轴为年龄 · ★大节点 ·小节点</div>');
 window._dayunChartData={
 id:dayunChartId,
@@ -3458,37 +3458,37 @@ var curAge=data.baziAge||0;
 var selfWx=data.selfWx||"";
 
 var ageMin=0,ageMax=90;
-var padL=50,padR=30,padT=35;
+var padL=55,padR=35,padT=10;
 var chartW=W-padL-padR;
 var ageToX=function(a){return padL+(a-ageMin)/(ageMax-ageMin)*chartW;};
 
 // Stage bands
-var stageColors=["rgba(66,133,244,0.10)","rgba(52,168,83,0.10)","rgba(251,188,4,0.10)","rgba(234,67,53,0.10)"];
+var stageColors=["rgba(66,133,244,0.12)","rgba(52,168,83,0.12)","rgba(251,188,4,0.12)","rgba(234,67,53,0.12)"];
 var stageBorders=["#a8c7fa","#81c995","#fdd663","#f28b82"];
 var stageTextClrs=["#1a56db","#137333","#b06000","#c5221f"];
 var stageRanges=[[0,24],[25,39],[40,54],[55,90]];
-var bandY=48,bandH=26;
+var bandY=50,bandH=28;
 for(var si=0;si<4;si++){
 var x1=ageToX(stageRanges[si][0]),x2=ageToX(stageRanges[si][1]);
 ctx.fillStyle=stageColors[si];ctx.fillRect(x1,bandY,x2-x1,bandH);
-ctx.strokeStyle=stageBorders[si];ctx.lineWidth=1;ctx.strokeRect(x1,bandY,x2-x1,bandH);
-ctx.fillStyle=stageTextClrs[si];ctx.font="bold 10px sans-serif";ctx.textAlign="center";
-ctx.fillText(stageNames[si],(x1+x2)/2,bandY+18);
+ctx.strokeStyle=stageBorders[si];ctx.lineWidth=1.2;ctx.strokeRect(x1,bandY,x2-x1,bandH);
+ctx.fillStyle=stageTextClrs[si];ctx.font="bold 11px sans-serif";ctx.textAlign="center";
+ctx.fillText(stageNames[si],(x1+x2)/2,bandY+19);
 }
 
-// Timeline axis
-var axisY=92;
-ctx.strokeStyle="#d0d0d0";ctx.lineWidth=1.5;
+// Axis
+var axisY=106;
+ctx.strokeStyle="#bbb";ctx.lineWidth=1.8;
 ctx.beginPath();ctx.moveTo(padL,axisY);ctx.lineTo(W-padR,axisY);ctx.stroke();
 
 // Age ticks
 ctx.textAlign="center";
 for(var a=0;a<=90;a+=10){
 var tx=ageToX(a);
-ctx.fillStyle="#999";ctx.font="10px sans-serif";
-ctx.fillText(a+"岁",tx,axisY+14);
-ctx.strokeStyle="#d0d0d0";ctx.lineWidth=1;
-ctx.beginPath();ctx.moveTo(tx,axisY-4);ctx.lineTo(tx,axisY+4);ctx.stroke();
+ctx.fillStyle="#555";ctx.font="bold 11px sans-serif";
+ctx.fillText(a+"岁",tx,axisY+16);
+ctx.strokeStyle="#ccc";ctx.lineWidth=1.2;
+ctx.beginPath();ctx.moveTo(tx,axisY-5);ctx.lineTo(tx,axisY+5);ctx.stroke();
 }
 
 // Node markers
@@ -3504,64 +3504,69 @@ var nx=Math.round(ageToX(n.age));
 var sk=getShengKe(getWuXing(n.num),selfWx);
 var color=nodeColors[sk]||"#888";
 var isMajor=n.type==="大节点";
-var r=isMajor?6.5:3.5;
+var r=isMajor?7.5:4.5;
 var offY=0;
 var pk=nx;
-if(drawnPos[pk]!==undefined){offY=(drawnPos[pk]%2===0)?-13:13;drawnPos[pk]++;}
+if(drawnPos[pk]!==undefined){offY=(drawnPos[pk]%2===0)?-16:16;drawnPos[pk]++;}
 else{drawnPos[pk]=0;}
 var ny=axisY+offY;
 if(isMajor){
 ctx.fillStyle=color;ctx.beginPath();
 var sz=r*1.3;
-ctx.moveTo(nx,ny-sz);ctx.lineTo(nx+sz*0.65,ny+sz*0.35);
-ctx.lineTo(nx-sz*0.65,ny+sz*0.35);ctx.closePath();ctx.fill();
-ctx.strokeStyle="rgba(255,255,255,0.7)";ctx.lineWidth=0.5;ctx.stroke();
+ctx.moveTo(nx,ny-sz);ctx.lineTo(nx+sz*0.6,ny+sz*0.35);
+ctx.lineTo(nx-sz*0.6,ny+sz*0.35);ctx.closePath();ctx.fill();
+ctx.strokeStyle="#fff";ctx.lineWidth=0.8;ctx.stroke();
 }else{
 ctx.fillStyle=color;ctx.beginPath();ctx.arc(nx,ny,r,0,Math.PI*2);ctx.fill();
-ctx.strokeStyle="rgba(255,255,255,0.6)";ctx.lineWidth=0.5;ctx.stroke();
+ctx.strokeStyle="rgba(255,255,255,0.8)";ctx.lineWidth=0.8;ctx.stroke();
 }
-// Only show age label for first few nodes to avoid clutter
-if(ni<8||isMajor){
-ctx.fillStyle="#444";ctx.font="bold 8px sans-serif";ctx.textAlign="center";
-ctx.fillText(n.age,Math.round(nx),ny+(isMajor?16:10));
+if(isMajor||ni<5){
+ctx.fillStyle="#222";ctx.font="bold 10px sans-serif";ctx.textAlign="center";
+ctx.fillText(n.age,nx,ny+(isMajor?19:13));
 }
 }
 
-// Current age indicator
+// Current age
 if(curAge>0&&curAge<=90){
 var cx=Math.round(ageToX(curAge));
-ctx.strokeStyle="#d93025";ctx.lineWidth=2;ctx.setLineDash([5,3]);
-ctx.beginPath();ctx.moveTo(cx,bandY-6);ctx.lineTo(cx,axisY+28);ctx.stroke();
+ctx.strokeStyle="#d93025";ctx.lineWidth=2;ctx.setLineDash([4,3]);
+ctx.beginPath();ctx.moveTo(cx,bandY-10);ctx.lineTo(cx,axisY+32);ctx.stroke();
 ctx.setLineDash([]);
-// Current age label
 var clx=cx;
-if(clx<60)clx=60;if(clx>W-70)clx=W-70;
-ctx.fillStyle="#fff";ctx.strokeStyle="#d93025";ctx.lineWidth=1;
-var lblW=ctx.measureText("当前"+curAge+"岁").width+16;
-var dbx=clx-lblW/2-2,dby=bandY-22;
-var rr=4;ctx.beginPath();ctx.moveTo(dbx+rr,dby);ctx.lineTo(dbx+lblW+4-rr,dby);ctx.arcTo(dbx+lblW+4,dby,dbx+lblW+4,dby+rr,rr);ctx.lineTo(dbx+lblW+4,dby+16-rr);ctx.arcTo(dbx+lblW+4,dby+16,dbx+lblW+4-rr,dby+16,rr);ctx.lineTo(dbx+rr,dby+16);ctx.arcTo(dbx,dby+16,dbx,dby+16-rr,rr);ctx.lineTo(dbx,dby+rr);ctx.arcTo(dbx,dby,dbx+rr,dby,rr);ctx.closePath();ctx.fill();ctx.stroke();
-ctx.fillStyle="#d93025";ctx.font="bold 9px sans-serif";ctx.textAlign="center";
-ctx.fillText("当前"+curAge+"岁",clx,bandY-11);
+if(clx<70)clx=70;if(clx>W-80)clx=W-80;
+var lbl="当前"+curAge+"岁";
+ctx.font="bold 10px sans-serif";var lblW=ctx.measureText(lbl).width+18;
+var dbx=clx-lblW/2,dby=bandY-24;
+var rr=4;ctx.beginPath();ctx.moveTo(dbx+rr,dby);ctx.lineTo(dbx+lblW-rr,dby);ctx.arcTo(dbx+lblW,dby,dbx+lblW,dby+rr,rr);ctx.lineTo(dbx+lblW,dby+18-rr);ctx.arcTo(dbx+lblW,dby+18,dbx+lblW-rr,dby+18,rr);ctx.lineTo(dbx+rr,dby+18);ctx.arcTo(dbx,dby+18,dbx,dby+18-rr,rr);ctx.lineTo(dbx,dby+rr);ctx.arcTo(dbx,dby,dbx+rr,dby+rr,rr);ctx.closePath();ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#d93025";ctx.lineWidth=1.2;ctx.stroke();
+ctx.fillStyle="#d93025";ctx.font="bold 10px sans-serif";ctx.textAlign="center";
+ctx.fillText(lbl,clx,dby+13);
 }
 
 // Legend
-var ly=172;
+var ly=185;
 var legend=[
 {color:"#34a853",label:"生内(吉)"},
 {color:"#ea4335",label:"克内(凶)"},
 {color:"#f9ab00",label:"内生外(泄)"},
-{color:"#ff6d01",label:"内克外(辛苦进财)"},
+{color:"#ff6d01",label:"内克外(辛苦财)"},
 {color:"#5f6368",label:"比合(平)"}
 ];
-var lx=padL+2;
+var lx=padL;
 for(var li=0;li<legend.length;li++){
-ctx.fillStyle=legend[li].color;ctx.beginPath();ctx.arc(lx+5,ly-3,5,0,Math.PI*2);ctx.fill();
-ctx.fillStyle="#555";ctx.font="9px sans-serif";ctx.textAlign="left";
-ctx.fillText(legend[li].label,lx+14,ly+2);
-lx+=80;
+ctx.fillStyle=legend[li].color;ctx.beginPath();ctx.arc(lx+6,ly-2,6,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle="rgba(0,0,0,0.15)";ctx.lineWidth=0.5;ctx.stroke();
+ctx.fillStyle="#333";ctx.font="bold 10px sans-serif";ctx.textAlign="left";
+ctx.fillText(legend[li].label,lx+15,ly+4);
+lx+=88;
 }
-ctx.fillStyle="#999";ctx.font="8px sans-serif";ctx.textAlign="right";
+ctx.fillStyle="#888";ctx.font="9px sans-serif";ctx.textAlign="right";
 ctx.fillText("★大节点(后天) ·小节点(先天)  |  红线=当前年龄",W-padR,ly+2);
+
+// Title
+ctx.fillStyle="#666";ctx.font="bold 12px sans-serif";ctx.textAlign="left";
+var stageLabel="";
+for(var si=0;si<4;si++){if(stages[si]&&stages[si].length>0){if(stageLabel)stageLabel+=" · ";stageLabel+=stageNames[si]+"("+stages[si].length+"个节点)";}}
+if(stageLabel)ctx.fillText("大运时间轴："+stageLabel,padL,padT+14);
 }
 // ==================== 初始化 ====================
 window.addEventListener('load',function(){var lo=document.getElementById('loadingOverlay');if(lo){lo.style.opacity='0';lo.style.transition='opacity .3s';setTimeout(function(){lo.remove();},300);}});
