@@ -2837,26 +2837,36 @@ return std;
 }
 function pickMid(ages){if(ages.length===1)return ages[0];var s=0;for(var i=0;i<ages.length;i++)s+=ages[i];return Math.round(s/ages.length);}
 var allPts=[];
-function addPt(n,label){if(n>0&&n!==-1){allPts.push({num:n,age:ageRead(n),label:label});}}
+function addAges(n,label){
+if(n<=0||n===-1)return;
+if(n<=6){
+allPts.push({num:n,age:20+n,label:label,tier:'早'});
+allPts.push({num:n,age:24+n,label:label,tier:'正常'});
+} else {
+allPts.push({num:n,age:10+n,label:label,tier:'早'});
+allPts.push({num:n,age:14+n,label:label,tier:'正常'});
+allPts.push({num:n,age:20+n,label:label,tier:'晚'});
+}
+}
 // 年月同数时：去掉年，用日柱替代
 if(isYueNianSame&&riIdxs.length>0){
-addPt(riNum2,'日先天'+riNum2);
-if(riHou2>0&&riHou2!==-1)addPt(riHou2,'日后天'+riHou2);
-addPt(yueXian,'月先天'+yueXian);
-if(yueHou>0&&yueHou!==-1)addPt(yueHou,'月后天'+yueHou);
+addAges(riNum2,'日先天'+riNum2);
+if(riHou2>0&&riHou2!==-1)addAges(riHou2,'日后天'+riHou2);
+addAges(yueXian,'月先天'+yueXian);
+if(yueHou>0&&yueHou!==-1)addAges(yueHou,'月后天'+yueHou);
 } else {
-addPt(yearXian,'年先天'+yearXian);
-if(yearHou>0&&yearHou!==-1)addPt(yearHou,'年后天'+yearHou);
-if(!isYueNianSame)addPt(yueXian,'月先天'+yueXian);
-if(yueHou>0&&yueHou!==-1)addPt(yueHou,'月后天'+yueHou);
+addAges(yearXian,'年先天'+yearXian);
+if(yearHou>0&&yearHou!==-1)addAges(yearHou,'年后天'+yearHou);
+if(!isYueNianSame)addAges(yueXian,'月先天'+yueXian);
+if(yueHou>0&&yueHou!==-1)addAges(yueHou,'月后天'+yueHou);
 }allPts.sort(function(a,b){return a.age!==b.age?a.age-b.age:a.num-b.num;});
-var nn=allPts.length;
 var early=[],normal=[],late=[];
-if(nn===1){normal=[allPts[0]];}
-else if(nn===2){early=[allPts[0]];late=[allPts[1]];}
-else if(nn===3){early=[allPts[0]];normal=[allPts[1]];late=[allPts[2]];}
-else if(nn===4){early=[allPts[0],allPts[1]];normal=[allPts[2]];late=[allPts[3]];}
-else{early=[allPts[0],allPts[1]];normal=[allPts[2]];late=allPts.slice(3);}
+for(var ti=0;ti<allPts.length;ti++){
+var p=allPts[ti];
+if(p.tier==='早')early.push(p);
+else if(p.tier==='正常')normal.push(p);
+else late.push(p);
+}
 function mergeAdj(arr){
 if(arr.length===0)return[];
 arr.sort(function(a,b){return a.age-b.age;});
@@ -3611,21 +3621,20 @@ var llabels=["生内(吉)","克内(凶)","内生外(泄)","内克外(辛苦财)"
 var lcolors=["#34a853","#ea4335","#f9ab00","#ff6d01","#5f6368"];
 var lx=padL;
 for(var li=0;li<5;li++){
-ctx.fillStyle=lcolors[li];ctx.beginPath();ctx.arc(lx+6,ly-1,6,0,Math.PI*2);ctx.fill();
-ctx.strokeStyle="rgba(0,0,0,0.18)";ctx.lineWidth=0.6;ctx.stroke();
-ctx.fillStyle="#111";ctx.font="bold 11px sans-serif";ctx.textAlign="left";
-ctx.fillText(llabels[li],lx+16,ly+4);
-lx+=92;
+ctx.fillStyle=lcolors[li];ctx.beginPath();ctx.arc(lx+7,ly,7,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle="rgba(0,0,0,0.2)";ctx.lineWidth=0.7;ctx.stroke();
+ctx.fillStyle="#000";ctx.font="bold 12px sans-serif";ctx.textAlign="left";
+ctx.fillText(llabels[li],lx+18,ly+5);
+lx+=102;
 }
-ctx.fillStyle="#666";ctx.font="bold 10px sans-serif";ctx.textAlign="right";
+ctx.fillStyle="#444";ctx.font="bold 11px sans-serif";ctx.textAlign="right";
 ctx.fillText("★大节点(后天) ·小节点(先天)  |  红线=当前年龄",W-padR,ly+2);
 
 // Title
-ctx.fillStyle="#444";ctx.font="bold 13px sans-serif";ctx.textAlign="left";
+ctx.fillStyle="#333";ctx.font="bold 13px sans-serif";ctx.textAlign="left";
 var stageLabel="";
 for(var si=0;si<4;si++){if(stages[si]&&stages[si].length>0){if(stageLabel)stageLabel+=" · ";stageLabel+=stageNames[si]+"("+stages[si].length+"个节点)";}}
-if(stageLabel)ctx.fillText("大运时间轴："+stageLabel,padL,padT+14);
-}
+if(stageLabel)ctx.fillText("大运时间轴："+stageLabel,padL,padT+14);}
 // ==================== 初始化 ====================
 document.getElementById('toolbarJishiArchive').style.display='block';
 window.addEventListener('load',function(){var lo=document.getElementById('loadingOverlay');if(lo){lo.style.opacity='0';lo.style.transition='opacity .3s';setTimeout(function(){lo.remove();},300);}});
