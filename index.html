@@ -3539,7 +3539,7 @@ if(clx<60)clx=60;if(clx>W-70)clx=W-70;
 ctx.fillStyle="#fff";ctx.strokeStyle="#d93025";ctx.lineWidth=1;
 var lblW=ctx.measureText("当前"+curAge+"岁").width+16;
 var dbx=clx-lblW/2-2,dby=bandY-22;
-ctx.beginPath();ctx.roundRect(dbx,dby,lblW+4,16,4);ctx.fill();ctx.stroke();
+var rr=4;ctx.beginPath();ctx.moveTo(dbx+rr,dby);ctx.lineTo(dbx+lblW+4-rr,dby);ctx.arcTo(dbx+lblW+4,dby,dbx+lblW+4,dby+rr,rr);ctx.lineTo(dbx+lblW+4,dby+16-rr);ctx.arcTo(dbx+lblW+4,dby+16,dbx+lblW+4-rr,dby+16,rr);ctx.lineTo(dbx+rr,dby+16);ctx.arcTo(dbx,dby+16,dbx,dby+16-rr,rr);ctx.lineTo(dbx,dby+rr);ctx.arcTo(dbx,dby,dbx+rr,dby,rr);ctx.closePath();ctx.fill();ctx.stroke();
 ctx.fillStyle="#d93025";ctx.font="bold 9px sans-serif";ctx.textAlign="center";
 ctx.fillText("当前"+curAge+"岁",clx,bandY-11);
 }
