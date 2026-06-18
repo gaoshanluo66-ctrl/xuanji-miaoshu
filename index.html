@@ -616,6 +616,18 @@ transition: all 0.2s;
 #loadingOverlay .loader { width:40px; height:40px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
 #loadingOverlay p { margin-top:16px; color:var(--accent); font-size:16px; letter-spacing:4px; font-family:'Noto Serif SC',serif; }
 @keyframes spin { to{transform:rotate(360deg);} }
+
+/* 数字类象弹窗 */
+#numXiangOverlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;}
+#numXiangPopup{background:var(--paper, #fff);border-radius:12px;padding:20px 24px;max-width:320px;width:90vw;box-shadow:0 12px 48px rgba(0,0,0,0.3);text-align:center;position:relative;}
+#numXiangPopup .num-big{font-size:56px;font-weight:900;line-height:1;margin-bottom:6px;}
+#numXiangPopup .num-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:12px;letter-spacing:1px;}
+#numXiangPopup .num-row{font-size:13px;color:var(--ink2);margin:4px 0;line-height:1.7;}
+#numXiangPopup .num-row strong{color:var(--ink);}
+#numXiangPopup .num-close{position:absolute;top:8px;right:12px;font-size:20px;color:var(--ink3);cursor:pointer;background:none;border:none;line-height:1;}
+.num-clickable{cursor:pointer;transition:transform .1s;display:inline-block;}
+.num-clickable:hover{transform:scale(1.2);}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 </style>
 </head>
 <body>
@@ -658,7 +670,7 @@ transition: all 0.2s;
 </div>
 <div class="ad-banner" style="margin:12px 0 8px;padding:10px 16px;background:linear-gradient(135deg,rgba(201,169,110,0.12),rgba(201,169,110,0.04));border:1px solid rgba(201,169,110,0.25);border-radius:8px;text-align:center;">
 <span style="font-size:13px;color:var(--gold-light);letter-spacing:1px;">📢 微信：</span>
-<strong style="font-size:16px;color:var(--gold);letter-spacing:2px;user-select:all;">lfc76876</strong>
+<strong style="font-size:16px;color:var(--gold);letter-spacing:2px;user-select:all;">LFC76876</strong>
 <span style="font-size:13px;color:var(--text2);"> 领取数字体系高维免费课程</span>
 </div>
 <div class="notice-bar" style="margin:4px 0;padding:6px 0;overflow:hidden;white-space:nowrap;border-bottom:1px solid rgba(201,169,110,0.15);">
@@ -797,10 +809,7 @@ transition: all 0.2s;
 </div>
 <div class="result" id="resultText"></div>
 <div style="text-align:right;margin-top:4px;display:inline-block;" id="jishiSaveBtn" onclick="saveBeforeJishiArchive()"><button class="btn btn-secondary" style="font-size:11px;padding:4px 10px;opacity:0.6;">保存记录</button></div>
-<div class="analysis" style="margin-top:12px;">
-<h3 style="font-size:14px;font-weight:700;color:var(--ink);letter-spacing:1px;margin-bottom:8px;">类象参考</h3>
-<div class="xiang-grid" id="xiangRef"></div>
-</div>
+
 </div>
 <div id="modeBazi" class="tab-content">
 <div class="time-row" style="align-items:center;">
@@ -873,10 +882,7 @@ transition: all 0.2s;
 <div id="jishiArchiveList" style="display:flex;flex-direction:column;gap:6px;"></div>
 </div>
 
-<div class="analysis" style="margin-top:12px;">
-<h3 style="font-size:14px;font-weight:700;color:var(--ink);letter-spacing:1px;margin-bottom:8px;">类象参考</h3>
-<div class="xiang-grid" id="baziXiangRef"></div>
-</div>
+
 </div>
 <div id="baziSaveDialog" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;">
 <div style="background:var(--paper);padding:20px 24px;border-radius:8px;max-width:360px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
@@ -1510,6 +1516,31 @@ if((a===6&&b===3)||(a===3&&b===6))warnings.push('大小红煞: 6-3');
 }
 return warnings;
 }
+
+function showNumXiang(n){
+var attr=NUM_ATTR[n]||{};
+var color=getNumColor(n);
+var polarityText={'++':'阳中阳','+-':'阳中阴','-+':'阴中阳','--':'阴中阴','—':'太极'}[POLARITY[n]]||'';
+var html='<div id="numXiangOverlay" onclick="if(event.target===this)hideNumXiang()">';
+html+='<div id="numXiangPopup">';
+html+='<button class="num-close" onclick="hideNumXiang()">&times;</button>';
+html+='<div class="num-big" style="color:'+color+';">'+n+'</div>';
+html+='<div class="num-title">'+attr.dizhi+' · '+attr.wuxing+' · '+polarityText+'</div>';
+html+='<div class="num-row"><strong>五行：</strong>'+attr.wuxing+' | <strong>阴阳：</strong>'+polarityText+'</div>';
+html+='<div class="num-row"><strong>地支：</strong>'+attr.dizhi+' | <strong>生肖：</strong>'+attr.shengxiao+'</div>';
+if(attr.yanse)html+='<div class="num-row"><strong>颜色：</strong>'+attr.yanse+' | <strong>方位：</strong>'+(attr.fangwei||'')+'</div>';
+if(attr.gua)html+='<div class="num-row"><strong>卦象：</strong>'+attr.gua+' | <strong>人物：</strong>'+(attr.renwu||'')+'</div>';
+if(attr.tiwei)html+='<div class="num-row"><strong>身体：</strong>'+attr.tiwei+'</div>';
+if(attr.wu)html+='<div class="num-row"><strong>物象：</strong>'+attr.wu+'</div>';
+html+='</div></div>';
+var old=document.getElementById('numXiangOverlay');if(old)old.remove();
+document.body.insertAdjacentHTML('beforeend',html);
+}
+function hideNumXiang(){var o=document.getElementById('numXiangOverlay');if(o)o.remove();}
+function numBtn(n,size){
+if(n===0||n===-1)return '<span style="font-size:'+(size||24)+'px;color:#888;">?</span>';
+return '<span class="num-clickable" onclick="showNumXiang('+n+')" style="font-size:'+(size||24)+'px;color:'+getNumColor(n)+';font-weight:700;border-bottom:1.5px dashed '+getNumColor(n)+';">'+n+'</span>';
+}
 function showXiangRef(numbers,containerId) {
 var container=document.getElementById(containerId||'xiangRef');
 if(!container)container=document.getElementById('baziXiangRef');
@@ -1648,12 +1679,12 @@ var hasLing=nei===0||wai===0;
 var neiHou, waiHou;
 if(!hasLing){neiHou=getHouTian(nei);waiHou=getHouTian(wai);}
 else {neiHou=-1;waiHou=-1;}
-document.getElementById('jishiXianN1').innerHTML='<span style="color:'+getNumColor(nei)+';">'+nei+'</span>';
-document.getElementById('jishiXianN2').innerHTML='<span style="color:'+getNumColor(wai)+';">'+wai+'</span>';
+document.getElementById('jishiXianN1').innerHTML=numBtn(nei,28);
+document.getElementById('jishiXianN2').innerHTML=numBtn(wai,28);
 if(hasLing){
 document.getElementById('jishiHouRow').style.display='none';
-document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+')';
-document.getElementById('waiNum').innerHTML='<span style="color:'+getNumColor(wai)+';font-weight:600;">'+wai+'</span> ('+getDizhi(wai)+' '+getWuXing(wai)+' '+POLARITY[wai]+')';
+document.getElementById('neiNum').innerHTML=numBtn(nei,24)+' ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+')';
+document.getElementById('waiNum').innerHTML=numBtn(wai,24)+' ('+getDizhi(wai)+' '+getWuXing(wai)+' '+POLARITY[wai]+')';
 } else {
 document.getElementById('jishiHouRow').style.display='flex';
 document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+') → <span style="color:'+getNumColor(neiHou)+';">'+neiHou+'</span> ('+getDizhi(neiHou)+' '+getWuXing(neiHou)+' '+POLARITY[neiHou]+')';
@@ -1679,7 +1710,7 @@ var hunyinSub='';
 if(wenShi==='hunyin')hunyinSub=getActiveHunyinSub();
 var zidingyiText='';
 if(wenShi==='zidingyi'){zidingyiText=getActiveZidingyi();if(!zidingyiText)zidingyiText='自定义问题';}
-showXiangRef(allNums,'xiangRef');
+
 var reading=generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenShiText,hunyinSub,zidingyiText,genderJishi,hasLing);
 document.getElementById('resultText').innerHTML=reading;
 setTimeout(function(){if(window._dayunChartData){drawDayunChart(window._dayunChartData);window._dayunChartData=null;}},120);
@@ -1706,8 +1737,8 @@ var hasLing=nei===0||wai===0;
 var neiHou, waiHou;
 if(!hasLing){neiHou=getHouTian(nei);waiHou=getHouTian(wai);}
 else {neiHou=-1;waiHou=-1;}
-document.getElementById('jishiXianN1').innerHTML='<span style="color:'+getNumColor(nei)+';">'+nei+'</span>';
-document.getElementById('jishiXianN2').innerHTML='<span style="color:'+getNumColor(wai)+';">'+wai+'</span>';
+document.getElementById('jishiXianN1').innerHTML=numBtn(nei,28);
+document.getElementById('jishiXianN2').innerHTML=numBtn(wai,28);
 if(hasLing){
 document.getElementById('jishiHouRow').style.display='none';
 document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+')';
@@ -1731,7 +1762,7 @@ if(isAnJue(nei,wai,neiHou,waiHou))allTags.push({type:'jue',text:'暗绝:先天�
 if(isZhenJue(nei,wai,neiHou,waiHou))allTags.push({type:'jue',text:'真绝:始终凶险'});
 if(isJiaJue(nei,wai,neiHou,waiHou))allTags.push({type:'sheng',text:'假绝:逢凶化吉'});
 }
-showXiangRef(allNums,'xiangRef');
+
 var wenShi=getActiveWenShi();
 var wenShiText=getActiveWenShiText();
 var hunyinSub='';
@@ -2212,7 +2243,7 @@ d+='</div>';
 d+='<div style="display:flex;justify-content:center;align-items:center;margin:2px 0;font-size:28px;font-weight:700;line-height:1.2;">';
 for(var pi=0;pi<numP;pi++){
 var xv=xianAll[pi];
-d+='<div'+_cellEx(36,'color:'+(xv===0?'var(--ink3)':getNumColor(xv))+';')+'>'+(xv===0?'?':xv)+'</div>';
+d+='<div'+_cellEx(36,'')+'>'+numBtn(xv,28)+'</div>';
 if(pi<numP-1)d+=_numSep();
 }
 d+=_tail('先天');
@@ -2234,7 +2265,7 @@ d+=_tail('');
 d+='</div>';
 d+='<div style="display:flex;justify-content:center;align-items:center;margin:2px 0;font-size:24px;font-weight:600;line-height:1.2;">';
 for(var pi=0;pi<numP;pi++){
-d+='<div'+_cellEx(36,'color:'+(houAll[pi]===-1?'#888':getNumColor(houAll[pi]))+';')+'>'+(houAll[pi]===-1?'?':houAll[pi])+'</div>';
+d+='<div'+_cellEx(36,'')+'>'+numBtn(houAll[pi],24)+'</div>';
 if(pi<numP-1)d+=_numSep();
 }
 d+=_tail('后天');
@@ -2280,7 +2311,7 @@ var analysis=analyzePairs(pairs,pairLabels);
 var houFiltered=[];
 for(var hi=0;hi<houAll.length;hi++){if(houAll[hi]!==-1)houFiltered.push(houAll[hi]);}
 var allNums=xianAll.concat(houFiltered);
-showXiangRef(allNums,'baziXiangRef');
+
 var allTags=checkSpecialPairs(allNums);
 var aiWarn=checkAizheng(pairs);
 for(var ai=0;ai<aiWarn.length;ai++)allTags.push(aiWarn[ai]);
@@ -3569,6 +3600,7 @@ for(var si=0;si<4;si++){if(stages[si]&&stages[si].length>0){if(stageLabel)stageL
 if(stageLabel)ctx.fillText("大运时间轴："+stageLabel,padL,padT+14);
 }
 // ==================== 初始化 ====================
+document.getElementById('toolbarJishiArchive').style.display='block';
 window.addEventListener('load',function(){var lo=document.getElementById('loadingOverlay');if(lo){lo.style.opacity='0';lo.style.transition='opacity .3s';setTimeout(function(){lo.remove();},300);}});
 try{setNow();}catch(e){var lo2=document.getElementById('loadingOverlay');if(lo2){lo2.style.opacity='0';lo2.style.transition='opacity .3s';setTimeout(function(){lo2.remove();},300);}}
 document.addEventListener('click',function(e){
