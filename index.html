@@ -2723,28 +2723,29 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
   }
   var eGrp=mergeAdj(early),nGrp=mergeAdj(normal),lGrp=mergeAdj(late);
 
-  l.push('<p>● <strong>三个节点：</strong></p>');
-  if(eGrp.length>0){l.push('<p>　早：<strong>'+pickMid(eGrp[0].ages)+'岁</strong> — 上下不差一岁</p>');}
-  if(nGrp.length>0){l.push('<p>　正常：<strong>'+pickMid(nGrp[0].ages)+'岁</strong> — 上下不差一岁</p>');}
-  if(lGrp.length>0){l.push('<p>　晚：<strong>'+pickMid(lGrp[lGrp.length-1].ages)+'岁</strong> — 上下不差一岁</p>');}
+  l.push('<p><strong>婚期节点：</strong></p>');
+  if(eGrp.length>0){l.push('<p>　早：<strong>'+pickMid(eGrp[0].ages)+'岁</strong>（上下不差一岁）</p>');}
+  if(nGrp.length>0){l.push('<p>　正常：<strong>'+pickMid(nGrp[0].ages)+'岁</strong>（上下不差一岁）</p>');}
+  if(lGrp.length>0){l.push('<p>　晚：<strong>'+pickMid(lGrp[lGrp.length-1].ages)+'岁</strong>（上下不差一岁）</p>');}
 
-  // 虚岁/周岁说明
-  l.push('<p style="font-size:11px;color:var(--ink3);margin-top:2px;">※ 以上年龄按<strong>虚岁</strong>推算（落地即算1岁）。「上下不差一岁」即留出虚岁与周岁的浮动空间——有的地方按虚岁办喜事，有的按周岁领证，实际情况正负一岁之内均属正常。</p>');
-
-  if(isYearYueChong){l.push('<p class="warning">⚠ 年月'+yearXian+'-'+yueXian+'六冲：冲则动，婚姻要么<strong>很早</strong>要么<strong>很晚</strong>，中间不易稳定。</p>');}
-  if(isYueNianSame){l.push('<p>● 年月同数<strong>'+yearXian+'</strong>：年=月内外合一，当做一个看。</p>');}
+  if(isYearYueChong){l.push('<p class="warning">⚠ 年月六冲：婚姻要么很早要么很晚。</p>');}
+  if(isYueNianSame){l.push('<p>● 年月同数，当做一个看。</p>');}
 
   var wanPoint=(lGrp.length>0)?pickMid(lGrp[lGrp.length-1].ages):0;
   if(isZaoHun){
-    l.push('<p style="color:var(--qing);">● 属<strong>早婚型</strong>，婚缘来得早。</p>');
+    l.push('<p style="color:var(--qing);">● 早婚型，婚缘来得早。</p>');
   } else {
-    l.push('<p style="color:var(--zhu);">● 属<strong>晚婚型</strong>，婚缘来得晚。</p>');
     if(wanPoint>0){
-      var fallbackAge=wanPoint+3;if(fallbackAge<30)fallbackAge=30;
-      l.push('<p style="color:var(--zhu);">● 若晚婚节点（'+wanPoint+'岁）仍未成婚，把握不住则可能推迟到 <strong>'+fallbackAge+'~'+(fallbackAge+5)+'岁</strong> 前后。</p>');
+      if(wanPoint>=31){
+        l.push('<p style="color:var(--zhu);">● 晚婚型，最晚'+wanPoint+'岁，还把握不住就得很晚了。</p>');
+      } else {
+        l.push('<p style="color:var(--zhu);">● 晚婚型，若'+wanPoint+'岁还未成，把握不住则更晚。</p>');
+      }
+    } else {
+      l.push('<p style="color:var(--zhu);">● 晚婚型，婚缘来得晚。</p>');
     }
   }
-  l.push('<p style="font-size:11px;color:var(--ink3);">※ 年龄推断仅供参考，实际婚期还需结合大运流年。</p>');
+  l.push('<p style="font-size:11px;color:var(--ink3);">※ 按虚岁推算，正负一岁正常。实际结合大运流年。</p>');
 
   // ==================== 6. 财运大小（依书：第十二章 财运） ====================
   l.push('<br><strong>六、财运：</strong>');
