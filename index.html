@@ -256,7 +256,7 @@ body::after {
   border-color: var(--gold);
   box-shadow: 0 0 0 3px rgba(201,169,110,0.08);
 }
-#birthDate { width: 95px; flex: none; }
+#birthDate { flex: 0 1 auto; }
 
 /* ===== 按钮 ===== */
 .btn-group { display: flex; gap: 10px; margin: 12px 0; flex-wrap: wrap; align-items: center; }
@@ -740,6 +740,7 @@ p.warning { color: var(--zhu-light) !important; }
 <!-- ===== 即时起卦 ===== -->
 <div id="modeJishi" class="tab-content active">
 
+<div style="display:flex;justify-content:flex-end;margin-bottom:4px;"><button class="btn btn-pdf" onclick="window.print()" style="padding:4px 10px;font-size:11px;">导出PDF</button></div>
   <div class="sub-tabs">
     <button class="sub-tab active" onclick="switchJishiMethod('rixia')">日时起卦</button>
     <button class="sub-tab" onclick="switchJishiMethod('baoshu')">报数起卦</button>
@@ -762,7 +763,6 @@ p.warning { color: var(--zhu-light) !important; }
       </select>
       <button class="btn btn-primary" onclick="doDivination()">起 卦</button>
       <button class="btn btn-secondary" onclick="setNow()">现在</button>
-      <button class="btn btn-pdf" onclick="window.print()">PDF</button>
     </div>
     <span id="hunyinExtra" style="display:none;margin-left:4px;">
       <select id="hunyinStatus" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -889,13 +889,13 @@ p.warning { color: var(--zhu-light) !important; }
 
   <div class="time-row" style="align-items:center;">
     <label style="min-width:auto;margin-right:4px;color:var(--text2);">日历</label>
-    <select id="baziCalType" onchange="onBaziCalChange()" style="padding:6px 10px;border:1px solid var(--gold-border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;width:auto;min-width:70px;">
+    <select id="baziCalType" onchange="onBaziCalChange()" style="padding:5px 8px;border:1px solid var(--gold-border);border-radius:6px;font-size:11px;background:var(--bg-input);color:var(--text);font-family:inherit;width:auto;min-width:70px;">
       <option value="solar">公历</option>
       <option value="lunar">农历</option>
     </select>
-    <label style="color:var(--text2);">出生日期</label>
+    <label style="color:var(--text);">日期</label>
     <div id="baziSolarInput">
-      <input type="date" id="birthDate" min="1900-01-01" max="2099-12-31" style="padding:8px 10px;border:1px solid var(--gold-border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;color-scheme:dark;">
+      <input type="date" id="birthDate" min="1900-01-01" max="2099-12-31" style="padding:6px 8px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;color-scheme:dark;">
     </div>
     <div id="baziLunarInput" style="display:none;gap:4px;align-items:center;">
       <input type="number" id="lunarYear" placeholder="年" min="1900" max="2100" style="padding:8px;border:1px solid var(--gold-border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;color-scheme:dark;width:70px;">
@@ -905,7 +905,7 @@ p.warning { color: var(--zhu-light) !important; }
       <input type="number" id="lunarDay" placeholder="日" min="1" max="30" style="padding:8px;border:1px solid var(--gold-border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;color-scheme:dark;width:55px;">
       <span style="color:var(--text3);">日</span>
     </div>
-    <label style="color:var(--text2);">时辰</label>
+    <label style="color:var(--text);">时辰</label>
     <select id="baziShichenSelect" style="padding:6px 10px;border:1px solid var(--gold-border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
       <option value="0">未知</option>
     <option value="1">子时 23-1点</option><option value="2">丑时 1-3点</option>
