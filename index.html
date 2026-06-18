@@ -3049,35 +3049,98 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     gejuLines.push('<p>● <strong>和尚尼姑格局</strong>：八字数字比较单一，性格多孤傲，对婚姻不利，适合独处。但现代社会也有单一八字结婚的，不能一概而论。</p>');
   }
 
-  // ===== 补充：领导格局 & 147框架 & 龙数 =====
+  // ===== 统一主格局判断（只输出一个主格局，不列清单） =====
+  gejuLines=[]; // 清空，改用变量选主格局
+  var mainG='',mainCls='';
+
+  if(uniqC<=2&&totN>=4){
+    mainG='<strong>和尚尼姑格局</strong>：数字单一，性格孤傲，婚姻不利，适合独处。';
+    mainCls='';
+  } else if(dirCh>=4&&xc.total+hc.total>=3){
+    mainG='<strong>无力格局</strong>：走向杂乱无序，一会上一会下，没主见，容易迷茫，很无力无奈。';
+    mainCls='';
+  } else if(xc.upK===0&&xc.downK===0&&xc.total>0 && (hc.upK+hc.downK)>=hc.total*0.6&&hc.total>0){
+    var jkTxt='';
+    if(yIdx>=1&&yIdx<len-1){
+      var sl=getShengKe(getWuXing(houAll[yIdx-1]),getWuXing(houAll[yIdx]));
+      var sr=getShengKe(getWuXing(houAll[yIdx]),getWuXing(houAll[yIdx+1]));
+      if((sl==='克'||sl==='被克')&&(sr==='克'||sr==='被克'))jkTxt='，后天夹克月数';
+    }
+    mainG='<strong>人穷命不穷</strong>：先天无克（命好），后天全克（运差）'+jkTxt+'。看着好的事易成坑，被骗破财。';
+    mainCls='warning';
+  } else if(xc.upS===xc.total&&hc.upS===hc.total&&xc.total>0&&hc.total>0){
+    mainG='<strong>富贵格局（生到顶）</strong>：先后天从时上一路生到年上，当官命或富贵命，此生不会太差。';
+    mainCls='good';
+  } else if(xUpDom&&hUpDom&&xc.downTotal===0&&hc.downTotal===0){
+    var kk=xc.upK+hc.upK;
+    mainG='<strong>富贵格局（生克到顶）</strong>：从时上生克到年上，上进能折腾，是富贵命。'+(kk>0?'往上克'+kk+'次，克越多阻力越大。':'');
+    mainCls='good';
+  } else if(xDownDom&&hDownDom&&xc.upTotal===0&&hc.upTotal===0){
+    mainG='<strong>阿斗格局（生克到底）</strong>：从年上生克到时上，随波逐流很佛系，今朝有酒今朝醉。易啃老。';
+    mainCls='';
+  } else if(xUpDom&&hDownDom){
+    mainG='<strong>表里不一</strong>：先天向上（外在上进），后天向下（内在随缘），表面努力内心佛系。';
+    mainCls='';
+  } else if(xDownDom&&hUpDom){
+    mainG='<strong>后起之秀</strong>：先天向下（早年随缘），后天向上（后来奋进），30岁前不努力30后突然奋发。';
+    mainCls='';
+  } else if(xSD||xKD||hSD||hKD){
+    var cl=[];
+    if(xSD||hSD)cl.push('生上生下');
+    if(xKD||hKD)cl.push('克上又克下');
+    mainG='<strong>操心劳碌格局</strong>：八字'+cl.join('且')+'，典型的操心劳碌命，出力不讨好。';
+    mainCls='';
+  } else if(xc.upS>0&&xc.downS>0 && hc.upS>0&&hc.downS>0){
+    mainG='<strong>好人格局</strong>：先后天生上又生下，对谁都无条件好，出力不讨好，"烂好人"。';
+    mainCls='';
+  } else if(xUpDom||hUpDom){
+    mainG='偏向上走（时→年），有一定的上进心，但走向不完全一致。';
+    mainCls='';
+  } else if(xDownDom||hDownDom){
+    mainG='偏向下走（年→时），比较随缘，缺乏主动进取心。';
+    mainCls='';
+  } else {
+    mainG='格局中和，无明显偏向，需结合整体链条和流年判断。';
+    mainCls='';
+  }
+
+  // 输出主格局
+  if(mainCls==='warning')l.push('<p class="warning">⚠ '+mainG+'</p>');
+  else if(mainCls==='good')l.push('<p class="good">⊕ '+mainG+'</p>');
+  else l.push('<p>● '+mainG+'</p>');
+
+  // 补充特征（与主格局不同维度，最多2条）
+  var supp=[];
+  if(jiaSheng&&mainG.indexOf('富贵')<0)supp.push('<p class="good">⊕ 年日先后天夹生月数，属富贵命。</p>');
+  if(sfScore>=5&&mainG.indexOf('无力')<0)supp.push('<p class="warning">⚠ 事非重：345主克夹克多+冲多，易招小人口舌'+(sfScore>=8?'，严重者官司牢狱。':'。')+'</p>');
+  if(jueC>=4||jiaJue)supp.push('<p class="warning">⚠ 因果重：绝数较多'+(jiaJue?'且有夹绝':'')+'，前世祖上因果大，生活不顺。'+(jueC>=5?'需特别注意。':'')+'</p>');
+  if(totN>=3&&zhC/totN>=0.8&&mainG.indexOf('和尚')<0)supp.push('<p>● 自我限制：四正数（1/4/7/10）超八成，思维固执保守，画地为牢。</p>');
+  if(earlyF)supp.push('<p class="good">⊕ 早运好：年月阴阳正生，易得祖业或早年遇贵人。</p>');
+  if(fhK>fhS&&shS>shK&&fhK+shS>=2)supp.push('<p>● 晚运好（草根逆袭）：早年多克阻力大，熬过后通过奋斗成功。</p>');
+  for(var si=0;si<Math.min(supp.length,2);si++){l.push(supp[si]);}
+
+  // 领导 / 龙 / 147（独立维度）
   var lingdao=[];
   for(var i=0;i<xianAll.length;i++){
     if(xianAll[i]===11||xianAll[i]===12)lingdao.push(pillarNames[i]+xianAll[i]);
   }
   if(lingdao.length>0){
     var ldNm=lingdao.length===1?parseInt(lingdao[0].replace(/[^0-9]/g,'')):0;
-    var ldTxt=lingdao.length===1?(ldNm===12?'正职领导':'副职或公检法'):'有领导格局';
-    gejuLines.push('<p class="good">⊕ <strong>领导格局</strong>：'+lingdao.join('、')+' — 11为公检法/副职，12为党政正职，天生有管理统领之才。'+(lingdao.length>=2?'领导格局较强，适合走仕途或管理岗。':'')+'</p>');
+    l.push('<p class="good">⊕ <strong>领导格局</strong>：'+lingdao.join('、')+' — 11公检法/副职，12党政正职。'+(lingdao.length>=2?'领导格局较强。':'')+'</p>');
   }
 
   var hasLong=false;
   for(var i=0;i<xianAll.length;i++){if(xianAll[i]===5)hasLong=true;}
-  if(hasLong)gejuLines.push('<p>● <strong>龙数入命</strong>：5为龙，能干大事业，有管理支配能力。成功则大，一旦失败也比较严重。</p>');
+  if(hasLong)l.push('<p>● <strong>龙数入命</strong>：5为龙，能干大事业，有管理支配能力。成功则大，一旦失败也较严重。</p>');
 
   var zheng147=[];
   for(var i=0;i<xianAll.length;i++){
     if(xianAll[i]===1||xianAll[i]===4||xianAll[i]===7)zheng147.push(pillarNames[i]+xianAll[i]);
   }
   if(zheng147.length>=2){
-    gejuLines.push('<p>● <strong>147正数框架</strong>：'+zheng147.join('、')+' — 正数多，守原则有底线，自我约束力强，但也容易画地为牢，把自己框住，有天花板限制。</p>');
+    l.push('<p>● <strong>147正数框架</strong>：'+zheng147.join('、')+' — 正数多，守原则有底线，但也容易画地为牢，把自己框住，有天花板限制。</p>');
   }
 
-  // 输出
-  if(gejuLines.length===0){
-    l.push('<p>● 八字格局较为中和，无突出格局特征，需结合整体链条和流年判断。</p>');
-  } else {
-    for(var gi=0;gi<gejuLines.length;gi++){l.push(gejuLines[gi]);}
-  }
   l.push('<p style="font-size:12px;color:var(--muted);">先天走向：'+dirDesc(xc)+'；后天走向：'+dirDesc(hc)+'</p>');
 
   // ==================== 性格人品 ====================
