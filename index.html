@@ -266,6 +266,9 @@ body::after {
   font-family: inherit;
 }
 .btn-primary {
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 700;
   background: linear-gradient(135deg, var(--gold-dim), var(--gold));
   color: #1a1410;
   box-shadow: 0 2px 12px rgba(201,169,110,0.3);
@@ -500,11 +503,11 @@ p.warning { color: var(--zhu-light) !important; }
 
 /* ===== 性别按钮 ===== */
 .gender-btn {
-  padding: 4px 14px;
+  padding: 2px 10px;
   border: 1.5px solid var(--border);
   border-radius: 4px;
   background: var(--bg-input);
-  font-size: 13px;
+  font-size: 11px;
   cursor: pointer;
   font-weight: 500;
   color: var(--text3);
@@ -727,14 +730,14 @@ p.warning { color: var(--zhu-light) !important; }
   <!-- 日时起卦 -->
   <div id="jishiRixia" class="shuzi-section active">
     <div class="btn-group" style="margin:0;">
-      <input type="date" id="solarDate" min="1900-01-01" max="2099-12-31" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);font-family:inherit;width:140px;">
-      <select id="shichenSelect" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <input type="date" id="solarDate" min="1900-01-01" max="2099-12-31" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;width:140px;">
+      <select id="shichenSelect" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option value="0">自动时辰</option>
         <option value="1">子时</option><option value="2">丑时</option><option value="3">寅时</option><option value="4">卯时</option><option value="5">辰时</option><option value="6">巳时</option><option value="7">午时</option><option value="8">未时</option><option value="9">申时</option><option value="10">酉时</option><option value="11">戌时</option><option value="12">亥时</option>
       </select>
       <button class="gender-btn active" id="genderMJishi" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi" onclick="setGender('jishi','f')">女</button>
-      <select id="wenShiSelect" onchange="onWenShiChange()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="wenShiSelect" onchange="onWenShiChange()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doDivination()">起 卦</button>
@@ -742,12 +745,12 @@ p.warning { color: var(--zhu-light) !important; }
       <button class="btn btn-pdf" onclick="window.print()">PDF</button>
     </div>
     <span id="hunyinExtra" style="display:none;margin-left:4px;">
-      <select id="hunyinStatus" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="hunyinStatus" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option>未婚看姻缘</option><option>已婚看感情</option><option>看离婚</option>
       </select>
     </span>
     <span id="zidingyiExtra" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <input type="text" id="zidingyiText" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
     <div style="display:flex;align-items:center;gap:12px;margin-top:8px;font-size:12px;color:var(--ink3);flex-wrap:wrap;">
       <span class="item" style="margin:0;padding:2px 10px;background:var(--paper2);border-radius:4px;border:1px solid var(--border);">农历：<strong id="lunarDateDisplay" style="color:var(--ink2);">--</strong></span>
@@ -759,23 +762,23 @@ p.warning { color: var(--zhu-light) !important; }
   <!-- 报数起卦 -->
   <div id="jishiBaoshu" class="shuzi-section">
     <div class="btn-group" style="margin:0;">
-      <input type="number" id="baoshuNei" min="0" max="12" value="" placeholder="内卦 0-12" style="width:90px;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);font-family:inherit;">
+      <input type="number" id="baoshuNei" min="0" max="12" value="" placeholder="内卦 0-12" style="width:90px;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;">
       <span style="font-size:18px;color:var(--border);">—</span>
-      <input type="number" id="baoshuWai" min="0" max="12" value="" placeholder="外卦 0-12" style="width:90px;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);font-family:inherit;">
+      <input type="number" id="baoshuWai" min="0" max="12" value="" placeholder="外卦 0-12" style="width:90px;padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;">
       <button class="gender-btn active" id="genderMJishi2" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi2" onclick="setGender('jishi','f')">女</button>
-      <select id="wenShiSelect2" onchange="onWenShiChange2()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="wenShiSelect2" onchange="onWenShiChange2()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
     </div>
     <span id="hunyinExtra2" style="display:none;margin-left:4px;">
-      <select id="hunyinStatus2" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="hunyinStatus2" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option>未婚看姻缘</option><option>已婚看感情</option><option>看离婚</option>
       </select>
     </span>
     <span id="zidingyiExtra2" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText2" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <input type="text" id="zidingyiText2" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
   </div>
 
@@ -787,18 +790,18 @@ p.warning { color: var(--zhu-light) !important; }
       <button class="btn btn-secondary" onclick="rollDice()">掷骰子</button>
       <button class="gender-btn active" id="genderMJishi3" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi3" onclick="setGender('jishi','f')">女</button>
-      <select id="wenShiSelect3" onchange="onWenShiChange3()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="wenShiSelect3" onchange="onWenShiChange3()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
     </div>
     <span id="hunyinExtra3" style="display:none;margin-left:4px;">
-      <select id="hunyinStatus3" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="hunyinStatus3" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option>未婚看姻缘</option><option>已婚看感情</option><option>看离婚</option>
       </select>
     </span>
     <span id="zidingyiExtra3" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText3" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <input type="text" id="zidingyiText3" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
     <div class="dice-label" id="diceLabel" style="margin-top:4px;">点击「掷骰子」</div>
   </div>
@@ -811,18 +814,18 @@ p.warning { color: var(--zhu-light) !important; }
       <button class="btn btn-secondary" onclick="drawCards()">抽 牌</button>
       <button class="gender-btn active" id="genderMJishi4" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi4" onclick="setGender('jishi','f')">女</button>
-      <select id="wenShiSelect4" onchange="onWenShiChange4()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="wenShiSelect4" onchange="onWenShiChange4()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
     </div>
     <span id="hunyinExtra4" style="display:none;margin-left:4px;">
-      <select id="hunyinStatus4" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <select id="hunyinStatus4" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option>未婚看姻缘</option><option>已婚看感情</option><option>看离婚</option>
       </select>
     </span>
     <span id="zidingyiExtra4" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText4" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);font-family:inherit;">
+      <input type="text" id="zidingyiText4" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
     <div class="dice-label" id="cardLabel" style="margin-top:4px;">点击「抽牌」随机抽取两张</div>
   </div>
@@ -891,7 +894,7 @@ p.warning { color: var(--zhu-light) !important; }
       <span style="color:var(--text3);">日</span>
     </div>
     <label>时辰</label>
-    <select id="baziShichenSelect">
+    <select id="baziShichenSelect" style="padding:6px 10px;border:1px solid var(--gold-border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
       <option value="0">未知</option>
     <option value="1">子时 23-1点</option><option value="2">丑时 1-3点</option>
     <option value="3">寅时 3-5点</option><option value="4">卯时 5-7点</option>
