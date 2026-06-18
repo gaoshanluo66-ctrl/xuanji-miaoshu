@@ -3507,19 +3507,25 @@ ctx.fillStyle=stageTextClrs[si];ctx.font="bold 11px sans-serif";ctx.textAlign="c
 ctx.fillText(stageNames[si],(x1+x2)/2,bandY+19);
 }
 
-// Axis
+// Wavy axis line
 var axisY=106;
-ctx.strokeStyle="#bbb";ctx.lineWidth=1.8;
-ctx.beginPath();ctx.moveTo(padL,axisY);ctx.lineTo(W-padR,axisY);ctx.stroke();
+ctx.strokeStyle="#bbb";ctx.lineWidth=1.8;ctx.lineCap="round";ctx.lineJoin="round";
+ctx.beginPath();
+var waveAmp=2.8,waveFreq=0.025;
+ctx.moveTo(padL,axisY);
+for(var wx=padL;wx<=W-padR;wx+=2){
+ctx.lineTo(wx,axisY+Math.sin(wx*waveFreq)*waveAmp);
+}
+ctx.stroke();
 
 // Age ticks
 ctx.textAlign="center";
 for(var a=0;a<=90;a+=10){
 var tx=ageToX(a);
 ctx.fillStyle="#555";ctx.font="bold 11px sans-serif";
-ctx.fillText(a+"岁",tx,axisY+16);
+ctx.fillText(a+"岁",tx,axisY+20);
 ctx.strokeStyle="#ccc";ctx.lineWidth=1.2;
-ctx.beginPath();ctx.moveTo(tx,axisY-5);ctx.lineTo(tx,axisY+5);ctx.stroke();
+ctx.beginPath();ctx.moveTo(tx,axisY-10);ctx.lineTo(tx,axisY+10);ctx.stroke();
 }
 
 // Node markers
@@ -3561,7 +3567,7 @@ ctx.fillText(n.age,nx,ny+(isMajor?19:13));
 if(curAge>0&&curAge<=90){
 var cx=Math.round(ageToX(curAge));
 ctx.strokeStyle="#d93025";ctx.lineWidth=2;ctx.setLineDash([4,3]);
-ctx.beginPath();ctx.moveTo(cx,bandY-10);ctx.lineTo(cx,axisY+32);ctx.stroke();
+ctx.beginPath();ctx.moveTo(cx,bandY-10);ctx.lineTo(cx,axisY+38);ctx.stroke();
 ctx.setLineDash([]);
 var clx=cx;
 if(clx<70)clx=70;if(clx>W-80)clx=W-80;
@@ -3574,27 +3580,22 @@ ctx.fillText(lbl,clx,dby+13);
 }
 
 // Legend
-var ly=185;
-var legend=[
-{color:"#34a853",label:"生内(吉)"},
-{color:"#ea4335",label:"克内(凶)"},
-{color:"#f9ab00",label:"内生外(泄)"},
-{color:"#ff6d01",label:"内克外(辛苦财)"},
-{color:"#5f6368",label:"比合(平)"}
-];
+var ly=195;
+var llabels=["生内(吉)","克内(凶)","内生外(泄)","内克外(辛苦财)","比合(平)"];
+var lcolors=["#34a853","#ea4335","#f9ab00","#ff6d01","#5f6368"];
 var lx=padL;
-for(var li=0;li<legend.length;li++){
-ctx.fillStyle=legend[li].color;ctx.beginPath();ctx.arc(lx+6,ly-2,6,0,Math.PI*2);ctx.fill();
-ctx.strokeStyle="rgba(0,0,0,0.15)";ctx.lineWidth=0.5;ctx.stroke();
-ctx.fillStyle="#333";ctx.font="bold 10px sans-serif";ctx.textAlign="left";
-ctx.fillText(legend[li].label,lx+15,ly+4);
-lx+=88;
+for(var li=0;li<5;li++){
+ctx.fillStyle=lcolors[li];ctx.beginPath();ctx.arc(lx+6,ly-1,6,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle="rgba(0,0,0,0.18)";ctx.lineWidth=0.6;ctx.stroke();
+ctx.fillStyle="#111";ctx.font="bold 11px sans-serif";ctx.textAlign="left";
+ctx.fillText(llabels[li],lx+16,ly+4);
+lx+=92;
 }
-ctx.fillStyle="#888";ctx.font="9px sans-serif";ctx.textAlign="right";
+ctx.fillStyle="#666";ctx.font="bold 10px sans-serif";ctx.textAlign="right";
 ctx.fillText("★大节点(后天) ·小节点(先天)  |  红线=当前年龄",W-padR,ly+2);
 
 // Title
-ctx.fillStyle="#666";ctx.font="bold 12px sans-serif";ctx.textAlign="left";
+ctx.fillStyle="#444";ctx.font="bold 13px sans-serif";ctx.textAlign="left";
 var stageLabel="";
 for(var si=0;si<4;si++){if(stages[si]&&stages[si].length>0){if(stageLabel)stageLabel+=" · ";stageLabel+=stageNames[si]+"("+stages[si].length+"个节点)";}}
 if(stageLabel)ctx.fillText("大运时间轴："+stageLabel,padL,padT+14);
