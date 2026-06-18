@@ -2920,7 +2920,7 @@ var kk=xc.upK+hc.upK;
 gejuLines.push('<p class="good">⊕ <strong>生克到顶·富贵格局</strong>：先后天从时上生克到年上，上进能折腾，是富贵命。'+(kk>0?'往上克'+kk+'次，克越多阻力越大，易大起大落。':'')+'</p>');
 }
 else if(xDownDom&&hDownDom&&xc.upTotal===0&&hc.upTotal===0){
-gejuLines.push('<p>● <strong>生克到底·阿斗格局</strong>：先后天从年上生克到时上，随波逐流，很佛系。懒散，今朝有酒今朝醉，明日无酒也不愁。易啃老，饿不死就行。</p>');
+gejuLines.push('<p>● <strong>生克到底·躺平格局</strong>：先后天从年上生克到时上，随波逐流，很佛系。懒散，今朝有酒今朝醉，明日无酒也不愁。易啃老，饿不死就行。</p>');
 }
 else if(xUpDom&&hDownDom){
 gejuLines.push('<p>● <strong>表里不一</strong>：先天从时上生克到年上（外在上进），后天从年上生克到时上（内在随缘），表面努力，实际内心随波逐流，比较佛系。</p>');
@@ -3027,21 +3027,24 @@ if(sfScore>=3){
 var sfw=sfScore>=6?'严重，容易官司牢狱。':'';
 gejuLines.push('<p class="warning">⚠ <strong>事非格局</strong>：3/4/5主克或夹克较多，八字相冲多。事非多，小人口舌，不是自己的事都容易招惹上身。'+sfw+'</p>');
 }
-// ===== 九、无力格局 =====
-var dirCh=0,pd='';
-for(var i=0;i<len-1;i++){
-var a=xianAll[i],b=xianAll[i+1];
-if(a===0||b===0)continue;
+// ===== 九、无力格局（修复：数方向翻转而非生克类型变化）=====
+function countDirFlips(nums){
+var flips=0,prevDir='';
+for(var i=0;i<nums.length-1;i++){
+var a=nums[i],b=nums[i+1];
+if(a<=0||b<=0||a===-1||b===-1)continue;
 var sk=getShengKe(getWuXing(a),getWuXing(b));
-if(sk&&sk!=='比合'){if(pd&&sk!==pd&&pd!=='比合')dirCh++;pd=sk;}
+if(!sk||sk==='比合')continue;
+var dir=(sk==='被生'||sk==='被克')?'UP':'DOWN';
+if(prevDir&&dir!==prevDir)flips++;
+prevDir=dir;
 }
-for(var i=0;i<len-1;i++){
-var ha=houAll[i],hb=houAll[i+1];
-if(ha===-1||hb===-1)continue;
-var sk2=getShengKe(getWuXing(ha),getWuXing(hb));
-if(sk2&&sk2!=='比合'){if(pd&&sk2!==pd)dirCh++;pd=sk2;}
+return flips;
 }
-if(dirCh>=3&&xc.total+hc.total>=3){
+var xianFlips=countDirFlips(xianAll);
+var houFlips=countDirFlips(houAll);
+var totalFlips=xianFlips+houFlips;
+if(totalFlips>=3&&xc.total+hc.total>=3){
 gejuLines.push('<p>● <strong>无力格局</strong>：八字走向杂乱，一会上一会下，五行落点混乱。比较没主见，容易迷茫，很无力无奈，不好抓重点。</p>');
 }
 // ===== 十、凶险因果格局 =====
@@ -3054,8 +3057,9 @@ if(len>=2){
 if(isBaJue(xianAll[0],xianAll[len-1]))jueC++;
 if(houAll[0]!==-1&&houAll[len-1]!==-1&&isBaJue(houAll[0],houAll[len-1]))jueC++;
 }
-if(jueC>=2){
-gejuLines.push('<p class="warning">⚠ <strong>凶险因果格局</strong>：八字出现绝数，前世或祖上涉及较大因果，生活不顺，有些事没法解释。</p>');
+var causeC=jueC+chongC;
+if(causeC>=2){
+gejuLines.push('<p class="warning">⚠ <strong>凶险因果格局</strong>：八字含'+(jueC>0?jueC+'处绝数':'')+(jueC>0&&chongC>0?'、':'')+(chongC>0?chongC+'处六冲':'')+'，前世或祖上涉及较大因果，生活不顺，有些事没法解释。</p>');
 }
 // ===== 十一、自我限制格局（四正数超80%） =====
 var totN=0,zhC=0;
@@ -3074,26 +3078,22 @@ var uniqC=Object.keys(uniq).length;
 if(uniqC<=2&&totN>=4){
 gejuLines.push('<p>● <strong>和尚尼姑格局</strong>：八字数字比较单一，性格多孤傲，对婚姻不利，适合独处。但现代社会也有单一八字结婚的，不能一概而论。</p>');
 }
-// ===== 先天后天分开判格局 =====
-gejuLines=[];
+// ===== 先天后天分开判格局（修复：主体显示先后天格局，无力格作为补充）=====
 function gjDesc(c){
 if(c.total===0)return{name:'无走向',desc:'无明确走向'};
 if(c.upS===c.total)return{name:'富贵格局',desc:'一路向上，有人帮有人抬，当官命或富贵命，此生不会太差',cls:'good'};
 if(c.upTotal>c.downTotal&&c.downTotal===0)return{name:'富贵格局',desc:'向上走，上进能折腾'+(c.upK>0?'，有阻力但能扛住，大起大落':',顺畅')+',是富贵命',cls:'good'};
-if(c.downTotal>c.upTotal&&c.upTotal===0)return{name:'阿斗格局',desc:'向下走，随波逐流，佛系懒散，今朝有酒今朝醉，易啃老',cls:''};
+if(c.downTotal>c.upTotal&&c.upTotal===0){var tlDesc=(c.downS>=c.total*0.7)?'生一路向下，特别懒散随缘，完全躺平':'生克向下，随波逐流，比较佛系';return{name:'躺平格局',desc:tlDesc+'，今朝有酒今朝醉，明日无酒也不愁，易啃老',cls:''};}
 if(c.upS>0&&c.downS>0&&c.upK===0&&c.downK===0)return{name:'好人格局',desc:'生上又生下，对谁都无条件好，出力不讨好，烂好人',cls:''};
 if(c.upK>0&&c.downK>0)return{name:'操心劳碌格局',desc:'克上又克下，忙上忙下，什么都管什么都做不好，出力不讨好',cls:''};
 if(c.upTotal>c.downTotal)return{name:'偏向上',desc:'有上进心，但不彻底，有时会犹豫摇摆',cls:''};
 if(c.downTotal>c.upTotal)return{name:'偏向下',desc:'比较随缘，缺乏主动进取心，容易随大流',cls:''};
 return{name:'中和',desc:'无明显偏向，起伏不大，按部就班',cls:''};
 }
-if(uniqC<=2&&totN>=4){
-l.push('<p>● <strong>和尚尼姑格局</strong>：数字单一，性格孤傲，对婚姻不利，适合独处。现代社会也有单一数字结婚的，不能一概而论。</p>');
-} else if(dirCh>=4&&xc.total+hc.total>=3){
-l.push('<p>● <strong>无力格局</strong>：八字走向杂乱无序，一会上一会下，没主见，容易迷茫，很无力无奈。</p>');
-} else {
 var isRQMBQ=(xc.upK===0&&xc.downK===0&&xc.total>0 && (hc.upK+hc.downK)>=hc.total*0.6&&hc.total>0);
 var xGJ=gjDesc(xc),hGJ=gjDesc(hc);
+
+// --- 主体：先天后天格局分类 ---
 if(isRQMBQ){
 var jkTxt='';
 if(yIdx>=1&&yIdx<len-1){
@@ -3124,15 +3124,19 @@ l.push('<p>→ 表里如一，内外都是随缘佛系之人。</p>');
 l.push('<p>→ 表面与内在有所不同，外在给人'+xGJ.name+'的印象，内在实际偏'+hGJ.name+'。</p>');
 }
 }
+
+// --- 补充标注 ---
 var supp=[];
+if(uniqC<=2&&totN>=4)supp.push('<p>● <strong>和尚尼姑格局</strong>：数字单一，性格孤傲，对婚姻不利。</p>');
 if(jiaSheng)supp.push('<p class="good">⊕ 月柱得生：属富贵命，怎么折腾都不会太差。</p>');
-if(sfScore>=5&&dirCh<4)supp.push('<p class="warning">⚠ 事非重：易招小人口舌，不是自己的事都容易惹上身'+(sfScore>=8?'，严重者官司牢狱。':'。')+'</p>');
-if(jueC>=2)supp.push('<p class="warning">⚠ 因果重：前世祖上因果较大，生活不顺，有些事没法解释。'+(jueC>=3?'需特别注意。':'。')+'</p>');
+var causeC=jueC+chongC;
+if(causeC>=2&&!isRQMBQ)supp.push('<p class="warning">⚠ 因果重：八字含'+(jueC>0?jueC+'处绝数':'')+(jueC>0&&chongC>0?'、':'')+(chongC>0?chongC+'处六冲':'')+'，前世祖上因果较大'+(causeC>=4?'，需特别注意。':'。')+'</p>');
+if(totalFlips>=3&&!isRQMBQ&&xGJ.name!=='中和')supp.push('<p>● 无力走向：走向有些杂乱，一会上一会下，容易迷茫，需抓重点。</p>');
+if(sfScore>=5&&totalFlips<3)supp.push('<p class="warning">⚠ 事非重：易招小人口舌，不是自己的事都容易惹上身'+(sfScore>=8?'，严重者官司牢狱。':'。')+'</p>');
 if(totN>=3&&zhC/totN>=0.8&&uniqC>2)supp.push('<p>● 自我限制：思维固执保守，容易画地为牢，给自己设天花板。</p>');
 if(earlyF)supp.push('<p class="good">⊕ 早运好：自己孝顺长辈，得长辈喜爱照顾，早年运势较顺。</p>');
 if(fhK>fhS&&shS>shK&&fhK+shS>=2)supp.push('<p>● 晚运好（草根逆袭）：早年辛苦阻力大，熬过后通过奋斗成功，越老越好。</p>');
-for(var si=0;si<Math.min(supp.length,2);si++){l.push(supp[si]);}
-}
+for(var si=0;si<Math.min(supp.length,3);si++){l.push(supp[si]);}
 var lingdao=[];
 for(var i=0;i<xianAll.length;i++){
 if(xianAll[i]===11||xianAll[i]===12)lingdao.push(pillarNames[i]+xianAll[i]);
