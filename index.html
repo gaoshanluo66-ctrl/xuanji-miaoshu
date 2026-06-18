@@ -2627,8 +2627,8 @@ document.getElementById('waiNum').innerHTML=numBtn(wai,24)+' ('+getDizhi(wai)+' 
 document.getElementById('jishiHouRow').style.display='flex';
 document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+') → <span style="color:'+getNumColor(neiHou)+';">'+neiHou+'</span> ('+getDizhi(neiHou)+' '+getWuXing(neiHou)+' '+POLARITY[neiHou]+')';
 document.getElementById('waiNum').innerHTML='<span style="color:'+getNumColor(wai)+';font-weight:600;">'+wai+'</span> ('+getDizhi(wai)+' '+getWuXing(wai)+' '+POLARITY[wai]+') → <span style="color:'+getNumColor(waiHou)+';">'+waiHou+'</span> ('+getDizhi(waiHou)+' '+getWuXing(waiHou)+' '+POLARITY[waiHou]+')';
-document.getElementById('jishiHouN1').innerHTML='<span style="color:'+getNumColor(neiHou)+';">'+neiHou+'</span>';
-document.getElementById('jishiHouN2').innerHTML='<span style="color:'+getNumColor(waiHou)+';">'+waiHou+'</span>';
+document.getElementById('jishiHouN1').innerHTML=numBtn(neiHou,28);
+document.getElementById('jishiHouN2').innerHTML=numBtn(waiHou,28);
 }
 var allNums=hasLing?[nei,wai]:[nei,wai,neiHou,waiHou];
 var pairs=hasLing?[[nei,wai]]:[[nei,wai],[neiHou,waiHou]];
@@ -2685,8 +2685,8 @@ document.getElementById('waiNum').innerHTML='<span style="color:'+getNumColor(wa
 document.getElementById('jishiHouRow').style.display='flex';
 document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+') → <span style="color:'+getNumColor(neiHou)+';">'+neiHou+'</span> ('+getDizhi(neiHou)+' '+getWuXing(neiHou)+' '+POLARITY[neiHou]+')';
 document.getElementById('waiNum').innerHTML='<span style="color:'+getNumColor(wai)+';font-weight:600;">'+wai+'</span> ('+getDizhi(wai)+' '+getWuXing(wai)+' '+POLARITY[wai]+') → <span style="color:'+getNumColor(waiHou)+';">'+waiHou+'</span> ('+getDizhi(waiHou)+' '+getWuXing(waiHou)+' '+POLARITY[waiHou]+')';
-document.getElementById('jishiHouN1').innerHTML='<span style="color:'+getNumColor(neiHou)+';">'+neiHou+'</span>';
-document.getElementById('jishiHouN2').innerHTML='<span style="color:'+getNumColor(waiHou)+';">'+waiHou+'</span>';
+document.getElementById('jishiHouN1').innerHTML=numBtn(neiHou,28);
+document.getElementById('jishiHouN2').innerHTML=numBtn(waiHou,28);
 }
 var allNums=hasLing?[nei,wai]:[nei,wai,neiHou,waiHou];
 var pairs=hasLing?[[nei,wai]]:[[nei,wai],[neiHou,waiHou]];
