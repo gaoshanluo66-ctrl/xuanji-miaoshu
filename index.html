@@ -1091,145 +1091,178 @@ const LUNAR_INFO = [
 0x0d520
 ];
 // ===== 深层性格解读函数 =====
-function buildDeepPersonality(xianNums,houNums,gender){
-// ===== 数字的「人话版」描述 —— 每个数字配上形容词，更生动 =====
+// ===== 数字的「人话版」描述 —— 分男女，更精准 =====
 var expand={
-1:'做事一心一意，认定了就不回头，有时候自私起来六亲不认，典型的"一根筋"——你跟他讲道理他听不进去',
-2:'精力旺盛停不下来，积极好动但也容易不讲理，爱钻牛角尖，有时候会耍小心机搞点小动作，是个"不服管"的主',
-3:'骨子里有股狠劲，个性强从不轻易低头，跟人较劲是天性，天生就是不服输的那种人',
-4:'为人直爽不拐弯，想做就做先斩后奏，任性起来谁也拦不住，性格两极分化——好的时候特别好、翻脸的时候也特别快',
-5:'特别执着倔犟，打死不认输，喜欢"吹冷风"说反话，也是一根筋，你越说他越对着干',
-6:'敏感善变脾气来得快，时阴时阳捉摸不定，喜怒哀乐全写在脸上藏不住，翻脸比翻书还快',
-7:'为人正直感性，眼里揉不得沙子，脾气也大——惹到他就像点着了一样，但心不坏',
-8:'优柔寡断拿不定主意，心慈手软见不得别人受苦，特别能包容——说白了就是受气包，吃亏了还不吭声',
-9:'间接性纠结，一会儿果断一会儿优柔，心软又追求完美，严肃认真到有强迫症的地步，女人见9更是强势得不行',
-10:'骨子里简单天真，少女心泛滥，一副"傻白甜"的样子，但嘴硬得很——心里服了嘴上也不认',
-11:'嘴巴笨不太会表达，说话难听容易得罪人，特别要面子，心里明明是为你好，说出来就变了味',
-12:'想法特别多格局也高，一般人跟不上他的频道，爱记仇也自我——你觉得他在装，他是真觉得自己对'
+  1:'做事一心一意，认定了就不回头，有时候自私起来六亲不认，典型的"一根筋"——你跟他讲道理他听不进去',
+  2:'精力旺盛停不下来，积极好动但也容易不讲理，爱钻牛角尖，有时候会耍小心机搞点小动作，是个"不服管"的主',
+  3:'骨子里有股狠劲，个性强从不轻易低头，跟人较劲是天性，天生就是不服输的那种人',
+  4:'为人直爽不拐弯，想做就做先斩后奏，任性起来谁也拦不住，性格两极分化——好的时候特别好、翻脸的时候也特别快',
+  5:'特别执着倔犟，打死不认输，喜欢"吹冷风"说反话，也是一根筋，你越说他越对着干',
+  6:'敏感善变脾气来得快，时阴时阳捉摸不定，喜怒哀乐全写在脸上藏不住，翻脸比翻书还快',
+  7:'为人正直感性，眼里揉不得沙子，脾气也大——惹到他就像点着了一样，但心不坏',
+  8:'优柔寡断拿不定主意，心慈手软见不得别人受苦，特别能包容——说白了就是受气包，吃亏了还不吭声',
+  9:{f:'间接性纠结，一会儿果断一会儿优柔，心软又追求完美，严肃认真到有强迫症的地步——女人见9更是强势得不行，事业心重',
+    m:'间接性纠结，一会儿果断一会儿优柔，心软又追求完美，严肃认真到有强迫症的地步——骨子里强势果断，事业心重'},
+  10:{f:'骨子里简单天真，少女心泛滥，一副"傻白甜"的样子，但嘴硬得很——心里服了嘴上也不认',
+    m:'骨子里简单天真，嘴硬心软，单纯直接不会拐弯，有时候幼稚得像个大男孩——心里服了嘴上也不认'},
+  11:'嘴巴笨不太会表达，说话难听容易得罪人，特别要面子，心里明明是为你好，说出来就变了味',
+  12:'想法特别多格局也高，一般人跟不上他的频道，爱记仇也自我——你觉得他在装，他是真觉得自己对'
 };
-var l=[];
-l.push('<div style="margin-top:6px;padding:10px 14px;background:rgba(201,169,110,0.06);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;">');
-var posLabels=xianNums.length>=4?['年','月','日','时']:['内','外'];
-// ===== 记录哪些数字已经讲过了，后天不讲重复的 =====
-var described={};
-// === A: 先天外在状态 —— 别人看到的你 ===
-l.push('<p style="font-weight:700;color:var(--gold-light);margin:0 0 6px;">《先天外在》—— 你给别人的感觉</p>');
-var xianList=[];
-for(var i=0;i<xianNums.length;i++){
-var n=xianNums[i];if(n<=0||n>12)continue;
-var pos=posLabels[i]||'';
-xianList.push({n:n,pos:pos});
-described[n]=1;
+function getTraitDesc(num,gender){
+  var t=expand[num];
+  if(!t)return'';
+  if(typeof t==='string')return t;
+  return t[gender]||t.f;
 }
-if(xianList.length===0){
-l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">无先天数据</p>');
-} else {
-var xianShown={};
-for(var xi=0;xi<xianList.length;xi++){
-var xn=xianList[xi];
-var cnt=1;
-for(var xj=xi+1;xj<xianList.length;xj++){if(xianList[xj].n===xn.n)cnt++;}
-if(xianShown[xn.n])continue;
-xianShown[xn.n]=1;
-var extra=cnt>1?' ×'+cnt+' 该特质加重':'';
-l.push('<p style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">→ 先天<span style="font-weight:700;font-size:18px;color:'+getNumColor(xn.n)+';">'+xn.n+'</span>'+extra+' —— '+expand[xn.n]+'</p>');
-}
-}
-// === B: 后天内在状态 —— 过渡语自然衔接，不讲先天出现过的数字 ===
-var houList=[];
-for(var hi=0;hi<houNums.length;hi++){
-var hn=houNums[hi];if(hn<=0||hn>12)continue;
-houList.push({n:hn,pos:posLabels[hi]||''});
-}
-var houNew=[];
-for(var hni=0;hni<houList.length;hni++){
-if(!described[houList[hni].n]){houNew.push(houList[hni]);described[houList[hni].n]=1;}
-}
-if(houNew.length>0){
-l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">《后天内在》—— 跟外表不一样的地方</p>');
-l.push('<p style="font-size:11px;color:var(--ink3);margin:-4px 0 6px;">外表你已经了解了，下面这些是你独处时或内心真正的样子，别人不一定看得到——</p>');
-var houShown={};
-for(var hxi=0;hxi<houNew.length;hxi++){
-var hxn=houNew[hxi];
-var hcnt=1;
-for(var hxj=hxi+1;hxj<houNew.length;hxj++){if(houNew[hxj].n===hxn.n)hcnt++;}
-if(houShown[hxn.n])continue;
-houShown[hxn.n]=1;
-var hextra=hcnt>1?' ×'+hcnt+' 该特质加重':'';
-l.push('<p style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">→ 后天<span style="font-weight:700;font-size:18px;color:'+getNumColor(hxn.n)+';">'+hxn.n+'</span>'+hextra+' —— '+expand[hxn.n]+'</p>');
-}
-} else {
-l.push('<p style="font-size:12px;color:var(--gold);margin:10px 0 4px 8px;">你内外比较一致，表里如一，不怎么装——外表什么样，内心就什么样。</p>');
-}
-// === C: 组合解读 —— 数字凑在一起就更有意思了 ===
-l.push('<p style="font-weight:700;color:var(--gold-light);margin:14px 0 6px;">《数字组合解读》—— 这些数字凑在一起就有意思了</p>');
-l.push('<p style="font-size:11px;color:var(--ink3);margin:-4px 0 6px;">相邻数字碰撞产生新的化学反应，有的是好事，有的要小心——</p>');
-var comboFound=false;
-var allPairs=[];
-for(var pi=0;pi<xianNums.length-1;pi++){
-if(xianNums[pi]>0&&xianNums[pi]<=12&&xianNums[pi+1]>0&&xianNums[pi+1]<=12){
-allPairs.push([xianNums[pi],xianNums[pi+1],'先天']);
-}
-}
-if(xianNums.length>=4&&xianNums[0]>0&&xianNums[0]<=12&&xianNums[xianNums.length-1]>0&&xianNums[xianNums.length-1]<=12){
-allPairs.push([xianNums[0],xianNums[xianNums.length-1],'先天年时']);
-}
-for(var pi2=0;pi2<houNums.length-1;pi2++){
-if(houNums[pi2]>0&&houNums[pi2]<=12&&houNums[pi2+1]>0&&houNums[pi2+1]<=12){
-allPairs.push([houNums[pi2],houNums[pi2+1],'后天']);
-}
-}
-if(houNums.length>=4&&houNums[0]>0&&houNums[0]<=12&&houNums[houNums.length-1]>0&&houNums[houNums.length-1]<=12){
-allPairs.push([houNums[0],houNums[houNums.length-1],'后天年时']);
-}
-for(var pi3=0;pi3<allPairs.length;pi3++){
-var a=allPairs[pi3][0],b=allPairs[pi3][1];
-var found=false;
-for(var nci=0;nci<NUM_PAIR_COMBO.length;nci++){
-var nc=NUM_PAIR_COMBO[nci];
-if(nc[0]===a&&nc[1]===b){
-var cls=nc[3]||'';
-var clsAttr=cls?' class="'+cls+'"':'';
-var icon=cls==='good'?' ✔':(cls==='warning'?' ⚠':'');
-l.push('<p'+clsAttr+' style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">'+icon+' '+a+'+'+b+'：'+nc[2]+'</p>');
-found=true;comboFound=true;break;
-}
-}
-if(!found){
-var wxA=getWuXing(a),wxB=getWuXing(b);
-var elemKey=wxA+'+'+wxB;
-var elemDesc=ELEM_COMBO[elemKey];
-if(elemDesc){
-var isGood=elemDesc.indexOf('不容')>=0||elemDesc.indexOf('混杂')>=0||elemDesc.indexOf('克')>=0||elemDesc.indexOf('压制')>=0||elemDesc.indexOf('受限')>=0;
-var eicon=isGood?' ⚠':'';
-l.push('<p style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">'+eicon+' '+a+'+'+b+'：'+elemDesc+'</p>');
-comboFound=true;
-}
-}
-}
-if(!comboFound){
-l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">你的数字组合比较平和，没有特别冲突的地方，这本身就是一种福气。</p>');
-}
-// === D: 综合画像 —— 说白了 ===
-l.push('<p style="font-weight:700;color:var(--gold-light);margin:14px 0 6px;">《综合画像》</p>');
-var allKws=[];
-var seenK={};
-for(var ak=0;ak<xianList.length;ak++){
-var kw=DEEP_TRAITS[xianList[ak].n].split('，')[0];
-if(!seenK[kw]){allKws.push(kw);seenK[kw]=1;}
-}
-for(var bk=0;bk<houNew.length;bk++){
-var kw2=DEEP_TRAITS[houNew[bk].n].split('，')[0];
-if(!seenK[kw2]){allKws.push(kw2);seenK[kw2]=1;}
-}
-if(allKws.length>0){
-l.push('<p style="margin:4px 0 4px 8px;line-height:1.9;font-size:14px;">说白了，你就是一个 <span style="color:var(--gold-light);font-weight:600;">'+allKws.join('、')+'</span> 的人。</p>');
-l.push('<p style="margin:8px 0 0 8px;font-size:12px;color:var(--ink3);line-height:1.7;">每个人都是多面的，上面这些只是数字告诉我们的一个侧面。你的优点和缺点都是你独特的组合，没有好坏，只有认不认。</p>');
-}
-l.push('</div>');
-return l.join('\n');
-}
-function lunarGetLeapMonth(year) { return LUNAR_INFO[year-1900]&0xf; }
+
+function buildDeepPersonality(xianNums,houNums,gender){
+  var l=[];
+  l.push('<div style="margin-top:6px;padding:10px 14px;background:rgba(201,169,110,0.06);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;">');
+
+  var posLabels=xianNums.length>=4?['年','月','日','时']:['内','外'];
+
+  // ===== 记录哪些数字已经讲过了，后天不讲重复的 =====
+  var described={};
+
+  // === A: 先天外在状态 —— 别人看到的你 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:0 0 6px;">《先天外在》—— 你给别人的感觉</p>');
+  var xianList=[];
+  for(var i=0;i<xianNums.length;i++){
+    var n=xianNums[i];if(n<=0||n>12)continue;
+    var pos=posLabels[i]||'';
+    xianList.push({n:n,pos:pos});
+    described[n]=1;
+  }
+  if(xianList.length===0){
+    l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">无先天数据</p>');
+  } else {
+    var xianShown={};
+    for(var xi=0;xi<xianList.length;xi++){
+      var xn=xianList[xi];
+      var cnt=1;
+      for(var xj=xi+1;xj<xianList.length;xj++){if(xianList[xj].n===xn.n)cnt++;}
+      if(xianShown[xn.n])continue;
+      xianShown[xn.n]=1;
+      var extra=cnt>1?' ×'+cnt+' 该特质加重':'';
+      l.push('<p style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">→ 先天<span style="font-weight:700;font-size:18px;color:'+getNumColor(xn.n)+';">'+xn.n+'</span>'+extra+' —— '+getTraitDesc(xn.n,gender)+'</p>');
+    }
+  }
+
+  // === B: 后天内在状态 —— 过渡语自然衔接 ===
+  var houList=[];
+  for(var hi=0;hi<houNums.length;hi++){
+    var hn=houNums[hi];if(hn<=0||hn>12)continue;
+    houList.push({n:hn,pos:posLabels[hi]||''});
+  }
+
+  var houNew=[];
+  for(var hni=0;hni<houList.length;hni++){
+    if(!described[houList[hni].n]){houNew.push(houList[hni]);described[houList[hni].n]=1;}
+  }
+
+  if(houNew.length>0){
+    l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">《后天内在》—— 跟外表不一样的地方</p>');
+    l.push('<p style="font-size:11px;color:var(--ink3);margin:-4px 0 6px;">外表你已经了解了，下面这些是你独处时或内心真正的样子，别人不一定看得到——</p>');
+    var houShown={};
+    for(var hxi=0;hxi<houNew.length;hxi++){
+      var hxn=houNew[hxi];
+      var hcnt=1;
+      for(var hxj=hxi+1;hxj<houNew.length;hxj++){if(houNew[hxj].n===hxn.n)hcnt++;}
+      if(houShown[hxn.n])continue;
+      houShown[hxn.n]=1;
+      var hextra=hcnt>1?' ×'+hcnt+' 该特质加重':'';
+      l.push('<p style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">→ 后天<span style="font-weight:700;font-size:18px;color:'+getNumColor(hxn.n)+';">'+hxn.n+'</span>'+hextra+' —— '+getTraitDesc(hxn.n,gender)+'</p>');
+    }
+  } else {
+    l.push('<p style="font-size:12px;color:var(--gold);margin:10px 0 4px 8px;">你内外比较一致，表里如一，不怎么装——外表什么样，内心就什么样。</p>');
+  }
+
+  // === C: 组合解读 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:14px 0 6px;">《数字组合解读》—— 这些数字凑在一起就有意思了</p>');
+  l.push('<p style="font-size:11px;color:var(--ink3);margin:-4px 0 6px;">相邻数字碰撞产生新的化学反应，有的是好事，有的要小心——</p>');
+
+  var comboFound=false;
+  var allPairs=[];
+
+  for(var pi=0;pi<xianNums.length-1;pi++){
+    if(xianNums[pi]>0&&xianNums[pi]<=12&&xianNums[pi+1]>0&&xianNums[pi+1]<=12){
+      allPairs.push([xianNums[pi],xianNums[pi+1],'先天']);
+    }
+  }
+  if(xianNums.length>=4&&xianNums[0]>0&&xianNums[0]<=12&&xianNums[xianNums.length-1]>0&&xianNums[xianNums.length-1]<=12){
+    allPairs.push([xianNums[0],xianNums[xianNums.length-1],'先天年时']);
+  }
+  for(var pi2=0;pi2<houNums.length-1;pi2++){
+    if(houNums[pi2]>0&&houNums[pi2]<=12&&houNums[pi2+1]>0&&houNums[pi2+1]<=12){
+      allPairs.push([houNums[pi2],houNums[pi2+1],'后天']);
+    }
+  }
+  if(houNums.length>=4&&houNums[0]>0&&houNums[0]<=12&&houNums[houNums.length-1]>0&&houNums[houNums.length-1]<=12){
+    allPairs.push([houNums[0],houNums[houNums.length-1],'后天年时']);
+  }
+
+  for(var pi3=0;pi3<allPairs.length;pi3++){
+    var a=allPairs[pi3][0],b=allPairs[pi3][1];
+    var found=false;
+    for(var nci=0;nci<NUM_PAIR_COMBO.length;nci++){
+      var nc=NUM_PAIR_COMBO[nci];
+      if(nc[0]===a&&nc[1]===b){
+        var cls=nc[3]||'';
+        var clsAttr=cls?' class="'+cls+'"':'';
+        var icon=cls==='good'?' ✔':(cls==='warning'?' ⚠':'');
+        l.push('<p'+clsAttr+' style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">'+icon+' '+a+'+'+b+'：'+nc[2]+'</p>');
+        found=true;comboFound=true;break;
+      }
+    }
+    if(!found){
+      var wxA=getWuXing(a),wxB=getWuXing(b);
+      var elemKey=wxA+'+'+wxB;
+      var elemDesc=ELEM_COMBO[elemKey];
+      if(elemDesc){
+        var isBad=elemDesc.indexOf('不容')>=0||elemDesc.indexOf('混杂')>=0||elemDesc.indexOf('克')>=0||elemDesc.indexOf('压制')>=0||elemDesc.indexOf('受限')>=0;
+        var eicon=isBad?' ⚠':'';
+        l.push('<p style="margin:4px 0 4px 8px;font-size:13px;line-height:1.7;">'+eicon+' '+a+'+'+b+'：'+elemDesc+'</p>');
+        comboFound=true;
+      }
+    }
+  }
+  if(!comboFound){
+    l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">你的数字组合比较平和，没有特别冲突的地方，这本身就是一种福气。</p>');
+  }
+
+  // === D: 综合画像 —— 多几句过渡，自然收尾 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:14px 0 6px;">《综合画像》</p>');
+
+  // Collect keywords
+  var allKws=[];
+  var seenK={};
+  for(var ak=0;ak<xianList.length;ak++){
+    var kw=DEEP_TRAITS[xianList[ak].n].split('，')[0];
+    if(!seenK[kw]){allKws.push(kw);seenK[kw]=1;}
+  }
+  for(var bk=0;bk<houNew.length;bk++){
+    var kw2=DEEP_TRAITS[houNew[bk].n].split('，')[0];
+    if(!seenK[kw2]){allKws.push(kw2);seenK[kw2]=1;}
+  }
+
+  if(allKws.length>0){
+    // 过渡1: 把先天后天的矛盾或一致性点出来
+    if(houNew.length>0){
+      l.push('<p style="margin:4px 0 4px 8px;line-height:1.8;font-size:14px;">把这些拼在一起看，你的性格核心其实就三个词：<span style="color:var(--gold-light);font-weight:600;">'+allKws.slice(0,3).join('、')+'</span>。</p>');
+      // 过渡2: 点出内外反差
+      if(xianList.length>0){
+        l.push('<p style="margin:6px 0 4px 8px;line-height:1.8;font-size:14px;">你给别人的感觉是一个 <span style="color:var(--gold-light);">'+DEEP_TRAITS[xianList[0].n].split('，')[0]+'</span> 的人，但熟悉你的人才知道，你内心还有 <span style="color:var(--gold-light);">'+DEEP_TRAITS[houNew[0].n].split('，')[0]+'</span> 的一面——这种反差恰恰是你独特的地方。</p>');
+      }
+    } else if(xianList.length>0){
+      l.push('<p style="margin:4px 0 4px 8px;line-height:1.8;font-size:14px;">把这些特质放在一起看，你就是一个 <span style="color:var(--gold-light);font-weight:600;">'+allKws.join('、')+'</span> 的人——表里如一，不绕弯子。</p>');
+    }
+    // 最后一句：说白了
+    l.push('<p style="margin:8px 0 0 8px;font-size:12px;color:var(--ink3);line-height:1.7;">不过话说回来，每个人都是多面的，上面这些只是数字告诉我们的一个侧面。你的优点和缺点都是你独特的组合，没有好坏，只有认不认。</p>');
+  }
+
+  l.push('</div>');
+  return l.join('\n');
+}function lunarGetLeapMonth(year) { return LUNAR_INFO[year-1900]&0xf; }
 function lunarGetMonthDays(year, month) { return (LUNAR_INFO[year-1900]&(0x10000>>month))?30:29; }
 function lunarGetLeapMonthDays(year) { return (LUNAR_INFO[year-1900]&0x10000)?30:29; }
 function lunarGetYearDays(year) {
