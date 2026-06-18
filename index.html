@@ -3311,6 +3311,25 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
 
   // ==================== 9. 大运节点 ====================
   l.push('<br><strong>九、大运节点：</strong>');
+
+  // 重大人生转折点：每柱最大岁数
+  var pillarMax={};
+  for(var pi=0;pi<numP;pi++){
+    var pn=pillarNames[pi].replace(/[0-9]/g,'');
+    if(!pillarMax[pn])pillarMax[pn]=0;
+    var xA=dayunAges[pi].xian||[],hA=dayunAges[pi].hou||[];
+    for(var ai=0;ai<xA.length;ai++){if(xA[ai]>pillarMax[pn])pillarMax[pn]=xA[ai];}
+    for(var ai=0;ai<hA.length;ai++){if(hA[ai]>pillarMax[pn])pillarMax[pn]=hA[ai];}
+  }
+  var turnPts=[];
+  var pOrder=['年','月','日','时'];
+  for(var oi=0;oi<pOrder.length;oi++){
+    if(pillarMax[pOrder[oi]]>0)turnPts.push(pOrder[oi]+pillarMax[pOrder[oi]]+'岁');
+  }
+  if(turnPts.length>0){
+    l.push('<p><strong>⚡ 重大人生转折点：</strong>'+turnPts.join('、')+'</p>');
+  }
+
   l.push('<p style="font-size:11px;color:var(--ink3);">● 小节点（先天）→ 人生关键年龄 · 大节点（后天）→ 重大转折点</p>');
 
   var allNodes=[];
