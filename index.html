@@ -2662,9 +2662,10 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     } else {
       l.push('<p class="warning">● 月日阴阳相同（均为'+yueYY+'）：缺少阴阳互补之象，婚姻或晚或不顺。</p>');
     }
-    // 年月日时克冲绝 婚姻不顺二婚
+    // 年月日克冲绝 婚姻不顺二婚（只看年月日三柱，时柱不算）
     var hasKeChongJue=false;
-    for(var pi=0;pi<len-1;pi++){
+    var maxPi=Math.min(len-1,2); // 只查到月-日，不含时柱
+    for(var pi=0;pi<maxPi;pi++){
       var a=xianAll[pi],b=xianAll[pi+1],ha=houAll[pi],hb=houAll[pi+1];
       if(a!==0&&b!==0){
         var sk=getShengKe(getWuXing(a),getWuXing(b));
@@ -2689,7 +2690,7 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
         }
       }
     }
-    if(hasKeChongJue){l.push('<p class="warning" style="font-size:15px;font-weight:700;">⚠ 年月日时出现克冲绝，婚姻不顺，易二婚。</p>');}
+    if(hasKeChongJue){l.push('<p class="warning" style="font-size:15px;font-weight:700;">⚠ 年月日出现克冲绝，婚姻不顺，易二婚。</p>');}
   } else {
     l.push('<p>● 八字不足四柱，缺少日柱配偶位，婚姻信息有限。</p>');
   }
