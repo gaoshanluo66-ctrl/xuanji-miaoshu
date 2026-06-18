@@ -853,15 +853,6 @@ p.warning { color: var(--zhu-light) !important; }
     </div>
   </div>
 
-  <!-- 生克简析 -->
-  <div class="analysis">
-    <h3 style="font-size:14px;font-weight:700;color:var(--ink);letter-spacing:1px;margin-bottom:8px;">生克简析</h3>
-    <div class="analysis-grid" id="analysisGrid" style="grid-template-columns:1fr 1fr;"></div>
-  </div>
-
-  <!-- 特殊标签 -->
-  <div id="specialTags" style="margin-bottom:12px;text-align:center;"></div>
-
   <!-- 断语 -->
   <div class="result" id="resultText"></div>
 
@@ -927,15 +918,6 @@ p.warning { color: var(--zhu-light) !important; }
   <!-- 八字：组合显示 -->
   <div class="gua-display" id="baziGuaDisplay" style="margin-top:12px;">
     <div id="baziCombinedDisplay"></div>
-  </div>
-
-  <!-- 八字：特殊标签 -->
-  <div id="baziSpecialTags" style="margin-bottom:12px;text-align:center;"></div>
-
-  <!-- 八字：生克分析 -->
-  <div class="analysis">
-    <h3 style="font-size:14px;font-weight:700;color:var(--ink);letter-spacing:1px;margin-bottom:8px;">生克分析</h3>
-    <div class="analysis-grid" id="baziAnalysisGrid"></div>
   </div>
 
   <!-- 八字：断语 -->
@@ -1549,17 +1531,6 @@ function doDivination() {
   var pairs=hasLing?[[nei,wai]]:[[nei,wai],[neiHou,waiHou]];
   var pairLabels=hasLing?['内-外(先天)']:['内-外(先天)','内-外(后天)'];
   var analysis=analyzePairs(pairs,pairLabels);
-  var grid=document.getElementById('analysisGrid');
-  var gridHtml='';
-  analysis.forEach(function(a){
-    var relIcon=a.sk==='生'?'⊕':(a.sk==='被生'?'⊕':(a.sk==='克'?'⊗':(a.sk==='被克'?'⊗':'○')));
-    var arrow=a.sk==='被生'?'←':(a.sk==='被克'?'←':'→');
-    gridHtml+='<div class="analysis-item"><div class="label">'+a.label+'</div>'+
-      '<div class="value">'+relIcon+' <span style="color:'+getNumColor(a.a)+';font-weight:600;">'+a.a+'</span>'+a.wxA+
-      ' '+arrow+' <span style="color:'+getNumColor(a.b)+';font-weight:600;">'+a.b+'</span>'+a.wxB+
-      ' <span style="color:var(--ink3);">('+(a.sk==='比合'?'比合':(a.sk==='被生'?a.wxB+'生'+a.wxA:(a.sk==='被克'?a.wxB+'克'+a.wxA:a.skCN)))+')</span></div></div>';
-  });
-  grid.innerHTML=gridHtml;
 
   // 特殊标签
   var allTags=checkSpecialPairs(allNums);
@@ -1570,7 +1541,6 @@ function doDivination() {
     if(isZhenJue(nei,wai,neiHou,waiHou))allTags.push({type:'jue',text:'真绝:始终凶险'});
     if(isJiaJue(nei,wai,neiHou,waiHou))allTags.push({type:'sheng',text:'假绝:逢凶化吉'});
   }
-  showSpecialTags(allTags,'specialTags');
 
   // 问事
   var wenShi=getActiveWenShi();
@@ -1626,17 +1596,6 @@ function doShuziDivination() {
   var pairs=hasLing?[[nei,wai]]:[[nei,wai],[neiHou,waiHou]];
   var pairLabels=hasLing?['内-外(先天)']:['内-外(先天)','内-外(后天)'];
   var analysis=analyzePairs(pairs,pairLabels);
-  var grid=document.getElementById('analysisGrid');
-  var gridHtml='';
-  analysis.forEach(function(a){
-    var relIcon=a.sk==='生'?'⊕':(a.sk==='被生'?'⊕':(a.sk==='克'?'⊗':(a.sk==='被克'?'⊗':'○')));
-    var arrow=a.sk==='被生'?'←':(a.sk==='被克'?'←':'→');
-    gridHtml+='<div class="analysis-item"><div class="label">'+a.label+'</div>'+
-      '<div class="value">'+relIcon+' <span style="color:'+getNumColor(a.a)+';font-weight:600;">'+a.a+'</span>'+a.wxA+
-      ' '+arrow+' <span style="color:'+getNumColor(a.b)+';font-weight:600;">'+a.b+'</span>'+a.wxB+
-      ' <span style="color:var(--ink3);">('+(a.sk==='比合'?'比合':(a.sk==='被生'?a.wxB+'生'+a.wxA:(a.sk==='被克'?a.wxB+'克'+a.wxA:a.skCN)))+')</span></div></div>';
-  });
-  grid.innerHTML=gridHtml;
 
   var allTags=checkSpecialPairs(allNums);
   var aiWarn=checkAizheng(pairs);
@@ -1646,7 +1605,6 @@ function doShuziDivination() {
     if(isZhenJue(nei,wai,neiHou,waiHou))allTags.push({type:'jue',text:'真绝:始终凶险'});
     if(isJiaJue(nei,wai,neiHou,waiHou))allTags.push({type:'sheng',text:'假绝:逢凶化吉'});
   }
-  showSpecialTags(allTags,'specialTags');
 
   showXiangRef(allNums,'xiangRef');
   var wenShi=getActiveWenShi();
@@ -2169,17 +2127,6 @@ function doBaZi() {
     pairLabels.push(pillarNames[pi4]+'-'+pillarNames[next]+'(后)'+(nw?' ['+nw+']':''));
   }
   var analysis=analyzePairs(pairs,pairLabels);
-  var grid2=document.getElementById('baziAnalysisGrid');
-  var gridHtml2='';
-  analysis.forEach(function(a){
-    var relIcon=a.sk==='生'?'⊕':(a.sk==='被生'?'⊕':(a.sk==='克'?'⊗':(a.sk==='被克'?'⊗':'○')));
-    var arrow=a.sk==='被生'?'←':(a.sk==='被克'?'←':'→');
-    gridHtml2+='<div class="analysis-item"><div class="label">'+a.label+'</div>'+
-      '<div class="value">'+relIcon+' <span style="color:'+getNumColor(a.a)+';font-weight:600;">'+a.a+'</span>'+a.wxA+
-      ' '+arrow+' <span style="color:'+getNumColor(a.b)+';font-weight:600;">'+a.b+'</span>'+a.wxB+
-      ' <span style="color:var(--ink3);">('+(a.sk==='比合'?'比合':(a.sk==='被生'?a.wxB+'生'+a.wxA:(a.sk==='被克'?a.wxB+'克'+a.wxA:a.skCN)))+')</span></div></div>';
-  });
-  grid2.innerHTML=gridHtml2;
 
   var houFiltered=[];
   for(var hi=0;hi<houAll.length;hi++){if(houAll[hi]!==-1)houFiltered.push(houAll[hi]);}
@@ -2199,8 +2146,6 @@ function doBaZi() {
       if(isJiaJue(xianAll[pi],xianAll[nx],houAll[pi],houAll[nx]))allTags.push({type:'sheng',text:'假绝:'+pillarNames[pi]+'-'+pillarNames[nx]});
     }
   }
-  showSpecialTags(allTags,'baziSpecialTags');
-
   var reading=generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,genderBazi);
   document.getElementById('baziResultText').innerHTML=reading;
   document.getElementById('btnSaveBazi').style.display='inline-block';
