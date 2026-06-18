@@ -1261,15 +1261,7 @@ function buildDeepPersonality(xianNums,houNums,gender){
   }
 
   l.push('</div>');
-  var dayunChartId="dayunChart_"+(window._dcc=((window._dcc||0)+1));
-l.push('<canvas id="'+dayunChartId+'" width="740" height="240" style="width:100%;max-width:740px;height:auto;border:1px solid var(--ink-border);border-radius:8px;margin:10px 0;display:block;"></canvas>');
-l.push('<div style="font-size:10px;color:var(--ink3);text-align:center;margin-top:-6px;">▲ 大运时间轴 · 横轴为年龄 · ★大节点 ·小节点</div>');
-window._dayunChartData={
-id:dayunChartId,
-allNodes:allNodes,stageGroups:stageGroups,stageNames:stageNames,
-uniqNodes:uniqNodes,selfWx:selfWx,selfNum:selfNum,baziAge:baziAge
-};
-return l.join('\n');
+  return l.join('\n');
 }function lunarGetLeapMonth(year) { return LUNAR_INFO[year-1900]&0xf; }
 function lunarGetMonthDays(year, month) { return (LUNAR_INFO[year-1900]&(0x10000>>month))?30:29; }
 function lunarGetLeapMonthDays(year) { return (LUNAR_INFO[year-1900]&0x10000)?30:29; }
@@ -3441,6 +3433,14 @@ var uniqueNums=[];
 for(var i=0;i<xianAll.length;i++){if(uniqueNums.indexOf(xianAll[i])<0)uniqueNums.push(xianAll[i]);}
 for(var i=0;i<houAll.length;i++){if(houAll[i]!==-1&&uniqueNums.indexOf(houAll[i])<0)uniqueNums.push(houAll[i]);}
 l.push('<p style="margin-top:6px;font-size:11px;color:var(--ink3);">● 八字中出现的关键流年数字：'+uniqueNums.sort(function(a,b){return a-b;}).join('、')+'。对应生肖年份：1鼠(2020)、2牛(2021)、3虎(2022)、4兔(2023)、5龙(2024)、6蛇(2025)、7马(2026)、8羊(2027)、9猴(2028)、10鸡(2029)、11狗(2030)、12猪(2031)——遇到这些年份运势会有明显变化。</p>');
+var dayunChartId="dayunChart_"+(window._dcc=((window._dcc||0)+1));
+l.push('<canvas id="'+dayunChartId+'" width="740" height="240" style="width:100%;max-width:740px;height:auto;border:1px solid var(--ink-border);border-radius:8px;margin:10px 0;display:block;"></canvas>');
+l.push('<div style="font-size:10px;color:var(--ink3);text-align:center;margin-top:-6px;">▲ 大运时间轴 · 横轴为年龄 · ★大节点 ·小节点</div>');
+window._dayunChartData={
+id:dayunChartId,
+allNodes:allNodes,stageGroups:stageGroups,stageNames:stageNames,
+uniqNodes:uniqNodes,selfWx:selfWx,selfNum:selfNum,baziAge:baziAge
+};
 return l.join('\n');
 }
 // ==================== 初始化 ====================
