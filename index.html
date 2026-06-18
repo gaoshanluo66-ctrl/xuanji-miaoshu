@@ -2937,20 +2937,62 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     l.push('<p class="good">⊕ 命带领导数：'+lingdao.join('、')+' → 适合走公职路线，或谋求管理岗位、领导职位。</p>');
   }
 
-  // 五行行业推荐（依书中数字万物类象 + 五行属性）
+  // 行业方向：找生月柱的数字→最佳行业（生月为上，克月为次）
   var wxIndustry={
-    '金':'金融/银行/证券/法律/机械/汽车/五金/公务员/军警（金主义，适合原则性强、需要判断力的行业）',
-    '木':'教育/培训/医疗/中医药/林业/园艺/文化/出版/设计/服装（木主仁，适合有成长性和教育属性的行业）',
-    '水':'物流/航运/贸易/旅游/传媒/销售/饮料/渔业（水主智，适合流动性强、需要沟通应变的行业）',
-    '火':'餐饮/能源/电力/互联网/演艺/美容/摄影/心理咨询（火主礼，适合需要表现力和热情的行业）',
-    '土':'房地产/建筑/农业/矿产/陶瓷/珠宝/管理/保险/顾问（土主信，适合需要稳定和诚信的行业）'
+    '金':'金融、银行、证券、法律、机械、汽车、五金、公务员、军警',
+    '木':'教育、培训、医疗、中医药、林业、园艺、文化、出版、设计、服装',
+    '水':'物流、航运、贸易、旅游、传媒、销售、饮料、渔业',
+    '火':'餐饮、能源、电力、互联网、演艺、美容、摄影、心理咨询',
+    '土':'房地产、建筑、农业、矿产、陶瓷、珠宝、管理、保险、顾问'
   };
-  l.push('<p>● 自身属<strong style="color:'+getNumColor(selfNum)+';">'+selfWx+'</strong>，推荐行业：</p>');
-  l.push('<p style="margin-left:12px;">'+wxIndustry[selfWx]+'</p>');
+  var yueIdxW=-1;
+  for(var pi=0;pi<len;pi++){if(pillarNames[pi]==='月'){yueIdxW=pi;break;}}
+  var shengYueWx=[],keYueWx=[],shengYueNums=[];
+  if(yueIdxW>=0){
+    var wxYue=getWuXing(xianAll[yueIdxW]);
+    for(var i=0;i<len;i++){
+      if(i===yueIdxW||xianAll[i]===0)continue;
+      var wxP=getWuXing(xianAll[i]);
+      var sk=getShengKe(wxP,wxYue);
+      if(sk==='生'){
+        if(shengYueWx.indexOf(wxP)<0)shengYueWx.push(wxP);
+        shengYueNums.push({num:xianAll[i],wx:wxP,pillar:pillarNames[i]});
+      } else if(sk==='克'){
+        if(keYueWx.indexOf(wxP)<0)keYueWx.push(wxP);
+      }
+    }
+  }
+  if(shengYueWx.length>0){
+    l.push('<p class="good">⊕ 最佳行业方向：<strong>'+shengYueWx.join('、')+'</strong>属性行业</p>');
+    for(var si=0;si<shengYueWx.length;si++){
+      l.push('<p style="margin-left:12px;">'+wxIndustry[shengYueWx[si]]+'</p>');
+    }
+    var neiKeList=[];
+    for(var si=0;si<shengYueNums.length;si++){
+      var sn=shengYueNums[si];
+      for(var j=0;j<len;j++){
+        if(xianAll[j]===0||xianAll[j]===sn.num)continue;
+        if(getShengKe(getWuXing(sn.num),getWuXing(xianAll[j]))==='被克'){
+          if(neiKeList.indexOf(sn.num)<0)neiKeList.push(sn.num);
+        }
+      }
+    }
+    if(neiKeList.length>0){
+      l.push('<p style="font-size:11px;color:var(--ink3);">※ '+neiKeList.join('、')+'受克，行业方向需参考调整。</p>');
+    }
+  } else if(keYueWx.length>0){
+    l.push('<p>● 适合行业方向：<strong>'+keYueWx.join('、')+'</strong>属性行业</p>');
+    for(var si=0;si<keYueWx.length;si++){
+      l.push('<p style="margin-left:12px;">'+wxIndustry[keYueWx[si]]+'</p>');
+    }
+  } else {
+    l.push('<p>● 行业方向：<strong>'+selfWx+'</strong>属性行业</p>');
+    l.push('<p style="margin-left:12px;">'+wxIndustry[selfWx]+'</p>');
+  }
 
-  // 如果11/12在月柱，提示公务员/领导方向
+  // 月柱领导数
   if(selfNum===11||selfNum===12){
-    l.push('<p class="good">⊕ 月柱为领导数，天生有管理才能，最适合走仕途或担任管理岗位。</p>');
+    l.push('<p class="good">⊕ 月柱为领导数，适合走仕途或管理岗位。</p>');
   }
 
   // ==================== 9. 大运节点 ====================
