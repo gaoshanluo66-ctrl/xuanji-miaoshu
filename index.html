@@ -3097,13 +3097,14 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     } else {
       // 正常输出先天后天
       var xCls=xGJ.cls||'',hCls=hGJ.cls||'';
-      if(xCls==='good')l.push('<p class="good">⊕ <strong>先天格局：'+xGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+xGJ.desc+'</p>');
-      else l.push('<p>● <strong>先天格局：'+xGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+xGJ.desc+'</p>');
+      if(xCls==='good'){l.push('<p class="good">⊕ <strong>先天格局：'+xGJ.name+'</strong></p>');}
+      else{l.push('<p>● <strong>先天格局：'+xGJ.name+'</strong></p>');}
+      l.push('<p style="margin-left:12px;">→ '+xGJ.desc+'</p>');
 
-      if(hCls==='good')l.push('<p class="good">⊕ <strong>后天格局：'+hGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+hGJ.desc+'</p>');
-      else if(hCls==='warning')l.push('<p class="warning">⚠ <strong>后天格局：'+hGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+hGJ.desc+'</p>');
-      else l.push('<p>● <strong>后天格局：'+hGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+hGJ.desc+'</p>');
-
+      if(hCls==='good'){l.push('<p class="good">⊕ <strong>后天格局：'+hGJ.name+'</strong></p>');}
+      else if(hCls==='warning'){l.push('<p class="warning">⚠ <strong>后天格局：'+hGJ.name+'</strong></p>');}
+      else{l.push('<p>● <strong>后天格局：'+hGJ.name+'</strong></p>');}
+      l.push('<p style="margin-left:12px;">→ '+hGJ.desc+'</p>');
       // 先后天对比
       if(xUpDom && hDownDom){
         l.push('<p>→ 表面努力上进，实际内心随波逐流，表里不一。</p>');
