@@ -1228,55 +1228,58 @@ function buildDeepPersonality(xianNums,houNums,gender){
   var l=[];
   l.push('<div style="margin-top:6px;padding:10px 14px;background:rgba(201,169,110,0.06);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;">');
 
-  // === A: 先天外在状态 ===
+  // Pillar/position labels
+  var posLabels=xianNums.length>=4?['\u5e74\u67f1','\u6708\u67f1','\u65e5\u67f1','\u65f6\u67f1']:xianNums.length>=2?['\u5185','\u5916']:[''];
+
+  // === A: 先天外在状态（逐个数读） ===
   l.push('<p style="font-weight:700;color:var(--gold-light);margin:0 0 6px;">\u300a\u5148\u5929\u5916\u5728\u72b6\u6001\u300b\u2014\u2014 \u6211\u7ed9\u522b\u4eba\u7684\u611f\u89c9</p>');
-  var xianSeen={},xianUniq=[];
+  var xianCounts={},xianSummary=[];
   for(var i=0;i<xianNums.length;i++){
     var n=xianNums[i];
     if(n<=0||n>12)continue;
-    if(!xianSeen[n]){xianSeen[n]=1;xianUniq.push(n);}
-    else xianSeen[n]++;
+    var pos=posLabels[i]||'';
+    var trait=DEEP_TRAITS[n]||'';
+    var numClr=getNumColor(n);
+    l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="font-size:11px;color:var(--ink3);">'+pos+'\u5148\u5929 </span><span style="font-weight:700;font-size:19px;color:'+numClr+';">'+n+'</span> <span style="font-size:13px;">'+trait+'</span></p>');
+    xianCounts[n]=(xianCounts[n]||0)+1;
   }
-  if(xianUniq.length===0){
-    l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u65e0\u5148\u5929\u6570\u636e</p>');
-  } else {
-    for(var ui=0;ui<xianUniq.length;ui++){
-      var un=xianUniq[ui],cnt=xianSeen[un];
-      var xianTrait=DEEP_TRAITS[un]||'';
-      var xianExtra=cnt>1?(' \u00d7'+cnt+' \uff0c\u8be5\u7279\u8d28\u52a0\u91cd') :'';
-      // numeric label for xian
-      var xianLabel='\u2588 '+un;
-      // 女性特殊
-      var genderNote='';
-      if(gender==='f'){
-        if(un===6)genderNote=' \u2014\u2014 \u5973\u4eba\u5e74\u6708\u89c16\uff0c\u5ac1\u7ed9\u8c01\u90fd\u540e\u6094\uff0c\u5bf9\u81ea\u5df1\u548c\u522b\u4eba\u8981\u6c42\u90fd\u9ad8';
-        if(un===9)genderNote=' \u2014\u2014 \u5973\u4eba\u89c19\uff0c\u6027\u683c\u5f3a\u52bf\uff0c\u4e8b\u4e1a\u5fc3\u91cd';
-      }
-      // color
-      var numClr=getNumColor(un);
-      l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="display:inline-block;min-width:24px;font-weight:700;font-size:19px;color:'+numClr+';vertical-align:middle;">'+un+'</span> <span style="font-size:13px;">'+xianTrait+xianExtra+'</span>'+genderNote+'</p>');
+  // Summary of repeating patterns
+  var xianRepeats=[];
+  for(var k in xianCounts){if(xianCounts[k]>=2)xianRepeats.push(k);}
+  if(xianRepeats.length>0){
+    var repeatStrs=[];
+    for(var ri=0;ri<xianRepeats.length;ri++){
+      var rn=parseInt(xianRepeats[ri]),rc=xianCounts[rn];
+      repeatStrs.push('\u201c'+DEEP_TRAITS[rn].split('\uff0c')[0]+'\u201d\u7279\u8d28\u52a0\u91cd\uff08\u51fa\u73b0'+rc+'\u6b21\uff09');
     }
+    l.push('<p style="margin:6px 0 2px 8px;font-size:12px;color:var(--gold-light);">\u2192 \u5916\u5728\u603b\u7ed3\uff1a'+repeatStrs.join('\uff0c')+'</p>');
   }
 
-  // === B: 后天内在状态 ===
+  // === B: 后天内在状态（逐个数读） ===
   l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u540e\u5929\u5185\u5728\u72b6\u6001\u300b\u2014\u2014 \u6211\u5185\u5fc3\u771f\u5b9e\u7684\u6837\u5b50</p>');
-  var houSeen={},houUniq=[];
+  var houCounts={},houHasAny=false;
   for(var hi=0;hi<houNums.length;hi++){
     var hn=houNums[hi];
     if(hn<=0||hn>12)continue;
-    if(!houSeen[hn]){houSeen[hn]=1;houUniq.push(hn);}
-    else houSeen[hn]++;
+    houHasAny=true;
+    var pos2=posLabels[hi]||'';
+    var hTrait=DEEP_TRAITS[hn]||'';
+    var numClr2=getNumColor(hn);
+    l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="font-size:11px;color:var(--ink3);">'+pos2+'\u540e\u5929 </span><span style="font-weight:700;font-size:19px;color:'+numClr2+';">'+hn+'</span> <span style="font-size:13px;color:var(--ink2);">'+hTrait+'</span></p>');
+    houCounts[hn]=(houCounts[hn]||0)+1;
   }
-  if(houUniq.length===0){
+  if(!houHasAny){
     l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u65e0\u540e\u5929\u6570\u636e</p>');
-  } else {
-    for(var hi2=0;hi2<houUniq.length;hi2++){
-      var hun=houUniq[hi2],hcnt=houSeen[hun];
-      var houTrait=DEEP_TRAITS[hun]||'';
-      var houExtra=hcnt>1?(' \u00d7'+hcnt+' \uff0c\u8be5\u7279\u8d28\u52a0\u91cd') :'';
-      var numClr2=getNumColor(hun);
-      l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="display:inline-block;min-width:24px;font-weight:700;font-size:19px;color:'+numClr2+';vertical-align:middle;">'+hun+'</span> <span style="font-size:13px;color:var(--ink2);">'+houTrait+houExtra+'</span></p>');
+  }
+  var houRepeats=[];
+  for(var k2 in houCounts){if(houCounts[k2]>=2)houRepeats.push(k2);}
+  if(houRepeats.length>0){
+    var hrStrs=[];
+    for(var ri2=0;ri2<houRepeats.length;ri2++){
+      var hrn=parseInt(houRepeats[ri2]),hrc=houCounts[hrn];
+      hrStrs.push('\u201c'+DEEP_TRAITS[hrn].split('\uff0c')[0]+'\u201d\u5185\u5728\u52a0\u91cd\uff08\u51fa\u73b0'+hrc+'\u6b21\uff09');
     }
+    l.push('<p style="margin:6px 0 2px 8px;font-size:12px;color:var(--gold-light);">\u2192 \u5185\u5728\u603b\u7ed3\uff1a'+hrStrs.join('\uff0c')+'</p>');
   }
 
   // === C: 数字组合解读 ===
@@ -1329,6 +1332,14 @@ function buildDeepPersonality(xianNums,houNums,gender){
   if(!comboFound){
     l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u6682\u65e0\u7279\u6b8a\u7ec4\u5408</p>');
   }
+
+  // === D: 综合性格画像 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u7efc\u5408\u6027\u683c\u753b\u50cf\u300b</p>');
+  // Collect all unique traits from xian and hou
+  var allTraits=[],allKeys={};
+  for(var i2=0;i2<xianNums.length;i2++){var xn=xianNums[i2];if(xn>0&&xn<=12&&!allKeys['x'+xn]){allTraits.push(DEEP_TRAITS[xn].split('\uff0c')[0]);allKeys['x'+xn]=1;}}
+  for(var hi3=0;hi3<houNums.length;hi3++){var hn2=houNums[hi3];if(hn2>0&&hn2<=12&&!allKeys['h'+hn2]){allTraits.push(DEEP_TRAITS[hn2].split('\uff0c')[0]);allKeys['h'+hn2]=1;}}
+  l.push('<p style="margin:4px 0 4px 8px;line-height:1.8;font-size:13px;">\u7efc\u5408\u6765\u770b\uff0c\u4f60\u662f\u4e00\u4e2a <span style="color:var(--gold-light);">'+allTraits.join('\u3001')+'</span> \u7684\u4eba\u3002</p>');
 
   l.push('</div>');
   return l.join('\n');
