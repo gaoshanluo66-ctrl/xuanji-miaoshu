@@ -3301,6 +3301,34 @@ else if(yFirst>3&&yFirst<10&&sLast>=10){
 l.push('<p>● 年上中数，时上大数：起步稳健，越做越大，有后劲。</p>');
 }
 }
+
+// ==================== 后天夹克格局（木克土） ====================
+var jiaKeList=[];
+var muNums=[4,5],tuNums=[3,8,9];
+for(var hi=1;hi<houAll.length-1;hi++){
+var a=houAll[hi-1],b=houAll[hi],c=houAll[hi+1];
+if(a===-1||b===-1||c===-1)continue;
+var aWx=getWuXing(a),bWx=getWuXing(b),cWx=getWuXing(c);
+// 检查是否 a克b 且 c克b（木克土夹克：a和c是木，b是土）
+var aKeB=getShengKe(aWx,bWx)==='克',cKeB=getShengKe(cWx,bWx)==='克';
+if(aKeB&&cKeB&&muNums.indexOf(a)>=0&&tuNums.indexOf(b)>=0&&muNums.indexOf(c)>=0){
+jiaKeList.push({pos:hi,pillar:pillarNames[hi]+'('+b+')',left:a,mid:b,right:c,wx:bWx,desc:pillarNames[hi-1]+a+'→'+pillarNames[hi]+b+'←'+pillarNames[hi+1]+c});
+}
+}
+if(jiaKeList.length>0){
+var jkWarn='';
+for(var jki=0;jki<jiaKeList.length;jki++){jkWarn+=jiaKeList[jki].desc+(jki<jiaKeList.length-1?'、':'');}
+l.push('<br><strong>后天夹克警示（木克土）：</strong>');
+l.push('<p class="warning">⚠ 后天出现木克土夹克：'+jkWarn+'</p>');
+if(gender==='f'){
+l.push('<p class="warning">女命后天木克土夹克，易抑郁、精神问题、想不开、自闭（尤其小孩）。生气生闷气，身上易长结节：乳腺增生、小叶增生、甲状腺、腰部不适。</p>');
+} else {
+l.push('<p class="warning">男命后天木克土夹克，易官司是非、牢狱之灾。若先天阴数多（6/8/10等占比高），也容易抑郁。</p>');
+var yinCount=0,totCount=0;
+for(var yi=0;yi<xianAll.length;yi++){if(xianAll[yi]!==0){totCount++;if(xianAll[yi]===6||xianAll[yi]===8||xianAll[yi]===10)yinCount++;}}
+if(yinCount>=totCount*0.6)l.push('<p class="warning">⚠ 先天阴数占比高（'+yinCount+'/'+totCount+'），阴郁体质叠加夹克格局，抑郁风险较高。</p>');
+}
+}
 // ==================== 8. 适合工作（依书：第十三章 工作/事业） ====================
 l.push('<br><strong>八、适合工作：</strong>');
 if(zhengShu.length>0){
@@ -3593,10 +3621,7 @@ ctx.strokeStyle="#fff";ctx.lineWidth=0.8;ctx.stroke();
 ctx.fillStyle=color;ctx.beginPath();ctx.arc(nx,ny,r,0,Math.PI*2);ctx.fill();
 ctx.strokeStyle="rgba(255,255,255,0.8)";ctx.lineWidth=0.8;ctx.stroke();
 }
-if(isMajor||ni<5){
-ctx.fillStyle="#222";ctx.font="bold 10px sans-serif";ctx.textAlign="center";
-ctx.fillText(n.age,nx,ny+(isMajor?19:13));
-}
+
 }
 
 // Current age
@@ -3615,20 +3640,30 @@ ctx.fillStyle="#d93025";ctx.font="bold 10px sans-serif";ctx.textAlign="center";
 ctx.fillText(lbl,clx,dby+13);
 }
 
-// Legend
-var ly=195;
+// Legend — two rows, larger text
+var ly1=190,ly2=212;
 var llabels=["生内(吉)","克内(凶)","内生外(泄)","内克外(辛苦财)","比合(平)"];
 var lcolors=["#34a853","#ea4335","#f9ab00","#ff6d01","#5f6368"];
-var lx=padL;
-for(var li=0;li<5;li++){
-ctx.fillStyle=lcolors[li];ctx.beginPath();ctx.arc(lx+7,ly,7,0,Math.PI*2);ctx.fill();
+// Row 1: first 3 items
+var lx1=padL;
+for(var li=0;li<3;li++){
+ctx.fillStyle=lcolors[li];ctx.beginPath();ctx.arc(lx1+7,ly1,7,0,Math.PI*2);ctx.fill();
 ctx.strokeStyle="rgba(0,0,0,0.2)";ctx.lineWidth=0.7;ctx.stroke();
 ctx.fillStyle="#000";ctx.font="bold 12px sans-serif";ctx.textAlign="left";
-ctx.fillText(llabels[li],lx+18,ly+5);
-lx+=102;
+ctx.fillText(llabels[li],lx1+18,ly1+5);
+lx1+=110;
 }
-ctx.fillStyle="#444";ctx.font="bold 11px sans-serif";ctx.textAlign="right";
-ctx.fillText("★大节点(后天) ·小节点(先天)  |  红线=当前年龄",W-padR,ly+2);
+// Row 2: last 2 items
+var lx2=padL;
+for(var li=3;li<5;li++){
+ctx.fillStyle=lcolors[li];ctx.beginPath();ctx.arc(lx2+7,ly2,7,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle="rgba(0,0,0,0.2)";ctx.lineWidth=0.7;ctx.stroke();
+ctx.fillStyle="#000";ctx.font="bold 12px sans-serif";ctx.textAlign="left";
+ctx.fillText(llabels[li],lx2+18,ly2+5);
+lx2+=110;
+}
+ctx.fillStyle="#555";ctx.font="bold 11px sans-serif";ctx.textAlign="right";
+ctx.fillText("★大节点(后天) ·小节点(先天)  |  红线=当前年龄",W-padR,ly2+2);
 
 // Title
 ctx.fillStyle="#333";ctx.font="bold 13px sans-serif";ctx.textAlign="left";
