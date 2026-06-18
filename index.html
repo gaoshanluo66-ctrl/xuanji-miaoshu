@@ -2735,14 +2735,9 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
   if(isZaoHun){
     l.push('<p style="color:var(--qing);">● 早婚型，婚缘来得早。</p>');
   } else {
+    l.push('<p style="color:var(--zhu);">● 晚婚型，婚缘来得晚。</p>');
     if(wanPoint>0){
-      if(wanPoint>=31){
-        l.push('<p style="color:var(--zhu);">● 晚婚型，最晚'+wanPoint+'岁，还把握不住就得很晚了。</p>');
-      } else {
-        l.push('<p style="color:var(--zhu);">● 晚婚型，若'+wanPoint+'岁还未成，把握不住则更晚。</p>');
-      }
-    } else {
-      l.push('<p style="color:var(--zhu);">● 晚婚型，婚缘来得晚。</p>');
+      l.push('<p style="color:var(--zhu);">● 最晚'+wanPoint+'岁，还没结就得很晚了。</p>');
     }
   }
   l.push('<p style="font-size:11px;color:var(--ink3);">※ 按虚岁推算，上下不差一岁（有周岁虚岁之分，有的虚一两岁）。实际结合大运流年。</p>');
