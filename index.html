@@ -297,6 +297,13 @@ body::after {
   border: 1px solid rgba(122,158,138,0.2);
 }
 .btn-pdf:hover { box-shadow: 0 3px 14px rgba(122,158,138,0.25); }
+	.btn-archive {
+	  background: rgba(201,169,110,0.12);
+	  color: var(--gold-light);
+	  box-shadow: 0 2px 8px rgba(201,169,110,0.1);
+	  border: 1px solid rgba(201,169,110,0.2);
+	}
+	.btn-archive:hover { box-shadow: 0 3px 14px rgba(201,169,110,0.25); }
 
 /* ===== 农历信息条 ===== */
 .lunar-info {
@@ -721,7 +728,16 @@ p.warning { color: var(--zhu-light) !important; }
   <div class="subtitle">基于駱高山《玄机妙数》和《数绎乾坤》体系排盘</div>
 </div>
 
-<div id="topToolbar" style="position:fixed;top:10px;right:12px;z-index:100;display:flex;gap:6px;align-items:center;">
+<div id="topToolbar" style="position:fixed;top:10px;left:12px;right:12px;z-index:100;display:flex;gap:6px;align-items:center;justify-content:space-between;pointer-events:none;">
+  <div style="display:flex;gap:6px;align-items:center;pointer-events:auto;">
+    <div id="toolbarJishiArchive" style="display:none;">
+      <button class="btn btn-archive" onclick="toggleJishiArchive()" style="padding:4px 10px;font-size:11px;">档案 ▾</button>
+    </div>
+    <div id="toolbarBaziArchive" style="display:none;">
+      <button class="btn btn-archive" onclick="toggleBaziArchive()" style="padding:4px 10px;font-size:11px;">档案 ▾</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;pointer-events:auto;">
   <div id="toolbarJishi">
     <button class="btn btn-pdf" onclick="window.print()" style="padding:4px 10px;font-size:11px;">导出PDF</button>
   </div>
@@ -731,6 +747,7 @@ p.warning { color: var(--zhu-light) !important; }
     </select>
     <button class="btn btn-pdf" onclick="exportBaziPDF()" style="padding:4px 10px;font-size:11px;">导出PDF</button>
   </div>
+</div>
 </div>
 
 <div class="ad-banner" style="margin:12px 0 8px;padding:10px 16px;background:linear-gradient(135deg,rgba(201,169,110,0.12),rgba(201,169,110,0.04));border:1px solid rgba(201,169,110,0.25);border-radius:8px;text-align:center;">
@@ -886,6 +903,7 @@ p.warning { color: var(--zhu-light) !important; }
 
   <!-- 断语 -->
   <div class="result" id="resultText"></div>
+  <div style="text-align:right;margin-top:4px;" id="jishiSaveBtn" onclick="saveBeforeJishiArchive()"><button class="btn btn-secondary" style="font-size:11px;padding:4px 10px;opacity:0.6;">保存档案</button></div>
 
   <!-- 类象参考 -->
   <div class="analysis" style="margin-top:12px;">
@@ -928,7 +946,7 @@ p.warning { color: var(--zhu-light) !important; }
   </div>
   <div class="btn-group">
     <button class="btn btn-primary" onclick="doBaZi()" style="padding:12px 24px;font-size:15px;">排 八 字</button>
-    <button class="btn btn-secondary" onclick="saveBaziArchive()" id="btnSaveBazi" style="display:none;">保存档案</button>
+    <button class="btn btn-secondary" onclick="saveBeforeBaziArchive()" id="btnSaveBazi" style="display:none;">保存档案</button>
     <button class="btn btn-secondary" onclick="setBaziNow()">今天</button>
     <label style="font-size:13px;color:var(--ink2);font-weight:600;margin-left:8px;">性别</label>
     <button class="gender-btn active" id="genderMBazi" onclick="setGender('bazi','m')">男</button>
@@ -962,6 +980,42 @@ p.warning { color: var(--zhu-light) !important; }
   <div style="text-align:right;margin-top:8px;" id="baziArchiveToggle">
     <button class="btn btn-secondary" onclick="document.getElementById('baziArchive').style.display='block';renderBaziArchives();" style="font-size:11px;padding:4px 10px;opacity:0.6;">档案 ▾</button>
   </div>
+  <!-- 即时起卦：档案（默认隐藏） -->
+  <div id="jishiArchive" style="margin-top:16px;display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <h3 style="font-size:14px;font-weight:700;color:var(--ink);letter-spacing:1px;margin:0;">即时起卦档案</h3>
+      <div style="display:flex;gap:6px;">
+        <button class="btn btn-secondary" onclick="clearJishiArchives()" style="font-size:11px;padding:4px 10px;">清空全部</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('jishiArchive').style.display='none';" style="font-size:11px;padding:4px 10px;">收起 ▲</button>
+      </div>
+    </div>
+    <div id="jishiArchiveList" style="display:flex;flex-direction:column;gap:6px;"></div>
+  </div>
+
+  <!-- 八字：保存备注输入框 -->
+  <div id="baziSaveDialog" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;">
+    <div style="background:var(--paper);padding:20px 24px;border-radius:8px;max-width:360px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+      <p style="margin:0 0 12px;font-size:14px;color:var(--ink);">保存档案</p>
+      <input id="baziArchiveRemark" placeholder="备注：如“张三的八字”“看事业运”" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:4px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;box-sizing:border-box;margin-bottom:12px;">
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button class="btn btn-secondary" onclick="document.getElementById('baziSaveDialog').style.display='none';" style="font-size:12px;padding:6px 16px;">取消</button>
+        <button class="btn btn-primary" onclick="doSaveBaziArchive()" style="font-size:12px;padding:6px 16px;">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 即时起卦：保存备注输入框 -->
+  <div id="jishiSaveDialog" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center;">
+    <div style="background:var(--paper);padding:20px 24px;border-radius:8px;max-width:360px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.3);">
+      <p style="margin:0 0 12px;font-size:14px;color:var(--ink);">保存档案</p>
+      <input id="jishiArchiveRemark" placeholder="备注：如“张三的卦”“看事业”" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:4px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;box-sizing:border-box;margin-bottom:12px;">
+      <div style="display:flex;gap:8px;justify-content:flex-end;">
+        <button class="btn btn-secondary" onclick="document.getElementById('jishiSaveDialog').style.display='none';" style="font-size:12px;padding:6px 16px;">取消</button>
+        <button class="btn btn-primary" onclick="doSaveJishiArchive()" style="font-size:12px;padding:6px 16px;">保存</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- 八字：类象参考 -->
   <div class="analysis" style="margin-top:12px;">
@@ -1425,6 +1479,8 @@ function switchMainTab(tab) {
   }
   document.getElementById('toolbarJishi').style.display=(tab==='jishi')?'block':'none';
   document.getElementById('toolbarBazi').style.display=(tab==='bazi')?'block':'none';
+  document.getElementById('toolbarJishiArchive').style.display=(tab==='jishi')?'block':'none';
+  document.getElementById('toolbarBaziArchive').style.display=(tab==='bazi')?'block':'none';
 }
 
 function switchJishiMethod(method) {
@@ -2302,7 +2358,8 @@ function _saveBaziArchive(arr){localStorage.setItem(BAZI_ARCHIVE_KEY,JSON.string
 
 function saveBaziArchive(){
   var calType=document.getElementById('baziCalType').value;
-  var data={id:Date.now(),calType:calType,gender:genderBazi,time:new Date().toLocaleString(),name:''};
+  var remark=document.getElementById('baziArchiveRemark');
+  var data={id:Date.now(),calType:calType,gender:genderBazi,time:new Date().toLocaleString(),name:'',remark:remark?remark.value:''};
   if(calType==='lunar'){
     data.lunarYear=document.getElementById('lunarYear').value;
     data.lunarMonth=document.getElementById('lunarMonth').value;
@@ -2338,8 +2395,9 @@ function renderBaziArchives(){
     var genderLabel=a.gender==='m'?'男':'女';
     h+='<div class="archive-item">'+
       '<div class="archive-info" onclick="replayBaziArchive('+a.id+')">'+
-        '<div class="archive-name" onclick="event.stopPropagation();"><input value="'+_esc(a.name)+'" onchange="renameBaziArchive('+a.id+',this.value)" onclick="event.stopPropagation();" title="点击编辑名称"></div>'+
+        '<div class="archive-name" onclick="event.stopPropagation();"><input value="'+_esc(a.name||'')+'" onchange="renameBaziArchive('+a.id+',this.value)" onclick="event.stopPropagation();" title="点击编辑名称"></div>'+
         '<div class="archive-meta">'+a.label+' · '+genderLabel+' · '+a.scLabel+' · '+a.time+'</div>'+
+      '<div class="archive-remark" onclick="event.stopPropagation();"><input value="'+_esc(a.remark||'')+'" onchange="remarkBaziArchive('+a.id+',this.value)" onclick="event.stopPropagation();" placeholder="\u5907\u6ce8\uff1a\u8c01\u7684\u516b\u5b57\uff0c\u770b\u4ec0\u4e48" style="background:transparent;border:none;border-bottom:1px dashed var(--border);color:var(--ink3);font-size:11px;font-family:inherit;width:200px;outline:none;"></div>'+
       '</div>'+
       '<div class="archive-actions">'+
         '<button onclick="replayBaziArchive('+a.id+')">查看</button>'+
@@ -2381,12 +2439,130 @@ function renameBaziArchive(id,newName){
   for(var i=0;i<archives.length;i++){if(archives[i].id===id){archives[i].name=newName;break;}}
   _saveBaziArchive(archives);
 }
+function remarkBaziArchive(id,newRemark){
+  var archives=_baziArchive();
+  for(var i=0;i<archives.length;i++){if(archives[i].id===id){archives[i].remark=newRemark;break;}}
+  _saveBaziArchive(archives);
+}
+
+function toggleBaziArchive(){
+  var el=document.getElementById('baziArchive');
+  if(el.style.display==='block'){el.style.display='none';}else{el.style.display='block';renderBaziArchives();}
+}
+function toggleJishiArchive(){
+  var el=document.getElementById('jishiArchive');
+  if(el.style.display==='block'){el.style.display='none';}else{el.style.display='block';renderJishiArchives();}
+}
+function saveBeforeBaziArchive(){
+  document.getElementById('baziArchiveRemark').value='';
+  document.getElementById('baziSaveDialog').style.display='flex';
+}
+function doSaveBaziArchive(){
+  document.getElementById('baziSaveDialog').style.display='none';
+  saveBaziArchive();
+}
+function saveBeforeJishiArchive(){
+  document.getElementById('jishiArchiveRemark').value='';
+  document.getElementById('jishiSaveDialog').style.display='flex';
+}
+function doSaveJishiArchive(){
+  document.getElementById('jishiSaveDialog').style.display='none';
+  saveJishiArchive();
+}
 
 function clearBaziArchives(){
   if(!confirm('确定清空所有八字档案吗？此操作不可恢复。'))return;
   localStorage.removeItem(BAZI_ARCHIVE_KEY);
   renderBaziArchives();
 }
+// ==================== 即时起卦档案 ====================
+var JISHI_ARCHIVE_KEY='xuanji_jishi_archive';
+function _jishiArchive(){try{return JSON.parse(localStorage.getItem(JISHI_ARCHIVE_KEY))||[];}catch(e){return[];}}
+function _saveJishiArchive(arr){localStorage.setItem(JISHI_ARCHIVE_KEY,JSON.stringify(arr));renderJishiArchives();}
+
+function saveJishiArchive(){
+  var remark=document.getElementById('jishiArchiveRemark');
+  var data={
+    id:Date.now(),
+    gender:genderJishi,
+    time:new Date().toLocaleString(),
+    name:'',
+    remark:remark?remark.value:'',
+    solarDate:document.getElementById('solarDate').value,
+    lunarDisplay:document.getElementById('lunarDateDisplay').innerText,
+    dayNumDisplay:document.getElementById('dayNumDisplay').innerText,
+    scDisplay:document.getElementById('scDisplay').innerText,
+    wenShi:getActiveWenShi(),
+    wenShiText:getActiveWenShiText(),
+    hunyinSub:getActiveWenShi()==='hunyin'?getActiveHunyinSub():'',
+    zidingyiText:getActiveWenShi()==='zidingyi'?getActiveZidingyi():'',
+    resultHTML:document.getElementById('resultText').innerHTML
+  };
+  data.label=data.lunarDisplay||data.solarDate;
+  data.name=data.label;
+  var archives=_jishiArchive();
+  archives.unshift(data);
+  if(archives.length>50)archives=archives.slice(0,50);
+  _saveJishiArchive(archives);
+}
+
+function renderJishiArchives(){
+  var archives=_jishiArchive();
+  var container=document.getElementById('jishiArchive');
+  var list=document.getElementById('jishiArchiveList');
+  if(archives.length===0){container.style.display='none';return;}
+  var h='';
+  for(var i=0;i<archives.length;i++){
+    var a=archives[i];
+    var genderLabel=a.gender==='m'?'\u7537':'\u5973';
+    var wenShiLabel=a.wenShiText||a.wenShi||'\u7efc\u5408';
+    h+='<div class="archive-item">'+
+      '<div class="archive-info" onclick="replayJishiArchive('+a.id+')">'+
+        '<div class="archive-name" onclick="event.stopPropagation();"><input value="'+_esc(a.name||'')+'" onchange="renameJishiArchive('+a.id+',this.value)" onclick="event.stopPropagation();" title="\u70b9\u51fb\u7f16\u8f91\u540d\u79f0"></div>'+
+        '<div class="archive-meta">'+a.lunarDisplay+' \u3001'+genderLabel+' \u95ee\u4e8b\uff1a'+wenShiLabel+' \u65e5\u671f\uff1a'+a.time+'</div>'+
+        '<div class="archive-remark" onclick="event.stopPropagation();"><input value="'+_esc(a.remark||'')+'" onchange="remarkJishiArchive('+a.id+',this.value)" onclick="event.stopPropagation();" placeholder="\u5907\u6ce8\uff1a\u8c01\u7684\u5366\uff0c\u770b\u4ec0\u4e48" style="background:transparent;border:none;border-bottom:1px dashed var(--border);color:var(--ink3);font-size:11px;font-family:inherit;width:200px;outline:none;"></div>'+
+      '</div>'+
+      '<div class="archive-actions">'+
+        '<button onclick="replayJishiArchive('+a.id+')">\u67e5\u770b</button>'+
+        '<button class="del-btn" onclick="deleteJishiArchive('+a.id+')">\u5220\u9664</button>'+
+      '</div>'+
+    '</div>';
+  }
+  list.innerHTML=h;
+}
+
+function replayJishiArchive(id){
+  var archives=_jishiArchive();
+  var a=null;for(var i=0;i<archives.length;i++){if(archives[i].id===id){a=archives[i];break;}}
+  if(!a)return;
+  document.getElementById('resultText').innerHTML=a.resultHTML;
+  document.getElementById('modeJishi').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function deleteJishiArchive(id){
+  if(!confirm('\u786e\u5b9a\u5220\u9664\u8be5\u8bb0\u5f55\u5417\uff1f'))return;
+  var archives=_jishiArchive().filter(function(a){return a.id!==id;});
+  _saveJishiArchive(archives);
+}
+
+function renameJishiArchive(id,newName){
+  var archives=_jishiArchive();
+  for(var i=0;i<archives.length;i++){if(archives[i].id===id){archives[i].name=newName;break;}}
+  _saveJishiArchive(archives);
+}
+
+function remarkJishiArchive(id,newRemark){
+  var archives=_jishiArchive();
+  for(var i=0;i<archives.length;i++){if(archives[i].id===id){archives[i].remark=newRemark;break;}}
+  _saveJishiArchive(archives);
+}
+
+function clearJishiArchives(){
+  if(!confirm('\u786e\u5b9a\u6e05\u7a7a\u6240\u6709\u5373\u65f6\u8d77\u5366\u6863\u6848\u5417\uff1f\u6b64\u64cd\u4f5c\u4e0d\u53ef\u6062\u590d\uff01'))return;
+  localStorage.removeItem(JISHI_ARCHIVE_KEY);
+  renderJishiArchives();
+}
+
 
 // ==================== 导出PDF ====================
 var BILINGUAL={
