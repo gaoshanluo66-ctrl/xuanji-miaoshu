@@ -3014,20 +3014,18 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
 
   // ===== 十、凶险因果格局 =====
   var jueC=0;
-  for(var i=0;i<len;i++){
-    for(var j=i+1;j<len;j++){
-      if(isBaJue(xianAll[i],xianAll[j]))jueC++;
-      if(houAll[i]!==-1&&houAll[j]!==-1&&isBaJue(houAll[i],houAll[j]))jueC++;
-    }
+  // 只检测相邻柱 + 年时作用（隔位不作用）
+  for(var i=0;i<len-1;i++){
+    if(isBaJue(xianAll[i],xianAll[i+1]))jueC++;
+    if(houAll[i]!==-1&&houAll[i+1]!==-1&&isBaJue(houAll[i],houAll[i+1]))jueC++;
   }
-  var jiaJue=false;
-  for(var i=1;i<len-1;i++){
-    if(xianAll[i-1]!==0&&xianAll[i+1]!==0&&isBaJue(xianAll[i-1],xianAll[i+1]))jiaJue=true;
-    if(houAll[i-1]!==-1&&houAll[i+1]!==-1&&isBaJue(houAll[i-1],houAll[i+1]))jiaJue=true;
+  // 年时作用
+  if(len>=2){
+    if(isBaJue(xianAll[0],xianAll[len-1]))jueC++;
+    if(houAll[0]!==-1&&houAll[len-1]!==-1&&isBaJue(houAll[0],houAll[len-1]))jueC++;
   }
-  if(jueC>=3||jiaJue){
-    var ygw=jueC>=5?'因果较重，自身容易有人命过失或牢狱。':'';
-    gejuLines.push('<p class="warning">⚠ <strong>凶险因果格局</strong>：八字绝数较多'+(jiaJue?'，且有夹绝':'')+'，前世或祖上涉及较大因果，生活不顺，有些事没法解释。'+ygw+'</p>');
+  if(jueC>=2){
+  gejuLines.push('<p class="warning">⚠ <strong>凶险因果格局</strong>：八字出现绝数，前世或祖上涉及较大因果，生活不顺，有些事没法解释。</p>');
   }
 
   // ===== 十一、自我限制格局（四正数超80%） =====
@@ -3123,7 +3121,7 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     var supp=[];
     if(jiaSheng)supp.push('<p class="good">⊕ 月柱得生：属富贵命，怎么折腾都不会太差。</p>');
     if(sfScore>=5&&dirCh<4)supp.push('<p class="warning">⚠ 事非重：易招小人口舌，不是自己的事都容易惹上身'+(sfScore>=8?'，严重者官司牢狱。':'。')+'</p>');
-    if(jueC>=4||jiaJue)supp.push('<p class="warning">⚠ 因果重：前世祖上因果较大，生活不顺，有些事没法解释。'+(jueC>=5?'需特别注意。':'。')+'</p>');
+    if(jueC>=2)supp.push('<p class="warning">⚠ 因果重：前世祖上因果较大，生活不顺，有些事没法解释。'+(jueC>=3?'需特别注意。':'。')+'</p>');
     if(totN>=3&&zhC/totN>=0.8&&uniqC>2)supp.push('<p>● 自我限制：思维固执保守，容易画地为牢，给自己设天花板。</p>');
     if(earlyF)supp.push('<p class="good">⊕ 早运好：自己孝顺长辈，得长辈喜爱照顾，早年运势较顺。</p>');
     if(fhK>fhS&&shS>shK&&fhK+shS>=2)supp.push('<p>● 晚运好（草根逆袭）：早年辛苦阻力大，熬过后通过奋斗成功，越老越好。</p>');
