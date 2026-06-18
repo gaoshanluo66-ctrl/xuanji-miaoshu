@@ -2804,10 +2804,29 @@ var skYearYueHou=getShengKe(wxYearHou,wxYueHou);
 var xianYYDiff=yearYY!==yueYY2,houYYDiff=(yearHYY!=='')&&(yearHYY!==yueHYY);
 var xianHasSK=skYearYueXian!=='比合'&&skYearYueXian!=='',houHasSK=skYearYueHou!=='比合'&&skYearYueHou!=='';
 var xianZaoHun=xianYYDiff&&xianHasSK,houZaoHun=houYYDiff&&houHasSK;
-l.push('<br><strong>五、结婚年龄节点：</strong>');
-var isZaoHun=xianZaoHun||houZaoHun;
 var isYueNianSame=yearXian===yueXian;
 var isYearYueChong=isLiuChong(yearXian,yueXian);
+// 新规则：年月同数时，去掉年，用月+日判断早晚
+if(isYueNianSame&&riIdxs.length>0){
+var riNum2=xianAll[riIdxs[0]];
+var riYY=riNum2%2===1?'阳':'阴',yueYY3=yueXian%2===1?'阳':'阴';
+var riYYDiff=yueYY3!==riYY;
+var skYueRiXian=getShengKe(wxYueXian,getWuXing(riNum2));
+var riHasSK=skYueRiXian!=='比合'&&skYueRiXian!=='';
+xianZaoHun=riYYDiff&&riHasSK;
+if(yueHou!==-1){
+var riHou2=getHouTian(riNum2);
+if(riHou2!==-1){
+var riHYY2=riHou2%2===1?'阳':'阴',yueHYY3=yueHou%2===1?'阳':'阴';
+var riHYYDiff=yueHYY3!==riHYY2;
+var skYueRiHou=getShengKe(getWuXing(yueHou),getWuXing(riHou2));
+var riHHasSK=skYueRiHou!=='比合'&&skYueRiHou!=='';
+houZaoHun=riHYYDiff&&riHHasSK;
+}
+}
+}
+l.push('<br><strong>五、结婚年龄节点：</strong>');
+var isZaoHun=xianZaoHun||houZaoHun;
 function ageRead(n){
 if(n<=0)return 0;
 if(n<=6)return 20+n;
@@ -2819,11 +2838,18 @@ return std;
 function pickMid(ages){if(ages.length===1)return ages[0];var s=0;for(var i=0;i<ages.length;i++)s+=ages[i];return Math.round(s/ages.length);}
 var allPts=[];
 function addPt(n,label){if(n>0&&n!==-1){allPts.push({num:n,age:ageRead(n),label:label});}}
+// 年月同数时：去掉年，用日柱替代
+if(isYueNianSame&&riIdxs.length>0){
+addPt(riNum2,'日先天'+riNum2);
+if(riHou2>0&&riHou2!==-1)addPt(riHou2,'日后天'+riHou2);
+addPt(yueXian,'月先天'+yueXian);
+if(yueHou>0&&yueHou!==-1)addPt(yueHou,'月后天'+yueHou);
+} else {
 addPt(yearXian,'年先天'+yearXian);
 if(yearHou>0&&yearHou!==-1)addPt(yearHou,'年后天'+yearHou);
 if(!isYueNianSame)addPt(yueXian,'月先天'+yueXian);
 if(yueHou>0&&yueHou!==-1)addPt(yueHou,'月后天'+yueHou);
-allPts.sort(function(a,b){return a.age!==b.age?a.age-b.age:a.num-b.num;});
+}allPts.sort(function(a,b){return a.age!==b.age?a.age-b.age:a.num-b.num;});
 var nn=allPts.length;
 var early=[],normal=[],late=[];
 if(nn===1){normal=[allPts[0]];}
@@ -2847,7 +2873,7 @@ if(eGrp.length>0){l.push('<p>　早：<strong>'+pickMid(eGrp[0].ages)+'岁</stro
 if(nGrp.length>0){l.push('<p>　正常：<strong>'+pickMid(nGrp[0].ages)+'岁</strong>（上下不差一岁）</p>');}
 if(lGrp.length>0){l.push('<p>　晚：<strong>'+pickMid(lGrp[lGrp.length-1].ages)+'岁</strong>（上下不差一岁）</p>');}
 if(isYearYueChong){l.push('<p class="warning">⚠ 年月六冲：婚姻要么很早要么很晚。</p>');}
-if(isYueNianSame){l.push('<p>● 年月同数，当做一个看。</p>');}
+if(isYueNianSame&&riIdxs.length>0){var riNum3=xianAll[riIdxs[0]];var ynDesc='月'+yueXian+'('+getWuXing(yueXian)+')与日'+riNum3+'('+getWuXing(riNum3)+')，'+(isZaoHun?'阴阳正生→早婚':'阴阳相克→晚婚');l.push('<p>● 年月同数，去掉年，看月日判断早晚。'+ynDesc+'。</p>');}
 var wanPoint=(lGrp.length>0)?pickMid(lGrp[lGrp.length-1].ages):0;
 if(isZaoHun){
 l.push('<p style="color:var(--qing);font-weight:600;">● 早恋早婚格局：姻缘来得早，容易在年轻时就遇到正缘，早早步入婚姻。</p>');
