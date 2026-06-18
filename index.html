@@ -3904,6 +3904,130 @@ if(n===10||n===11)jinShu.push(pillarNames[i]+n);
 if(caiGen.length>0)l.push('<p class="good">⊕ 财根稳固：'+caiGen.join('、')+'（3/8/9土为财根，财源有根基）</p>');
 if(zhengShu.length>0)l.push('<p class="good">⊕ 正数入命：'+zhengShu.join('、')+'（1/4/7/10为正数，主正式工作/稳定收入）</p>');
 if(jinShu.length>0)l.push('<p>● 金数出现：'+jinShu.join('、')+'（10为暗财/存款，11为明财/工资，与钱财直接相关）</p>');
+
+
+	// ==================== 事业方向分析 ====================
+	l.push('<br><strong>事业方向分析：</strong>');
+	// 1. 正数受克检查（1/4/7/10）
+	var _zhengList=[1,4,7,10];
+	var _zhengWarn=[],_zhengGood=[];
+	for(var _pi=0;_pi<len;_pi++){
+		var _xn=xianAll[_pi];
+		if(_zhengList.indexOf(_xn)<0)continue;
+		var _xw=getWuXing(_xn);var _hit=false;
+		for(var _qi=0;_qi<len;_qi++){
+			if(_qi===_pi||xianAll[_qi]===0||xianAll[_qi]===-1)continue;
+			if(getShengKe(getWuXing(xianAll[_qi]),_xw)==='克'){_hit=true;break;}
+		}
+		if(!_hit&&_pi<houAll.length&&houAll[_pi]!==-1){
+			var _hw=getWuXing(houAll[_pi]);
+			for(var _qi=0;_qi<houAll.length;_qi++){
+				if(_qi===_pi||houAll[_qi]===-1)continue;
+				if(getShengKe(getWuXing(houAll[_qi]),_hw)==='克'){_hit=true;break;}
+			}
+		}
+		if(_hit)_zhengWarn.push(pillarNames[_pi]+_xn);
+		else _zhengGood.push(pillarNames[_pi]+_xn);
+	}
+	if(_zhengGood.length>0&&_zhengWarn.length===0){
+		l.push('<p class="good">● 正数健全（'+_zhengGood.join('、')+'）：有正式工作运，适合考公考编、企事业单位。</p>');
+	} else if(_zhengGood.length>0&&_zhengWarn.length>0){
+		l.push('<p>● 正数有克（'+_zhengWarn.join('、')+'受克）：部分正数受压制，正式工作有不稳定因素。无克的正数（'+_zhengGood.join('、')+'）仍可发力。</p>');
+	} else if(_zhengWarn.length>0){
+		l.push('<p class="warning">● 正数全受克（'+_zhengWarn.join('、')+'）：不适合体制内/正式工作，宜自由职业或偏门行业。</p>');
+	} else {
+		l.push('<p>● 八字无正数（1/4/7/10）：不喜约束，适合自由职业。</p>');
+	}
+	// 2. 行业方向：生我 / 我克
+	var _yueXian=xianAll.length>1?xianAll[1]:0;
+	var _yueHou=(houAll.length>1&&houAll[1]!==-1)?houAll[1]:-1;
+	// 先天搜集
+	var _shengWoX=[],_woKeX=[];
+	if(_yueXian>0){
+		var _ywx=getWuXing(_yueXian);
+		for(var _pi=0;_pi<len;_pi++){
+			var _xn=xianAll[_pi];
+			if(_xn===0||_xn===_yueXian)continue;
+			var _sk=getShengKe(getWuXing(_xn),_ywx);
+			if(_sk==='生')_shengWoX.push({n:_xn,p:pillarNames[_pi],w:getWuXing(_xn)});
+			if(_sk==='被生')_woKeX.push({n:_xn,p:pillarNames[_pi],w:getWuXing(_xn)});
+		}
+	}
+	// 后天搜集
+	var _shengWoH=[],_woKeH=[];
+	if(_yueHou>0){
+		var _hwx=getWuXing(_yueHou);
+		for(var _pi=0;_pi<houAll.length;_pi++){
+			var _hn=houAll[_pi];
+			if(_hn===-1||_hn===_yueHou)continue;
+			var _sk=getShengKe(getWuXing(_hn),_hwx);
+			if(_sk==='生')_shengWoH.push({n:_hn,p:pillarNames[_pi],w:getWuXing(_hn)});
+			if(_sk==='被生')_woKeH.push({n:_hn,p:pillarNames[_pi],w:getWuXing(_hn)});
+		}
+	}
+	// 3. 内部克检查（用 var=function 避免声明问题）
+	var _checkNeiKe=function(_num){
+		var _issues=[];
+		if(!_num||_num<=0||_num===-1)return _issues;
+		for(var _pi=0;_pi<xianAll.length-1;_pi++){
+			var _a=xianAll[_pi],_b=xianAll[_pi+1];
+			if(_a===0||_b===0)continue;
+			if(_a===_num||_b===_num){
+				var _sk=getShengKe(getWuXing(_a),getWuXing(_b));
+				if(_sk==='克'||_sk==='被克'){
+					var _dir=_sk==='克'?(_a+'克'+_b):(_b+'克'+_a);
+					_issues.push('先天'+pillarNames[_pi]+'-'+pillarNames[_pi+1]+'('+_dir+')');
+				}
+			}
+		}
+		for(var _pi=0;_pi<houAll.length-1;_pi++){
+			var _a=houAll[_pi],_b=houAll[_pi+1];
+			if(_a===-1||_b===-1)continue;
+			if(_a===_num||_b===_num){
+				var _sk=getShengKe(getWuXing(_a),getWuXing(_b));
+				if(_sk==='克'||_sk==='被克'){
+					var _dir=_sk==='克'?(_a+'克'+_b):(_b+'克'+_a);
+					_issues.push('后天'+pillarNames[_pi]+'-'+pillarNames[_pi+1]+'('+_dir+')');
+				}
+			}
+		}
+		return _issues;
+	};
+	// 4. 汇总推荐
+	var _allRecs=[];
+	var _addRecs=function(_list,_label,_type){
+		var _seen={};
+		for(var _i=0;_i<_list.length;_i++){
+			var _it=_list[_i];
+			var _k=_it.n+'_'+_label;
+			if(_seen[_k])continue;_seen[_k]=true;
+			_allRecs.push({n:_it.n,p:_it.p,w:_it.w,lb:_label,tp:_type,nk:_checkNeiKe(_it.n)});
+		}
+	};
+	_addRecs(_shengWoX,'先天','生我');
+	_addRecs(_woKeX,'先天','我克');
+	_addRecs(_shengWoH,'后天','生我');
+	_addRecs(_woKeH,'后天','我克');
+	if(_allRecs.length>0){
+		l.push('<br><strong>推荐行业方向：</strong>');
+		l.push('<p style="font-size:11px;color:var(--ink3);">生我→简单轻松 | 我克→求财辛苦但有利</p>');
+		for(var _i=0;_i<_allRecs.length;_i++){
+			var _r=_allRecs[_i];
+			var _attr=NUM_ATTR[_r.n]||{};
+			var _icon=(_r.tp==='生我')?'⊕ 生我（轻松）':'● 我克（辛苦有财）';
+			var _nkhtml='';
+			if(_r.nk.length>0){
+				_nkhtml=' <span class="warning" style="font-size:11px;">⚠ 内部有克（'+_r.nk.join('；')+'），此方向需谨慎</span>';
+			} else {
+				_nkhtml=' <span style="color:var(--qing);font-size:11px;">✓ 内部无克</span>';
+			}
+			l.push('<p style="margin-left:6px;">'+_icon+' <span style="color:'+getNumColor(_r.n)+';font-weight:600;">'+_r.n+'</span>（'+_r.w+'/'+_r.lb+'-'+_r.p+'）→ '+
+				(_attr.career||_r.w+'行业')+_nkhtml+'</p>');
+		}
+	} else {
+		l.push('<p>● 八字中暂无明显行业生克指向，以自身五行（'+selfWx+'）行业为主。</p>');
+	}
+
 // ==================== 7. 八字格局（依书：第十二章 八字格局） ====================
 l.push('<br><strong>七、八字格局：</strong>');
 function isYangNum(n){return n===1||n===2||n===3||n===4||n===11||n===12;}
