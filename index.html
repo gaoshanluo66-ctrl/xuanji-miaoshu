@@ -2510,6 +2510,7 @@ function getDayunAge(pillar,xianNum,houNum,xianAll,houAll,dayCount){
 
 // ==================== 八字断语生成（重构版 v3 — 依书修订） ====================
 function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,gender){
+  try {
   var genderLabel=(gender==='m')?'男':'女';
   var l=[];
   l.push('<div class="section-title">数绎乾坤 · 八字解读</div>');
@@ -3050,6 +3051,7 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
   }
 
   // ===== 先天后天分开判格局 =====
+  l.push("<p style=\"color:red;\">DEBUG: === 进入格局段 ===</p>");
   gejuLines=[];
 
   // 单链格局描述（只给结果，不讲技术）
@@ -3451,7 +3453,11 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
   for(var i=0;i<houAll.length;i++){if(houAll[i]!==-1&&uniqueNums.indexOf(houAll[i])<0)uniqueNums.push(houAll[i]);}
   l.push('<p style="margin-top:6px;font-size:11px;color:var(--ink3);">● 八字中出现的关键流年数字：'+uniqueNums.sort(function(a,b){return a-b;}).join('、')+'。对应生肖年份：1鼠(2020)、2牛(2021)、3虎(2022)、4兔(2023)、5龙(2024)、6蛇(2025)、7马(2026)、8羊(2027)、9猴(2028)、10鸡(2029)、11狗(2030)、12猪(2031)——遇到这些年份运势会有明显变化。</p>');
 
+  l.push("<p style=\"color:red;\">DEBUG: === 格局段结束 ===</p>");
   return l.join('\n');
+  } catch(e) {
+    return '<div class="section-title">错误</div><p style="color:red;">生成八字解读时出错：' + e.message + '</p><pre>' + e.stack + '</pre>';
+  }
 }
 
 // ==================== 初始化 ====================
