@@ -620,7 +620,7 @@ transition: all 0.2s;
 @keyframes loFadeOut { to{visibility:hidden;opacity:0;pointer-events:none;} }
 
 /* 数字类象弹窗 */
-#numXiangOverlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;}
+#numXiangOverlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;animation:fadeIn .15s ease;}
 #numXiangPopup{position:relative;background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px 20px;max-width:480px;width:92vw;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.5);}
 #numXiangPopup .nx-close{position:absolute;top:6px;right:10px;font-size:20px;color:var(--ink3);cursor:pointer;background:none;border:none;line-height:1;z-index:1;}
 #numXiangPopup .nx-header{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
@@ -1550,15 +1550,12 @@ h+='<div class="nx-grid">';
 h+='<div class="nx-item"><b>颜色</b> '+attr.yanse+'</div>';
 h+='<div class="nx-item"><b>方位</b> '+(attr.fangwei||'—')+'</div>';
 h+='<div class="nx-item"><b>卦象</b> '+(attr.gua||'无')+'</div>';
-h+='<div class="nx-item"><b>人物</b> '+(attr.renwu||'—')+'</div>';
 h+='<div class="nx-item"><b>身体</b> '+(attr.tiwei||'—')+'</div>';
-h+='<div class="nx-item"><b>物象</b> '+(attr.wu||'—')+'</div>';
 h+='</div>';
 h+='<div class="nx-sep"></div>';
 if(attr.traits)h+='<div class="nx-block"><div class="nx-label">性格</div><div class="nx-text">'+attr.traits+'</div></div>';
 if(attr.career)h+='<div class="nx-block"><div class="nx-label">职业</div><div class="nx-text">'+attr.career+'</div></div>';
 h+='<div class="nx-block"><div class="nx-label">含义</div><div class="nx-text">'+(attr.meaning||'')+'</div></div>';
-if(attr.nature)h+='<div class="nx-block"><div class="nx-label">特性</div><div class="nx-text">'+attr.nature+'</div></div>';
 if(attr.disease&&attr.disease!=='—')h+='<div class="nx-block"><div class="nx-label">易病</div><div class="nx-text">'+attr.disease+'</div></div>';
 h+='</div></div>';
 var old=document.getElementById('numXiangOverlay');if(old)old.remove();
