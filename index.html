@@ -790,6 +790,7 @@ p.warning { color: var(--zhu-light) !important; }
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doDivination()">起 卦</button>
+      <button class="btn btn-secondary" id="jishiSaveBtn2" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
       <button class="btn btn-secondary" onclick="setNow()">现在</button>
     </div>
     <span id="hunyinExtra" style="display:none;margin-left:4px;">
@@ -819,6 +820,7 @@ p.warning { color: var(--zhu-light) !important; }
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
+      <button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
     </div>
     <span id="hunyinExtra2" style="display:none;margin-left:4px;">
       <select id="hunyinStatus2" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -842,6 +844,7 @@ p.warning { color: var(--zhu-light) !important; }
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
+      <button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
     </div>
     <span id="hunyinExtra3" style="display:none;margin-left:4px;">
       <select id="hunyinStatus3" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -866,6 +869,7 @@ p.warning { color: var(--zhu-light) !important; }
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
+      <button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
     </div>
     <span id="hunyinExtra4" style="display:none;margin-left:4px;">
       <select id="hunyinStatus4" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -1123,6 +1127,23 @@ var NUM_PAIR_COMBO=[
   [7,3,'正直感性+不服输=有正义感但刚硬，容易跟权威硬碰','warning'],
   [11,12,'想法多但说不出来——心里全明白，嘴上全卡住',''],
   [12,11,'想法多但说不出来——心里全明白，嘴上全卡住',''],
+  // 5+6 执着+敏感
+  [5,6,'执着倔犟碰上敏感多变——摇摆不定犹豫不决，想做又怕，矛盾体','warning'],
+  // 1+2 自私+好动
+  [1,2,'一心一意遇上积极好动——表面勤快内心算计，利己主义',''],
+  [2,1,'积极好动遇上一心一意——表面勤快内心算计，利己主义',''],
+  // 8+9 优柔+强迫
+  [8,9,'优柔寡断碰上追求完美——纠结到死，想太多做太少，内耗严重','warning'],
+  [9,8,'追求完美碰上优柔寡断——纠结到死，想太多做太少，内耗严重','warning'],
+  // 3+5 不服输+执着
+  [3,5,'不服输遇上执着倔犟——死犟到底，撞了南墙也不回头','warning'],
+  [5,3,'执着倔犟遇上不服输——死犟到底，撞了南墙也不回头','warning'],
+  // 4+9 直爽+强迫
+  [4,9,'直爽任性遇上追求完美——要求高嘴也直，容易得罪人还不自知','warning'],
+  [9,4,'追求完美遇上直爽任性——要求高嘴也直，容易得罪人还不自知','warning'],
+  // 6+8 敏感+心软
+  [6,8,'敏感善变遇上心慈手软——容易被人拿捏，情绪化，心太软被人利用','warning'],
+  [8,6,'心慈手软遇上敏感善变——容易被人拿捏，情绪化，心太软被人利用','warning'],
 ];
 
 // ==================== 性别状态 ====================
@@ -1228,75 +1249,47 @@ function buildDeepPersonality(xianNums,houNums,gender){
   var l=[];
   l.push('<div style="margin-top:6px;padding:10px 14px;background:rgba(201,169,110,0.06);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;">');
 
-  // Pillar/position labels
-  var posLabels=xianNums.length>=4?['\u5e74\u67f1','\u6708\u67f1','\u65e5\u67f1','\u65f6\u67f1']:xianNums.length>=2?['\u5185','\u5916']:[''];
+  var posLabels=xianNums.length>=4?['\u5e74','\u6708','\u65e5','\u65f6']:['\u5185','\u5916'];
 
-  // === A: 先天外在状态（逐个数读） ===
-  l.push('<p style="font-weight:700;color:var(--gold-light);margin:0 0 6px;">\u300a\u5148\u5929\u5916\u5728\u72b6\u6001\u300b\u2014\u2014 \u6211\u7ed9\u522b\u4eba\u7684\u611f\u89c9</p>');
-  var xianCounts={},xianSummary=[];
+  // === A: \u6570\u5b57\u6027\u683c\u4e00\u89c8 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:0 0 6px;">\u300a\u5148\u5929\u5916\u5728\u300b\u2014\u2014 \u6211\u7ed9\u522b\u4eba\u7684\u611f\u89c9</p>');
+  var xianTraits=[],xianSeen={};
   for(var i=0;i<xianNums.length;i++){
-    var n=xianNums[i];
-    if(n<=0||n>12)continue;
-    var pos=posLabels[i]||'';
-    var trait=DEEP_TRAITS[n]||'';
-    var numClr=getNumColor(n);
-    l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="font-size:11px;color:var(--ink3);">'+pos+'\u5148\u5929 </span><span style="font-weight:700;font-size:19px;color:'+numClr+';">'+n+'</span> <span style="font-size:13px;">'+trait+'</span></p>');
-    xianCounts[n]=(xianCounts[n]||0)+1;
-  }
-  // Summary of repeating patterns
-  var xianRepeats=[];
-  for(var k in xianCounts){if(xianCounts[k]>=2)xianRepeats.push(k);}
-  if(xianRepeats.length>0){
-    var repeatStrs=[];
-    for(var ri=0;ri<xianRepeats.length;ri++){
-      var rn=parseInt(xianRepeats[ri]),rc=xianCounts[rn];
-      repeatStrs.push('\u201c'+DEEP_TRAITS[rn].split('\uff0c')[0]+'\u201d\u7279\u8d28\u52a0\u91cd\uff08\u51fa\u73b0'+rc+'\u6b21\uff09');
-    }
-    l.push('<p style="margin:6px 0 2px 8px;font-size:12px;color:var(--gold-light);">\u2192 \u5916\u5728\u603b\u7ed3\uff1a'+repeatStrs.join('\uff0c')+'</p>');
+    var n=xianNums[i];if(n<=0||n>12)continue;
+    var pos=posLabels[i]||'',kw=DEEP_TRAITS[n].split('\uff0c')[0];
+    l.push('<p style="margin:3px 0 3px 8px;font-size:13px;">'+pos+'\u67f1\u5148\u5929 <span style="font-weight:700;font-size:18px;color:'+getNumColor(n)+';">'+n+'</span> \u2014\u2014 '+kw+'</p>');
+    if(!xianSeen[n]){xianSeen[n]=1;xianTraits.push(kw);}else{xianSeen[n]++;}
   }
 
-  // === B: 后天内在状态（逐个数读） ===
-  l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u540e\u5929\u5185\u5728\u72b6\u6001\u300b\u2014\u2014 \u6211\u5185\u5fc3\u771f\u5b9e\u7684\u6837\u5b50</p>');
-  var houCounts={},houHasAny=false;
+  // === B: \u540e\u5929\u5185\u5728 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u540e\u5929\u5185\u5728\u300b\u2014\u2014 \u6211\u5185\u5fc3\u771f\u5b9e\u7684\u6837\u5b50</p>');
+  var houHasAny=false,houTraits=[],houSeen={};
   for(var hi=0;hi<houNums.length;hi++){
-    var hn=houNums[hi];
-    if(hn<=0||hn>12)continue;
+    var hn=houNums[hi];if(hn<=0||hn>12)continue;
     houHasAny=true;
-    var pos2=posLabels[hi]||'';
-    var hTrait=DEEP_TRAITS[hn]||'';
-    var numClr2=getNumColor(hn);
-    l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="font-size:11px;color:var(--ink3);">'+pos2+'\u540e\u5929 </span><span style="font-weight:700;font-size:19px;color:'+numClr2+';">'+hn+'</span> <span style="font-size:13px;color:var(--ink2);">'+hTrait+'</span></p>');
-    houCounts[hn]=(houCounts[hn]||0)+1;
+    var pos2=posLabels[hi]||'',hkw=DEEP_TRAITS[hn].split('\uff0c')[0];
+    l.push('<p style="margin:3px 0 3px 8px;font-size:13px;">'+pos2+'\u67f1\u540e\u5929 <span style="font-weight:700;font-size:18px;color:'+getNumColor(hn)+';">'+hn+'</span> \u2014\u2014 '+hkw+'</p>');
+    if(!houSeen[hn]){houSeen[hn]=1;houTraits.push(hkw);}else{houSeen[hn]++;}
   }
   if(!houHasAny){
     l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u65e0\u540e\u5929\u6570\u636e</p>');
   }
-  var houRepeats=[];
-  for(var k2 in houCounts){if(houCounts[k2]>=2)houRepeats.push(k2);}
-  if(houRepeats.length>0){
-    var hrStrs=[];
-    for(var ri2=0;ri2<houRepeats.length;ri2++){
-      var hrn=parseInt(houRepeats[ri2]),hrc=houCounts[hrn];
-      hrStrs.push('\u201c'+DEEP_TRAITS[hrn].split('\uff0c')[0]+'\u201d\u5185\u5728\u52a0\u91cd\uff08\u51fa\u73b0'+hrc+'\u6b21\uff09');
-    }
-    l.push('<p style="margin:6px 0 2px 8px;font-size:12px;color:var(--gold-light);">\u2192 \u5185\u5728\u603b\u7ed3\uff1a'+hrStrs.join('\uff0c')+'</p>');
-  }
 
-  // === C: 数字组合解读 ===
-  l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u6570\u5b57\u7ec4\u5408\u89e3\u8bfb\u300b\u2014\u2014 \u6027\u683c\u7684\u4ea4\u7ec7\u4e0e\u51b2\u7a81</p>');
+  // === C: \u7ec4\u5408\u89e3\u8bfb (MAIN FOCUS) ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u7ec4\u5408\u89e3\u8bfb\u300b\u2014\u2014 \u6027\u683c\u7684\u4ea4\u7ec7\u4e0e\u51b2\u7a81</p>');
   var comboFound=false;
-  // Check all adjacent pairs in xianTian
   var allPairs=[];
+
+  // Collect all adjacent pairs from xianTian
   for(var pi=0;pi<xianNums.length-1;pi++){
     if(xianNums[pi]>0&&xianNums[pi]<=12&&xianNums[pi+1]>0&&xianNums[pi+1]<=12){
       allPairs.push([xianNums[pi],xianNums[pi+1],'\u5148\u5929']);
     }
   }
-  // Year-Hour pair for BaZi (len>=4)
   if(xianNums.length>=4&&xianNums[0]>0&&xianNums[0]<=12&&xianNums[xianNums.length-1]>0&&xianNums[xianNums.length-1]<=12){
     allPairs.push([xianNums[0],xianNums[xianNums.length-1],'\u5148\u5929\u5e74\u65f6']);
   }
-  // Also check houTian pairs
+  // HouTian pairs
   for(var pi2=0;pi2<houNums.length-1;pi2++){
     if(houNums[pi2]>0&&houNums[pi2]<=12&&houNums[pi2+1]>0&&houNums[pi2+1]<=12){
       allPairs.push([houNums[pi2],houNums[pi2+1],'\u540e\u5929']);
@@ -1305,26 +1298,25 @@ function buildDeepPersonality(xianNums,houNums,gender){
   if(houNums.length>=4&&houNums[0]>0&&houNums[0]<=12&&houNums[houNums.length-1]>0&&houNums[houNums.length-1]<=12){
     allPairs.push([houNums[0],houNums[houNums.length-1],'\u540e\u5929\u5e74\u65f6']);
   }
+
   for(var pi3=0;pi3<allPairs.length;pi3++){
-    var a=allPairs[pi3][0],b=allPairs[pi3][1],scope=allPairs[pi3][2];
-    // Check number-specific combos first
+    var a=allPairs[pi3][0],b=allPairs[pi3][1];
     var found=false;
     for(var nci=0;nci<NUM_PAIR_COMBO.length;nci++){
       var nc=NUM_PAIR_COMBO[nci];
       if(nc[0]===a&&nc[1]===b){
         var cls=nc[3]||'';
         var clsAttr=cls?' class="'+cls+'"':'';
-        l.push('<p'+clsAttr+' style="margin:4px 0 4px 8px;font-size:12px;">\u2192 '+a+'+'+b+'\uff1a'+nc[2]+'</p>');
+        l.push('<p'+clsAttr+' style="margin:4px 0 4px 8px;font-size:13px;">\u2192 '+a+'+'+b+'\uff1a'+nc[2]+'</p>');
         found=true;comboFound=true;break;
       }
     }
     if(!found){
-      // Fall back to element combo
       var wxA=getWuXing(a),wxB=getWuXing(b);
       var elemKey=wxA+'+'+wxB;
       var elemDesc=ELEM_COMBO[elemKey];
       if(elemDesc){
-        l.push('<p style="margin:4px 0 4px 8px;font-size:12px;">\u2192 '+a+'+'+b+'\uff1a'+elemDesc+'</p>');
+        l.push('<p style="margin:4px 0 4px 8px;font-size:13px;">\u2192 '+a+'+'+b+'\uff1a'+elemDesc+'</p>');
         comboFound=true;
       }
     }
@@ -1333,13 +1325,12 @@ function buildDeepPersonality(xianNums,houNums,gender){
     l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u6682\u65e0\u7279\u6b8a\u7ec4\u5408</p>');
   }
 
-  // === D: 综合性格画像 ===
+  // === D: \u7efc\u5408\u753b\u50cf ===
   l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u7efc\u5408\u6027\u683c\u753b\u50cf\u300b</p>');
-  // Collect all unique traits from xian and hou
-  var allTraits=[],allKeys={};
-  for(var i2=0;i2<xianNums.length;i2++){var xn=xianNums[i2];if(xn>0&&xn<=12&&!allKeys['x'+xn]){allTraits.push(DEEP_TRAITS[xn].split('\uff0c')[0]);allKeys['x'+xn]=1;}}
-  for(var hi3=0;hi3<houNums.length;hi3++){var hn2=houNums[hi3];if(hn2>0&&hn2<=12&&!allKeys['h'+hn2]){allTraits.push(DEEP_TRAITS[hn2].split('\uff0c')[0]);allKeys['h'+hn2]=1;}}
-  l.push('<p style="margin:4px 0 4px 8px;line-height:1.8;font-size:13px;">\u7efc\u5408\u6765\u770b\uff0c\u4f60\u662f\u4e00\u4e2a <span style="color:var(--gold-light);">'+allTraits.join('\u3001')+'</span> \u7684\u4eba\u3002</p>');
+  var allKws=xianTraits.concat(houTraits);
+  var uniqKws=[];var seenK={};
+  for(var ai=0;ai<allKws.length;ai++){if(!seenK[allKws[ai]]){uniqKws.push(allKws[ai]);seenK[allKws[ai]]=1;}}
+  l.push('<p style="margin:4px 0 4px 8px;line-height:1.8;font-size:14px;">\u7efc\u5408\u6765\u770b\uff0c\u4f60\u662f\u4e00\u4e2a <span style="color:var(--gold-light);font-weight:600;">'+uniqKws.join('\u3001')+'</span> \u7684\u4eba\u3002</p>');
 
   l.push('</div>');
   return l.join('\n');
@@ -1824,7 +1815,7 @@ function doDivination() {
   showXiangRef(allNums,'xiangRef');
   var reading=generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenShiText,hunyinSub,zidingyiText,genderJishi,hasLing);
   document.getElementById('resultText').innerHTML=reading;
-  document.getElementById('jishiSaveBtn').style.display='block';
+  document.getElementById('jishiSaveBtn').style.display='block';document.querySelectorAll('.jishi-save-btn').forEach(function(b){b.style.display='inline-block';});if(document.getElementById('jishiSaveBtn2'))document.getElementById('jishiSaveBtn2').style.display='inline-block';
 }
 
 
@@ -1887,7 +1878,7 @@ function doShuziDivination() {
   if(wenShi==='zidingyi'){zidingyiText=getActiveZidingyi();if(!zidingyiText)zidingyiText='自定义问题';}
   var reading=generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenShiText,hunyinSub,zidingyiText,genderJishi,hasLing);
   document.getElementById('resultText').innerHTML=reading;
-  document.getElementById('jishiSaveBtn').style.display='block';
+  document.getElementById('jishiSaveBtn').style.display='block';document.querySelectorAll('.jishi-save-btn').forEach(function(b){b.style.display='inline-block';});if(document.getElementById('jishiSaveBtn2'))document.getElementById('jishiSaveBtn2').style.display='inline-block';
 }
 
 // ==================== 数字卦断语生成（增强版） ====================
