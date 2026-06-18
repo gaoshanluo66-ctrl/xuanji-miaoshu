@@ -407,11 +407,6 @@ body::after {
 }
 p.good { color: var(--qing-light) !important; }
 p.warning { color: var(--zhu-light) !important; }
-}
-.result .good {
-  color: #3d6b4a;
-  font-weight: 600;
-}
 
 /* ===== 类象 ===== */
 .xiang-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 8px; margin-top: 6px; }
@@ -449,10 +444,10 @@ p.warning { color: var(--zhu-light) !important; }
 }
 .wx-tag {
   display: inline-block;
-  padding: 3px 10px;
-  border-radius: 16px;
+  padding: 2px 7px;
+  border-radius: 10px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 10px;
   color: #1a1410;
   letter-spacing: 1px;
 }
@@ -461,7 +456,7 @@ p.warning { color: var(--zhu-light) !important; }
 .wx-tag.tu { background: #d4a23c; color: #3e2d10; }
 .wx-tag.jin { background: #6b6b6b; }
 .wx-tag.shui { background: #4d7db8; }
-.wx-arrow { font-size: 16px; font-weight: 700; }
+.wx-arrow { font-size: 11px; font-weight: 700; }
 .wx-arrow.sheng { color: #5b8c5a; }
 .wx-arrow.ke { color: #c75b5b; }
 .wuxing-label {
@@ -1717,6 +1712,9 @@ function generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenS
     if(isJiaJue(nei,wai,neiHou,waiHou))l.push('<p class="good">⊕ 假绝之象：先天虽绝但后天相生，逢凶化吉，开始不好但结局转好。</p>');
   }
 
+  // 8-9互相伤害：8在内8克9，9在内9克8（五行虽同属土，但数理互克）
+  if((nei===8&&wai===9)||(!hasLing&&neiHou===8&&waiHou===9))l.push('<p class="warning">⚠ 8-9互克：8在内克9在外，数理上8压制9，注意内在矛盾（8为土中阴、9为土中阳，虽同五行但阴阳相克）。</p>');
+  if((nei===9&&wai===8)||(!hasLing&&neiHou===9&&waiHou===8))l.push('<p class="warning">⚠ 9-8互克：9在内克8在外，数理上9压制8，注意内在矛盾（9为土中阳、8为土中阴，虽同五行但阴阳相克）。</p>');
   // 暗风流
   if(isAnFengLiu(nei,wai)||(!hasLing&&isAnFengLiu(neiHou,waiHou)))l.push('<p class="warning">⚠ 暗风流之象：注意暗中有情感纠葛，事后能守口如瓶。</p>');
 
@@ -3007,7 +3005,7 @@ setNow();
 </script>
 
 <!-- ===== 五行生克参考 ===== -->
-<div style="text-align:center;padding:12px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-bottom:16px;font-size:12px;">
+<div style="text-align:center;padding:6px 10px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;margin-bottom:12px;font-size:11px;opacity:0.85;">
   <span style="color:var(--ink3);">相生</span>
   <span class="wx-tag mu">木</span><span class="wx-arrow sheng">→</span>
   <span class="wx-tag huo">火</span><span class="wx-arrow sheng">→</span>
