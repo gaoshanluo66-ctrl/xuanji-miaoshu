@@ -723,8 +723,7 @@ p.warning { color: var(--zhu-light) !important; }
 <div class="ad-banner" style="margin:12px 0 8px;padding:10px 16px;background:linear-gradient(135deg,rgba(201,169,110,0.12),rgba(201,169,110,0.04));border:1px solid rgba(201,169,110,0.25);border-radius:8px;text-align:center;">
   <span style="font-size:13px;color:var(--gold-light);letter-spacing:1px;">📢 微信：</span>
   <strong style="font-size:16px;color:var(--gold);letter-spacing:2px;user-select:all;">lfc76876</strong>
-  <span style="font-size:13px;color:var(--text2);"> 领取数字体系高维免费课程 | </span>
-  <span style="font-size:12px;color:var(--text3);">syxf.top</span>
+  <span style="font-size:13px;color:var(--text2);"> 领取数字体系高维免费课程</span>
 </div>
 
 <div class="notice-bar" style="margin:4px 0;padding:6px 0;overflow:hidden;white-space:nowrap;border-bottom:1px solid rgba(201,169,110,0.15);">
@@ -759,7 +758,7 @@ p.warning { color: var(--zhu-light) !important; }
       <button class="gender-btn active" id="genderMJishi" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi" onclick="setGender('jishi','f')">女</button>
       <select id="wenShiSelect" onchange="onWenShiChange()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
-        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
+        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doDivination()">起 卦</button>
       <button class="btn btn-secondary" onclick="setNow()">现在</button>
@@ -770,7 +769,7 @@ p.warning { color: var(--zhu-light) !important; }
       </select>
     </span>
     <span id="zidingyiExtra" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
+      <input type="text" id="zidingyiText" placeholder="如：何时有姻缘？合作能成吗？最近运势？" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
     <div style="display:flex;align-items:center;gap:12px;margin-top:8px;font-size:12px;color:var(--ink3);flex-wrap:wrap;">
       <span class="item" style="margin:0;padding:2px 10px;background:var(--paper2);border-radius:4px;border:1px solid var(--border);">农历：<strong id="lunarDateDisplay" style="color:var(--ink2);">--</strong></span>
@@ -788,7 +787,7 @@ p.warning { color: var(--zhu-light) !important; }
       <button class="gender-btn active" id="genderMJishi2" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi2" onclick="setGender('jishi','f')">女</button>
       <select id="wenShiSelect2" onchange="onWenShiChange2()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
-        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
+        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
     </div>
@@ -798,7 +797,7 @@ p.warning { color: var(--zhu-light) !important; }
       </select>
     </span>
     <span id="zidingyiExtra2" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText2" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
+      <input type="text" id="zidingyiText2" placeholder="如：何时有姻缘？合作能成吗？最近运势？" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
   </div>
 
@@ -811,7 +810,7 @@ p.warning { color: var(--zhu-light) !important; }
       <button class="gender-btn active" id="genderMJishi3" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi3" onclick="setGender('jishi','f')">女</button>
       <select id="wenShiSelect3" onchange="onWenShiChange3()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
-        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
+        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
     </div>
@@ -821,7 +820,7 @@ p.warning { color: var(--zhu-light) !important; }
       </select>
     </span>
     <span id="zidingyiExtra3" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText3" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
+      <input type="text" id="zidingyiText3" placeholder="如：何时有姻缘？合作能成吗？最近运势？" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
     <div class="dice-label" id="diceLabel" style="margin-top:4px;">点击「掷骰子」</div>
   </div>
@@ -835,7 +834,7 @@ p.warning { color: var(--zhu-light) !important; }
       <button class="gender-btn active" id="genderMJishi4" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi4" onclick="setGender('jishi','f')">女</button>
       <select id="wenShiSelect4" onchange="onWenShiChange4()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
-        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="zidingyi">自定义</option>
+        <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
       <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
     </div>
@@ -845,7 +844,7 @@ p.warning { color: var(--zhu-light) !important; }
       </select>
     </span>
     <span id="zidingyiExtra4" style="display:none;margin-left:4px;">
-      <input type="text" id="zidingyiText4" placeholder="具体问题" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
+      <input type="text" id="zidingyiText4" placeholder="如：何时有姻缘？合作能成吗？最近运势？" style="width:160px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
     </span>
     <div class="dice-label" id="cardLabel" style="margin-top:4px;">点击「抽牌」随机抽取两张</div>
   </div>
@@ -1918,15 +1917,58 @@ function generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenS
     if(skNeiWai==='生'&&(getWuXing(nei)===getWuXing(wai)))l.push('<p>● 五行受生过旺：旺也为病，注意'+wxNei+'对应的脏腑亢进。</p>');
   }
 
+
+  // 学业分析（内=上=自己，外=下=学习环境/师长）
+  if(wenShi==='xueye'){
+    l.push('<br><strong>学业分析（上=自己，下=学习环境/师长）：</strong>');
+
+    l.push('<p><strong>先天：</strong></p>');
+    if(skNeiWai==='被生'){
+      l.push('<p class="good">● <strong>下生上</strong>：学习环境/师长滋养你，有利考学升学，适合深造、考证、进修。</p>');
+    } else if(skNeiWai==='克'){
+      l.push('<p>● <strong>上克下</strong>：学习能力强，有自学能力。但需自律，考试发挥靠自己。</p>');
+    } else if(skNeiWai==='生'){
+      l.push('<p class="warning">● <strong>上生下</strong>：付出多收获少，学习上容易事倍功半，需调整方法。注意偏科。</p>');
+    } else if(skNeiWai==='被克'){
+      l.push('<p class="warning">● <strong>下克上</strong>：学习环境/师长压制，有考试压力大、老师不认可之象，需耐心调整。</p>');
+    } else {
+      l.push('<p>● <strong>上比合下</strong>：学习状态平稳，按部就班即可。</p>');
+    }
+
+    if(!hasLing){
+      l.push('<p><strong>后天：</strong></p>');
+      if(skHou==='被生'){
+        l.push('<p class="good">● <strong>后天 下生上</strong>：后期学习运势好转，考试运提升，适合报考。</p>');
+      } else if(skHou==='克'){
+        l.push('<p class="warning">● <strong>后天 上克下</strong>：后期需靠自己努力，考试结果看实际水平。</p>');
+      } else if(skHou==='生'){
+        l.push('<p class="warning">● <strong>后天 上生下</strong>：后期学习投入多回报少，注意劳逸结合。</p>');
+      } else if(skHou==='被克'){
+        l.push('<p class="warning">● <strong>后天 下克上</strong>：后期学习压力增大，提前准备。</p>');
+      } else {
+        l.push('<p>● <strong>后天 上比合下</strong>：后期平稳。</p>');
+      }
+    }
+
+    if(isZhengNei&&isZhengWai)l.push('<p>● 正数配正数：考试按部就班，成绩稳定，适合体制内考试。</p>');
+    else if(!isZhengNei&&isZhengWai)l.push('<p>● 斜数配正数：学习方式另类但能通过正规考试。</p>');
+    else if(isZhengNei&&!isZhengWai)l.push('<p>● 正数配斜数：适合职业教育、技能培训。</p>');
+    else l.push('<p>● 斜数配斜数：非传统学习路径，适合自学或非学历教育。</p>');
+
+    if(isLiuChong(nei,wai)||(!hasLing&&isLiuChong(neiHou,waiHou))){
+      l.push('<p class="warning">● 有冲则动：学业有变动之象，可能转学、转专业或考试结果意外。</p>');
+    }
+  }
+
   // 综合
   if(wenShi==='zonghe'){
     l.push('<br><strong>综合解读（上=自己，下=外界环境）：</strong>');
 
     // 先天综合判断
     if(skNeiWai==='被生'){
-      l.push('<p class="good">● <strong>先天 下生上</strong>：外界环境滋养你，整体运势向上。贵人多、机遇好，适合主动出击。求财、求职、求姻缘皆有助力。</p>');
+      l.push('<p class="good">● <strong>先天 下生上</strong>：外界环境滋养你，整体运势向上。贵人多、机遇好，适合主动出击。</p>');
     } else if(skNeiWai==='克'){
-      l.push('<p>● <strong>先天 上克下</strong>：你能够掌控局面，但需要付出努力。求财靠自己打拼，事业需亲力亲为，有掌控力但辛苦。</p>');
+      l.push('<p>● <strong>先天 上克下</strong>：你能够掌控局面，但需要付出努力。求财靠自己打拼，事业需亲力亲为。</p>');
     } else if(skNeiWai==='生'){
       l.push('<p class="warning">● <strong>先天 上生下</strong>：你对外付出多、收获少。容易劳心劳力却事倍功半，需注意节制消耗、守住根本。</p>');
     } else if(skNeiWai==='被克'){
@@ -1946,14 +1988,84 @@ function generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenS
         l.push('<p class="warning">● 后天 上生下：后期仍处于付出状态，注意保存实力。</p>');
       } else if(skHou==='被克'){
         l.push('<p class="warning">● 后天 下克上：后期压力增大，提前做好准备。</p>');
+      } else {
+        l.push('<p>● 后天比合：后期运势平稳。</p>');
       }
 
       // 性格参考
       l.push('<p style="margin-top:6px;">● 性格：外表'+POLARITY_LABEL[nei]+'('+POLARITY[nei]+')，内在'+POLARITY_LABEL[neiHou]+'('+POLARITY[neiHou]+')。</p>');
-      // 流年提示
-      l.push('<p>● 运势节点：注意'+nei+'、'+wai+'、'+neiHou+'、'+waiHou+'数字对应的生肖年份和月份。</p>');
+    }
+
+    // 各维度综合速览
+    l.push('<p style="margin-top:8px;"><strong>各维度速览：</strong></p>');
+
+    // 财运速览
+    l.push('<p><strong>💰 财运：</strong>');
+    if(skNeiWai==='被生')l.push('贵人财旺，正偏财皆有助力，适合投资理财。');
+    else if(skNeiWai==='克')l.push('辛苦求财，一分耕耘一分收获。我克者为财，有进财之机，但需主动争取。');
+    else if(skNeiWai==='生')l.push('消耗多进账少，注意开源节流，避免盲目投资或借钱给别人。');
+    else if(skNeiWai==='被克')l.push('财运受压，防破财意外，不宜大额投资。宜守财为主。');
+    else l.push('财运平稳，维持现状即可。');
+    l.push('</p>');
+
+    // 事业速览
+    l.push('<p><strong>💼 事业工作：</strong>');
+    if(skNeiWai==='被生')l.push('贵人扶持，有上升机会，适合跳槽或谋求升职。求职易成。');
+    else if(skNeiWai==='克')l.push('有掌控力但需亲力亲为，适合独立作业或创业。求职靠自己争取。');
+    else if(skNeiWai==='生')l.push('付出多回报少，注意职场消耗，不宜频繁变动。');
+    else if(skNeiWai==='被克')l.push('职场有阻力，领导或环境不友好，宜守不宜攻。求职不顺需耐心。');
+    else l.push('事业平稳，按部就班。');
+    if(isZhengNei&&isZhengWai)l.push('正数配正数：有正式工作之象。');
+    else if(!isZhengNei&&!isZhengWai)l.push('斜数配斜数：非传统行业或自由职业之象。');
+    l.push('</p>');
+
+    // 婚姻速览
+    l.push('<p><strong>💕 婚姻情感：</strong>');
+    var genderRef=gender||'m';
+    if(genderRef==='m'){
+      if(skNeiWai==='被生')l.push('女方旺你，婚姻和谐，对象条件不错。有姻缘时对方主动。');
+      else if(skNeiWai==='克')l.push('你能管住对方，但需注意沟通方式。有姻缘时你主动追求。');
+      else if(skNeiWai==='生')l.push('你付出多，注意感情中的不平等。姻缘需你主动但可能辛苦。');
+      else if(skNeiWai==='被克')l.push('感情有压力，注意对方强势或外界干预。姻缘受阻需耐心。');
+      else l.push('感情平稳，随缘即可。');
+    } else {
+      if(skNeiWai==='被生')l.push('对方滋养你，感情顺利，有依靠感。姻缘佳，对方条件好。');
+      else if(skNeiWai==='克')l.push('你比较强势，注意不要给对方太大压力。姻缘需你主导。');
+      else if(skNeiWai==='生')l.push('你的付出会感化对方，但注意不要过度牺牲。姻缘需耐心等待。');
+      else if(skNeiWai==='被克')l.push('感情受压，注意对方态度或外部因素。姻缘有阻碍。');
+      else l.push('感情平稳，随缘即可。');
+    }
+    if(!hasLing&&(isLiuChong(nei,wai)||isLiuChong(neiHou,waiHou)))l.push('有冲则动：感情有变动之象，注意冲的年份。');
+    l.push('</p>');
+
+    // 学业速览
+    l.push('<p><strong>📚 学业考试：</strong>');
+    if(skNeiWai==='被生')l.push('师长助力，考试运佳，适合深造进修、考公考研。');
+    else if(skNeiWai==='克')l.push('自学能力强，考试看实际发挥。适合自主复习备考。');
+    else if(skNeiWai==='生')l.push('投入多回报少，需调整学习策略。注意偏科和时间管理。');
+    else if(skNeiWai==='被克')l.push('学业压力大，考试运不佳需加倍努力。注意心态调整。');
+    else l.push('学业平稳，按部就班即可。');
+    l.push('</p>');
+
+    // 合作速览
+    l.push('<p><strong>🤝 合作合伙：</strong>');
+    if(skNeiWai==='被生')l.push('合作方滋养你，合作顺利、对方靠谱。适合合伙创业，对方带资源。');
+    else if(skNeiWai==='克')l.push('你能主导合作，但需注意不要过于强势。合作能成但需你主控。');
+    else if(skNeiWai==='生')l.push('你付出多对方得利多，合作需谨慎，务必明确权责和分成。');
+    else if(skNeiWai==='被克')l.push('合作方压制你，合作风险大，需注意对方意图。不宜草率签约。');
+    else l.push('合作平稳，按约定推进即可。');
+    if(isLiuChong(nei,wai)||(!hasLing&&isLiuChong(neiHou,waiHou)))l.push('有冲则动：合作关系有变动之象，注意冲的年份。');
+    l.push('</p>');
+
+    // 运势节点
+    if(!hasLing){
+      l.push('<p style="margin-top:6px;"><strong>⏰ 运势节点（流年流月提示）：</strong></p>');
+      l.push('<p>● 关键年份：遇到'+nei+'、'+wai+'、'+neiHou+'、'+waiHou+'数字对应的生肖年份时，运势会有明显变化，宜提前规划。</p>');
+      l.push('<p>● 有利月份：五行属'+getWuXing(nei)+'的月份（春季木旺、夏季火旺、四季末土旺、秋季金旺、冬季水旺），运势较顺，适合推进重要事项。</p>');
+      l.push('<p>● 注意月份：五行克'+getWuXing(nei)+'的月份需谨慎，不宜做重大决策。</p>');
     }
   }
+
 
   var hasChong=false,hasJue=false,hasFengliu=false;
   analysis.forEach(function(a){if(a.chong)hasChong=true;if(a.jue)hasJue=true;if(a.fengliu||a.anFengliu)hasFengliu=true;});
