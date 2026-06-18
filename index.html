@@ -2942,7 +2942,7 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
       }
     }
   }
-  if(jiaSheng)gejuLines.push('<p class="good">⊕ 年日先后天夹生月数，属富贵命，怎么折腾都不会太差，比较上进积极。</p>');
+  if(jiaSheng)supp.push('<p class="good">⊕ 月柱得生：属富贵命，怎么折腾都不会太差。</p>');
 
   // ===== 六、早运格局 =====
   var yn=xianAll[0],mn=xianAll[1],earlyF=false;
@@ -3097,12 +3097,12 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     } else {
       // 正常输出先天后天
       var xCls=xGJ.cls||'',hCls=hGJ.cls||'';
-      if(xCls==='good')l.push('<p class="good">⊕ <strong>先天格局（表面）：</strong>'+xGJ.name+' — '+xGJ.desc+'</p>');
-      else l.push('<p>● <strong>先天格局（表面）：</strong>'+xGJ.name+' — '+xGJ.desc+'</p>');
+      if(xCls==='good')l.push('<p class="good">⊕ <strong>先天格局：'+xGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+xGJ.desc+'</p>');
+      else l.push('<p>● <strong>先天格局：'+xGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+xGJ.desc+'</p>');
 
-      if(hCls==='good')l.push('<p class="good">⊕ <strong>后天格局（内在/运）：</strong>'+hGJ.name+' — '+hGJ.desc+'</p>');
-      else if(hCls==='warning')l.push('<p class="warning">⚠ <strong>后天格局（内在/运）：</strong>'+hGJ.name+' — '+hGJ.desc+'</p>');
-      else l.push('<p>● <strong>后天格局（内在/运）：</strong>'+hGJ.name+' — '+hGJ.desc+'</p>');
+      if(hCls==='good')l.push('<p class="good">⊕ <strong>后天格局：'+hGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+hGJ.desc+'</p>');
+      else if(hCls==='warning')l.push('<p class="warning">⚠ <strong>后天格局：'+hGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+hGJ.desc+'</p>');
+      else l.push('<p>● <strong>后天格局：'+hGJ.name+'</strong></p>'); l.push('<p style="margin-left:12px;">→ '+hGJ.desc+'</p>');
 
       // 先后天对比
       if(xUpDom && hDownDom){
@@ -3120,12 +3120,12 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
 
     // 补充特征
     var supp=[];
-    if(jiaSheng)supp.push('<p class="good">⊕ 年日先后天夹生月数，属富贵命，怎么折腾都不会太差。</p>');
+    if(jiaSheng)supp.push('<p class="good">⊕ 月柱得生：属富贵命，怎么折腾都不会太差。</p>');
     if(sfScore>=5&&dirCh<4)supp.push('<p class="warning">⚠ 事非重：易招小人口舌，不是自己的事都容易惹上身'+(sfScore>=8?'，严重者官司牢狱。':'。')+'</p>');
-    if(jueC>=4||jiaJue)supp.push('<p class="warning">⚠ 因果重：绝数较多'+(jiaJue?'且有夹绝':'')+'，前世祖上因果较大，生活不顺，有些事没法解释。'+(jueC>=5?'需特别注意。':'')+'</p>');
-    if(totN>=3&&zhC/totN>=0.8&&uniqC>2)supp.push('<p>● 自我限制：四正数（1/4/7/10）超八成，思维固执保守，容易画地为牢。</p>');
-    if(earlyF)supp.push('<p class="good">⊕ 早运好：年月阴阳正生，易得祖业或早年遇贵人。</p>');
-    if(fhK>fhS&&shS>shK&&fhK+shS>=2)supp.push('<p>● 晚运好（草根逆袭）：早年多克阻力大，熬过后通过奋斗成功。</p>');
+    if(jueC>=4||jiaJue)supp.push('<p class="warning">⚠ 因果重：前世祖上因果较大，生活不顺，有些事没法解释。'+(jueC>=5?'需特别注意。':'。')+'</p>');
+    if(totN>=3&&zhC/totN>=0.8&&uniqC>2)supp.push('<p>● 自我限制：思维固执保守，容易画地为牢，给自己设天花板。</p>');
+    if(earlyF)supp.push('<p class="good">⊕ 早运好：自己孝顺长辈，得长辈喜爱照顾，早年运势较顺。</p>');
+    if(fhK>fhS&&shS>shK&&fhK+shS>=2)supp.push('<p>● 晚运好（草根逆袭）：早年辛苦阻力大，熬过后通过奋斗成功，越老越好。</p>');
     for(var si=0;si<Math.min(supp.length,2);si++){l.push(supp[si]);}
   }
 
