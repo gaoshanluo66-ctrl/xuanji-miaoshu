@@ -786,6 +786,7 @@ p.warning { color: var(--zhu-light) !important; }
       </select>
       <button class="gender-btn active" id="genderMJishi" onclick="setGender('jishi','m')">男</button>
       <button class="gender-btn" id="genderFJishi" onclick="setGender('jishi','f')">女</button>
+      <input type="number" id="jishiBirthYear" placeholder="出生年" min="1920" max="2026" style="width:65px;padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
       <select id="wenShiSelect" onchange="onWenShiChange()" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
         <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
       </select>
@@ -1883,9 +1884,13 @@ function doShuziDivination() {
 
 // ==================== 数字卦断语生成（增强版） ====================
 function generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenShiText,hunyinSub,zidingyiText,gender,hasLing) {
-  var genderLabel=(gender==='m')?'男':'女';
+  var genderLabel=(gender==='m')?'男':'女';var genderSymbol=(gender==='m')?'+':'-';
   var l=[];
-  l.push('<div class="section-title">'+wenShiText+'</div>');
+    var gSymbol=(gender==='m')?'+':'-';var gLabel=(gender==='m')?'男':'女';
+  var byEl=document.getElementById('jishiBirthYear');var jishiAge=byEl&&byEl.value?calcAgeSimple(parseInt(byEl.value)):null;
+  var ageStr=jishiAge!==null?' | 周岁：<strong>'+jishiAge+'</strong>':'';
+  l.push('<p style="text-align:center;margin-bottom:4px;">求测人：<strong style="font-size:16px;color:var(--gold-light);">'+gSymbol+'</strong> '+gLabel+ageStr+'</p>');
+l.push('<div class="section-title">'+wenShiText+'</div>');
   if(hunyinSub)l.push('<p>（'+hunyinSub+'）</p>');
   if(zidingyiText)l.push('<p>（具体：'+zidingyiText+'）</p>');
 
@@ -2335,6 +2340,23 @@ function generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenS
 }
 
 // ==================== 八字卦 ====================
+// 计算周岁（过了农历生日才算）
+function calcAge(lunarYear, lunarMonth, lunarDay){
+  var now=new Date();var cy=now.getFullYear();var cm=now.getMonth()+1;var cd=now.getDate();
+  // Convert lunar birthday to approximate solar for comparison
+  // Simple approach: use lunar month/day as-is for comparison (approximate)
+  var age=cy-lunarYear;
+  // Check if lunar birthday hasn't passed yet this year
+  var lunarBD=new Date(lunarYear+lunarMonth-1).getDate();
+  if(cm<lunarMonth||(cm===lunarMonth&&cd<lunarDay))age--;
+  if(age<0)age=0;
+  return age;
+}
+function calcAgeSimple(birthYear){
+  var now=new Date();var age=now.getFullYear()-birthYear;
+  if(age<0)age=0;return age;
+}
+
 function doBaZi() {
   var calType=document.getElementById('baziCalType').value;
   var lunar,solarYear,solarMonth,solarDay;
@@ -2531,7 +2553,7 @@ function doBaZi() {
       if(isJiaJue(xianAll[pi],xianAll[nx],houAll[pi],houAll[nx]))allTags.push({type:'sheng',text:'假绝:'+pillarNames[pi]+'-'+pillarNames[nx]});
     }
   }
-  var reading=generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,genderBazi,dayunAges);
+  var baziAge=calcAge(lunar.year,lunar.month,lunar.day);var reading=generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,genderBazi,dayunAges,baziAge);
   document.getElementById('baziResultText').innerHTML=reading;
   document.getElementById('btnSaveBazi').style.display='inline-block';
   renderBaziArchives();
@@ -2675,6 +2697,7 @@ function saveJishiArchive(){
     name:'',
     remark:remark?remark.value:'',
     solarDate:document.getElementById('solarDate').value,
+    birthYear:(function(){var be=document.getElementById('jishiBirthYear');return be?parseInt(be.value)||null:null;})(),
     lunarDisplay:document.getElementById('lunarDateDisplay').innerText,
     dayNumDisplay:document.getElementById('dayNumDisplay').innerText,
     scDisplay:document.getElementById('scDisplay').innerText,
@@ -2877,11 +2900,11 @@ function getDayunAge(pillar,xianNum,houNum,xianAll,houAll,dayCount){
 }
 
 // ==================== 八字断语生成（重构版 v3 — 依书修订） ====================
-function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,gender,dayunAges){
-  var genderLabel=(gender==='m')?'男':'女';
+function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,gender,dayunAges,baziAge){
+  var genderLabel=(gender==='m')?'男':'女';var genderSymbol=(gender==='m')?'+':'-';
   var l=[];
   l.push('<div class="section-title">数绎乾坤 · 八字解读</div>');
-  l.push('<p>求测人性别：<strong>'+genderLabel+'</strong> | 柱数：'+xianAll.length+'柱（'+pillarNames.join('、')+'）</p>');
+  l.push('<p>求测人：<strong style="font-size:16px;color:var(--gold-light);">'+genderSymbol+'</strong> '+genderLabel+' | 周岁：<strong>'+(baziAge||'?')+'</strong> | 柱数：'+xianAll.length+'柱（'+pillarNames.join('、')+'）</p>');
   l.push('<p>先天：'+xianAll.join('、')+'  后天：'+houAll.join('、')+'</p>');
 
   // 共用变量
