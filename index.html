@@ -3545,9 +3545,9 @@ ctx.fillText(stageNames[si],(x1+x2)/2,bandY+19);
 
 // Wavy axis line
 var axisY=106;
-ctx.strokeStyle="#bbb";ctx.lineWidth=1.8;ctx.lineCap="round";ctx.lineJoin="round";
+ctx.strokeStyle="#aaa";ctx.lineWidth=2.2;ctx.lineCap="round";ctx.lineJoin="round";
 ctx.beginPath();
-var waveAmp=2.8,waveFreq=0.025;
+var waveAmp=5.5,waveFreq=0.025;
 ctx.moveTo(padL,axisY);
 for(var wx=padL;wx<=W-padR;wx+=2){
 ctx.lineTo(wx,axisY+Math.sin(wx*waveFreq)*waveAmp);
