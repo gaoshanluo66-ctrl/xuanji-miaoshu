@@ -682,9 +682,57 @@ p.warning { color: var(--zhu-light) !important; }
 .archive-actions button:hover { border-color:var(--gold);color:var(--gold); }
 .archive-actions .del-btn:hover { border-color:var(--zhu);color:var(--zhu); }
 #baziArchive, #baziArchiveToggle { display:none; }
+/* 密码验证页 */
+.pwd-gate {
+  position: fixed; top:0; left:0; width:100%; height:100%;
+  background: #0f0f0f;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 9999; padding: 20px;
+}
+.pwd-gate .pwd-header { text-align: center; margin-bottom: 32px; }
+.pwd-gate .pwd-header h1 {
+  font-size: 2em; color: var(--gold); letter-spacing: 6px;
+  font-family: "Noto Serif SC","SimSun",serif; margin: 0;
+}
+.pwd-gate .pwd-header .sub { font-size: 13px; color: var(--ink3); margin-top: 8px; letter-spacing: 2px; }
+.pwd-box { max-width: 320px; width: 100%; text-align: center; }
+.pwd-box h2 { font-size: 15px; color: var(--text2); margin: 0 0 20px; font-weight: 400; }
+.pwd-box input {
+  width: 100%; padding: 14px 16px; border: 1px solid var(--gold-border);
+  border-radius: 8px; font-size: 16px; background: var(--bg-input); color: var(--text);
+  text-align: center; letter-spacing: 4px; font-family: inherit;
+  box-sizing: border-box; margin-bottom: 16px;
+}
+.pwd-box input:focus { outline: none; border-color: var(--gold); }
+.pwd-box .btn-enter {
+  width: 100%; padding: 14px; border: none; border-radius: 8px;
+  font-size: 16px; background: var(--gold); color: #0f0f0f;
+  font-weight: 700; cursor: pointer; letter-spacing: 2px; font-family: inherit;
+}
+.pwd-box .btn-enter:hover { opacity: 0.85; }
+.pwd-err { color: #e74c3c; font-size: 13px; margin-top: 12px; display: none; }
+@media screen and (max-width: 640px) {
+  .pwd-gate .pwd-header h1 { font-size: 1.6em; letter-spacing: 4px; }
+  .pwd-box { max-width: 280px; }
+}
 </style>
 </head>
 <body>
+<!-- 密码验证 -->
+<div id="pwdGate" class="pwd-gate">
+  <div class="pwd-header">
+    <h1>玄 机 妙 数</h1>
+    <div class="sub">数字体系起卦工具</div>
+  </div>
+  <div class="pwd-box">
+    <h2>🔐 请输入访问密码</h2>
+    <input type="password" id="pwdInput" placeholder="输入密码" onkeydown="if(event.key==='Enter')checkPwd()">
+    <button class="btn-enter" onclick="checkPwd()">进 入</button>
+    <p class="pwd-err" id="pwdError">密码错误，请重试</p>
+  </div>
+</div>
+<!-- 主内容 -->
+<div id="mainContent" style="display:none;">
 <div class="bagua-symbols">
   <span class="b-qian">☰</span>
   <span class="b-dui">☱</span>
@@ -2943,6 +2991,29 @@ setNow();
   <span class="wx-tag huo">火</span><span class="wx-arrow ke">→</span>
   <span class="wx-tag jin">金</span>
 </div>
+
+</div><!-- end mainContent -->
+
+<script>
+// ========== 密码验证 ==========
+var ACCESS_PASSWORD = 'xuanji2024';
+function checkPwd(){
+  var p = document.getElementById('pwdInput').value.trim();
+  if(p === ACCESS_PASSWORD){
+    sessionStorage.setItem('_xm_auth', '1');
+    document.getElementById('pwdGate').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  } else {
+    document.getElementById('pwdError').style.display = 'block';
+  }
+}
+(function(){
+  if(sessionStorage.getItem('_xm_auth') === '1'){
+    document.getElementById('pwdGate').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+  }
+})();
+</script>
 
 </body>
 </html>
