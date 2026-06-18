@@ -689,7 +689,7 @@ transition: all 0.2s;
 <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
 </select>
 <button class="btn btn-primary" onclick="doDivination()">起 卦</button>
-<button class="btn btn-secondary" id="jishiSaveBtn2" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
+<button class="btn btn-secondary" id="jishiSaveBtn2" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:inline-block;">保存记录</button>
 <button class="btn btn-secondary" onclick="setNow()">现在</button>
 </div>
 <span id="hunyinExtra" style="display:none;margin-left:4px;">
@@ -717,7 +717,7 @@ transition: all 0.2s;
 <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
 </select>
 <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
-<button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
+<button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:inline-block;">保存记录</button>
 </div>
 <span id="hunyinExtra2" style="display:none;margin-left:4px;">
 <select id="hunyinStatus2" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -739,7 +739,7 @@ transition: all 0.2s;
 <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
 </select>
 <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
-<button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
+<button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:inline-block;">保存记录</button>
 </div>
 <span id="hunyinExtra3" style="display:none;margin-left:4px;">
 <select id="hunyinStatus3" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -762,7 +762,7 @@ transition: all 0.2s;
 <option value="zonghe">综合</option><option value="shiye">事业</option><option value="caiyun">财运</option><option value="hunyin">婚姻</option><option value="jiankang">健康</option><option value="xueye">学业</option><option value="zidingyi">自定义</option>
 </select>
 <button class="btn btn-primary" onclick="doShuziDivination()">起 卦</button>
-<button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:none;">保存记录</button>
+<button class="btn btn-secondary jishi-save-btn" onclick="saveBeforeJishiArchive()" style="font-size:12px;padding:6px 12px;display:inline-block;">保存记录</button>
 </div>
 <span id="hunyinExtra4" style="display:none;margin-left:4px;">
 <select id="hunyinStatus4" style="padding:6px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -796,7 +796,7 @@ transition: all 0.2s;
 </div>
 </div>
 <div class="result" id="resultText"></div>
-<div style="text-align:right;margin-top:4px;display:none;" id="jishiSaveBtn" onclick="saveBeforeJishiArchive()"><button class="btn btn-secondary" style="font-size:11px;padding:4px 10px;opacity:0.6;">保存记录</button></div>
+<div style="text-align:right;margin-top:4px;display:inline-block;" id="jishiSaveBtn" onclick="saveBeforeJishiArchive()"><button class="btn btn-secondary" style="font-size:11px;padding:4px 10px;opacity:0.6;">保存记录</button></div>
 <div class="analysis" style="margin-top:12px;">
 <h3 style="font-size:14px;font-weight:700;color:var(--ink);letter-spacing:1px;margin-bottom:8px;">类象参考</h3>
 <div class="xiang-grid" id="xiangRef"></div>
@@ -1261,7 +1261,15 @@ function buildDeepPersonality(xianNums,houNums,gender){
   }
 
   l.push('</div>');
-  return l.join('\n');
+  var dayunChartId="dayunChart_"+(window._dcc=((window._dcc||0)+1));
+l.push('<canvas id="'+dayunChartId+'" width="740" height="240" style="width:100%;max-width:740px;height:auto;border:1px solid var(--ink-border);border-radius:8px;margin:10px 0;display:block;"></canvas>');
+l.push('<div style="font-size:10px;color:var(--ink3);text-align:center;margin-top:-6px;">▲ 大运时间轴 · 横轴为年龄 · ★大节点 ·小节点</div>');
+window._dayunChartData={
+id:dayunChartId,
+allNodes:allNodes,stageGroups:stageGroups,stageNames:stageNames,
+uniqNodes:uniqNodes,selfWx:selfWx,selfNum:selfNum,baziAge:baziAge
+};
+return l.join('\n');
 }function lunarGetLeapMonth(year) { return LUNAR_INFO[year-1900]&0xf; }
 function lunarGetMonthDays(year, month) { return (LUNAR_INFO[year-1900]&(0x10000>>month))?30:29; }
 function lunarGetLeapMonthDays(year) { return (LUNAR_INFO[year-1900]&0x10000)?30:29; }
@@ -1682,6 +1690,8 @@ if(wenShi==='zidingyi'){zidingyiText=getActiveZidingyi();if(!zidingyiText)ziding
 showXiangRef(allNums,'xiangRef');
 var reading=generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenShiText,hunyinSub,zidingyiText,genderJishi,hasLing);
 document.getElementById('resultText').innerHTML=reading;
+setTimeout(function(){if(window._dayunChartData){drawDayunChart(window._dayunChartData);window._dayunChartData=null;}},120);
+setTimeout(function(){if(window._dayunChartData){drawDayunChart(window._dayunChartData);window._dayunChartData=null;}},120);
 document.getElementById('jishiSaveBtn').style.display='block';document.querySelectorAll('.jishi-save-btn').forEach(function(b){b.style.display='inline-block';});if(document.getElementById('jishiSaveBtn2'))document.getElementById('jishiSaveBtn2').style.display='inline-block';
 }
 // ==================== 即时起卦：数字起卦 ====================
@@ -2292,6 +2302,7 @@ if(isJiaJue(xianAll[pi],xianAll[nx],houAll[pi],houAll[nx]))allTags.push({type:'s
 }
 var baziAge=calcAge(lunar.year,lunar.month,lunar.day);var reading=generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,genderBazi,dayunAges,baziAge);
 document.getElementById('baziResultText').innerHTML=reading;
+setTimeout(function(){if(window._dayunChartData){drawDayunChart(window._dayunChartData);window._dayunChartData=null;}},120);
 document.getElementById('btnSaveBazi').style.display='inline-block';
 renderBaziArchives();
 }
@@ -2469,6 +2480,7 @@ var archives=_jishiArchive();
 var a=null;for(var i=0;i<archives.length;i++){if(archives[i].id===id){a=archives[i];break;}}
 if(!a)return;
 document.getElementById('resultText').innerHTML=a.resultHTML;
+setTimeout(function(){if(window._dayunChartData){drawDayunChart(window._dayunChartData);window._dayunChartData=null;}},120);
 document.getElementById('modeJishi').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function deleteJishiArchive(id){
@@ -2743,33 +2755,19 @@ if(isBaJue(yueNum,riNum))l.push('<p class="warning">● 月日八绝('+yueNum+'-
 l.push('<p class="warning">● 月日阴阳相同（均为'+yueYY+'）：缺少阴阳互补之象，婚姻或晚或不顺。</p>');
 }
 var hasKeChongJue=false;
-var maxPi=Math.min(len-1,2); // 只查到月-日，不含时柱
+var maxPi=Math.min(len-1,2);
 for(var pi=0;pi<maxPi;pi++){
 var a=xianAll[pi],b=xianAll[pi+1],ha=houAll[pi],hb=houAll[pi+1];
 if(a!==0&&b!==0){
 var sk=getShengKe(getWuXing(a),getWuXing(b));
-if(sk==='克'||sk==='被克'||isLiuChong(a,b)||isBaJue(a,b)){
-hasKeChongJue=true;
-var kc=[];
-if(sk==='克'||sk==='被克')kc.push(getWuXing(a)+getWuXing(b)+'相克');
-if(isLiuChong(a,b))kc.push(a+'-'+b+'六冲');
-if(isBaJue(a,b))kc.push(a+'-'+b+'八绝');
-l.push('<p class="warning">⚠ '+pillarNames[pi]+pillarNames[pi+1]+'先天 '+kc.join('、')+'</p>');
-}
+if(sk==='克'||sk==='被克'||isLiuChong(a,b)||isBaJue(a,b)){hasKeChongJue=true;}
 }
 if(ha!==-1&&hb!==-1){
 var skh=getShengKe(getWuXing(ha),getWuXing(hb));
-if(skh==='克'||skh==='被克'||isLiuChong(ha,hb)||isBaJue(ha,hb)){
-hasKeChongJue=true;
-var kch=[];
-if(skh==='克'||skh==='被克')kch.push(getWuXing(ha)+getWuXing(hb)+'相克');
-if(isLiuChong(ha,hb))kch.push(ha+'-'+hb+'六冲');
-if(isBaJue(ha,hb))kch.push(ha+'-'+hb+'八绝');
-l.push('<p class="warning">⚠ '+pillarNames[pi]+pillarNames[pi+1]+'后天 '+kch.join('、')+'</p>');
+if(skh==='克'||skh==='被克'||isLiuChong(ha,hb)||isBaJue(ha,hb)){hasKeChongJue=true;}
 }
 }
-}
-if(hasKeChongJue){l.push('<p class="warning" style="font-size:15px;font-weight:700;">⚠ 年月日出现克冲绝，婚姻不顺，易二婚。</p>');}
+if(hasKeChongJue){l.push('<p class="warning" style="font-size:15px;font-weight:700;">⚠ 婚姻宫带冲克绝，感情路不平顺，易二婚。</p>');}
 } else {
 l.push('<p>● 八字不足四柱，缺少日柱配偶位，婚姻信息有限。</p>');
 }
@@ -2829,12 +2827,43 @@ if(isYearYueChong){l.push('<p class="warning">⚠ 年月六冲：婚姻要么很
 if(isYueNianSame){l.push('<p>● 年月同数，当做一个看。</p>');}
 var wanPoint=(lGrp.length>0)?pickMid(lGrp[lGrp.length-1].ages):0;
 if(isZaoHun){
-l.push('<p style="color:var(--qing);">● 早婚型，婚缘来得早。</p>');
+l.push('<p style="color:var(--qing);font-weight:600;">● 早恋早婚格局：姻缘来得早，容易在年轻时就遇到正缘，早早步入婚姻。</p>');
 } else {
-l.push('<p style="color:var(--zhu);">● 晚婚型，婚缘来得晚。</p>');
+l.push('<p style="color:var(--zhu);font-weight:600;">● 晚婚格局：正缘来得较晚，需耐心等待。建议先立业后成家，不用着急。</p>');
 }
 if(wanPoint>0){
 l.push('<p style="color:var(--zhu);">● 最晚'+wanPoint+'岁，还没结就得很晚了。</p>');
+}
+var birthYear=parseInt((document.getElementById("yearSelect")||{}).value)||1990;
+var curAge=new Date().getFullYear()-birthYear+1;
+var marriageNodes=[];
+for(var pi=0;pi<xianAll.length;pi++){
+var pn=pillarNames[pi].replace(/[0-9]/g,"");
+if(pn==="年"||pn==="月"){
+var xA=dayunAges[pi].xian||[],hA=dayunAges[pi].hou||[];
+for(var ai=0;ai<xA.length;ai++){if(xA[ai]>curAge)marriageNodes.push({age:xA[ai],pillar:pn,type:"先天节点"});}
+for(var ai=0;ai<hA.length;ai++){if(hA[ai]>curAge)marriageNodes.push({age:hA[ai],pillar:pn,type:"后天节点"});}
+}
+}
+marriageNodes.sort(function(a,b){return a.age-b.age;});
+var seenAges={},uniqMarNodes=[];
+marriageNodes.forEach(function(n){if(!seenAges[n.age]){seenAges[n.age]=true;uniqMarNodes.push(n);}});
+if(uniqMarNodes.length>0){
+l.push('<br><strong>大运阶段婚姻分析：</strong>');
+l.push('<p style="font-size:11px;color:var(--ink3);">※ 当前'+curAge+'岁，已过的阶段不再看，往后看未来大运节点。</p>');
+for(var mi=0;mi<Math.min(uniqMarNodes.length,4);mi++){
+var mn=uniqMarNodes[mi];
+var stageLabel="";
+if(mn.age<25)stageLabel="早年阶段";
+else if(mn.age<40)stageLabel="青年阶段";
+else if(mn.age<55)stageLabel="中年阶段";
+else stageLabel="晚年阶段";
+l.push('<p style="margin-left:12px;">◆ <strong>'+mn.age+'岁</strong>（'+stageLabel+'）'+mn.type+'：'+(mi===0?'最近的婚姻机会窗口':'后续可能的婚姻节点')+'</p>');
+}
+if(uniqMarNodes.length>4)l.push('<p style="margin-left:12px;font-size:11px;color:var(--ink3);">...还有'+(uniqMarNodes.length-4)+'个节点未显示</p>');
+} else {
+l.push('<br><strong>大运阶段婚姻分析：</strong>');
+l.push('<p style="margin-left:12px;">※ 当前'+curAge+'岁，未来大运节点中暂未显示明确婚姻信号，顺其自然即可。</p>');
 }
 l.push('<p style="font-size:11px;color:var(--ink3);">※ 按虚岁推算，上下不差一岁（有周岁虚岁之分，有的虚一两岁）。实际结合大运流年。</p>');
 // ==================== 6. 财运大小（依书：第十二章 财运） ====================
@@ -3413,6 +3442,126 @@ for(var i=0;i<xianAll.length;i++){if(uniqueNums.indexOf(xianAll[i])<0)uniqueNums
 for(var i=0;i<houAll.length;i++){if(houAll[i]!==-1&&uniqueNums.indexOf(houAll[i])<0)uniqueNums.push(houAll[i]);}
 l.push('<p style="margin-top:6px;font-size:11px;color:var(--ink3);">● 八字中出现的关键流年数字：'+uniqueNums.sort(function(a,b){return a-b;}).join('、')+'。对应生肖年份：1鼠(2020)、2牛(2021)、3虎(2022)、4兔(2023)、5龙(2024)、6蛇(2025)、7马(2026)、8羊(2027)、9猴(2028)、10鸡(2029)、11狗(2030)、12猪(2031)——遇到这些年份运势会有明显变化。</p>');
 return l.join('\n');
+function drawDayunChart(data){
+var canvas=document.getElementById(data.id);
+if(!canvas)return;
+var ctx=canvas.getContext("2d");
+var W=canvas.width,H=canvas.height;
+ctx.clearRect(0,0,W,H);
+
+var nodes=data.uniqNodes||[];
+var stages=data.stageGroups||[];
+var stageNames=data.stageNames||["早年","青年","中年","晚年"];
+var curAge=data.baziAge||0;
+var selfWx=data.selfWx||"";
+
+var ageMin=0,ageMax=90;
+var padL=50,padR=30,padT=35;
+var chartW=W-padL-padR;
+var ageToX=function(a){return padL+(a-ageMin)/(ageMax-ageMin)*chartW;};
+
+// Stage bands
+var stageColors=["rgba(66,133,244,0.10)","rgba(52,168,83,0.10)","rgba(251,188,4,0.10)","rgba(234,67,53,0.10)"];
+var stageBorders=["#a8c7fa","#81c995","#fdd663","#f28b82"];
+var stageTextClrs=["#1a56db","#137333","#b06000","#c5221f"];
+var stageRanges=[[0,24],[25,39],[40,54],[55,90]];
+var bandY=48,bandH=26;
+for(var si=0;si<4;si++){
+var x1=ageToX(stageRanges[si][0]),x2=ageToX(stageRanges[si][1]);
+ctx.fillStyle=stageColors[si];ctx.fillRect(x1,bandY,x2-x1,bandH);
+ctx.strokeStyle=stageBorders[si];ctx.lineWidth=1;ctx.strokeRect(x1,bandY,x2-x1,bandH);
+ctx.fillStyle=stageTextClrs[si];ctx.font="bold 10px sans-serif";ctx.textAlign="center";
+ctx.fillText(stageNames[si],(x1+x2)/2,bandY+18);
+}
+
+// Timeline axis
+var axisY=92;
+ctx.strokeStyle="#d0d0d0";ctx.lineWidth=1.5;
+ctx.beginPath();ctx.moveTo(padL,axisY);ctx.lineTo(W-padR,axisY);ctx.stroke();
+
+// Age ticks
+ctx.textAlign="center";
+for(var a=0;a<=90;a+=10){
+var tx=ageToX(a);
+ctx.fillStyle="#999";ctx.font="10px sans-serif";
+ctx.fillText(a+"岁",tx,axisY+14);
+ctx.strokeStyle="#d0d0d0";ctx.lineWidth=1;
+ctx.beginPath();ctx.moveTo(tx,axisY-4);ctx.lineTo(tx,axisY+4);ctx.stroke();
+}
+
+// Node markers
+var nodeColors={
+"生":"#34a853","被生":"#f9ab00",
+"克":"#ea4335","被克":"#ff6d01",
+"比合":"#5f6368"
+};
+var drawnPos={};
+for(var ni=0;ni<nodes.length;ni++){
+var n=nodes[ni];
+var nx=Math.round(ageToX(n.age));
+var sk=getShengKe(getWuXing(n.num),selfWx);
+var color=nodeColors[sk]||"#888";
+var isMajor=n.type==="大节点";
+var r=isMajor?6.5:3.5;
+var offY=0;
+var pk=nx;
+if(drawnPos[pk]!==undefined){offY=(drawnPos[pk]%2===0)?-13:13;drawnPos[pk]++;}
+else{drawnPos[pk]=0;}
+var ny=axisY+offY;
+if(isMajor){
+ctx.fillStyle=color;ctx.beginPath();
+var sz=r*1.3;
+ctx.moveTo(nx,ny-sz);ctx.lineTo(nx+sz*0.65,ny+sz*0.35);
+ctx.lineTo(nx-sz*0.65,ny+sz*0.35);ctx.closePath();ctx.fill();
+ctx.strokeStyle="rgba(255,255,255,0.7)";ctx.lineWidth=0.5;ctx.stroke();
+}else{
+ctx.fillStyle=color;ctx.beginPath();ctx.arc(nx,ny,r,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle="rgba(255,255,255,0.6)";ctx.lineWidth=0.5;ctx.stroke();
+}
+// Only show age label for first few nodes to avoid clutter
+if(ni<8||isMajor){
+ctx.fillStyle="#444";ctx.font="bold 8px sans-serif";ctx.textAlign="center";
+ctx.fillText(n.age,Math.round(nx),ny+(isMajor?16:10));
+}
+}
+
+// Current age indicator
+if(curAge>0&&curAge<=90){
+var cx=Math.round(ageToX(curAge));
+ctx.strokeStyle="#d93025";ctx.lineWidth=2;ctx.setLineDash([5,3]);
+ctx.beginPath();ctx.moveTo(cx,bandY-6);ctx.lineTo(cx,axisY+28);ctx.stroke();
+ctx.setLineDash([]);
+// Current age label
+var clx=cx;
+if(clx<60)clx=60;if(clx>W-70)clx=W-70;
+ctx.fillStyle="#fff";ctx.strokeStyle="#d93025";ctx.lineWidth=1;
+var lblW=ctx.measureText("当前"+curAge+"岁").width+16;
+var dbx=clx-lblW/2-2,dby=bandY-22;
+ctx.beginPath();ctx.roundRect(dbx,dby,lblW+4,16,4);ctx.fill();ctx.stroke();
+ctx.fillStyle="#d93025";ctx.font="bold 9px sans-serif";ctx.textAlign="center";
+ctx.fillText("当前"+curAge+"岁",clx,bandY-11);
+}
+
+// Legend
+var ly=172;
+var legend=[
+{color:"#34a853",label:"生内(吉)"},
+{color:"#ea4335",label:"克内(凶)"},
+{color:"#f9ab00",label:"内生外(泄)"},
+{color:"#ff6d01",label:"内克外(辛苦进财)"},
+{color:"#5f6368",label:"比合(平)"}
+];
+var lx=padL+2;
+for(var li=0;li<legend.length;li++){
+ctx.fillStyle=legend[li].color;ctx.beginPath();ctx.arc(lx+5,ly-3,5,0,Math.PI*2);ctx.fill();
+ctx.fillStyle="#555";ctx.font="9px sans-serif";ctx.textAlign="left";
+ctx.fillText(legend[li].label,lx+14,ly+2);
+lx+=80;
+}
+ctx.fillStyle="#999";ctx.font="8px sans-serif";ctx.textAlign="right";
+ctx.fillText("★大节点(后天) ·小节点(先天)  |  红线=当前年龄",W-padR,ly+2);
+}
+
 }
 // ==================== 初始化 ====================
 setNow();
