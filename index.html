@@ -1059,6 +1059,72 @@ function getShengXiaoNum(year) { return ((year-4)%12+12)%12+1; }
 const POLARITY = {0:'—',1:'++',2:'+-',3:'++',4:'+-',5:'-+',6:'--',7:'-+',8:'--',9:'-+',10:'--',11:'++',12:'+-'};
 const POLARITY_LABEL = {0:'太极',1:'阳中阳',2:'阳中阴',3:'阳中阳',4:'阳中阴',5:'阴中阳',6:'阴中阴',7:'阴中阳',8:'阴中阴',9:'阴中阳',10:'阴中阴',11:'阳中阳',12:'阳中阴'};
 
+// ===== 深层性格数据 =====
+var DEEP_TRAITS={
+  1:'一心一意，自私，一根筋',
+  2:'积极好动，不讲理，爱钻牛角尖，犯浑，爱搞小动作',
+  3:'个性强，不服输',
+  4:'直爽，任性，先斩后奏，两极分化',
+  5:'执着倔犟，不服输，爱吹冷风，一根筋',
+  6:'敏感善变脾气急，时阴时阳，喜怒哀乐都在脸上',
+  7:'正直感性，脾气大',
+  8:'优柔寡断，心慈手软，主包容（受气包）',
+  9:'间接性优柔寡断，心软，追求完美，严肃认真，有强迫症，女人强势',
+  10:'简单天真，少女心泛滥，傻白甜，嘴硬',
+  11:'不表达能力不好，说话难听，嘴硬，要面子',
+  12:'想法多，格局高，不容易和别人一个频道，爱记仇，自我'
+};
+
+var ELEM_COMBO={
+  '水+火':'水火不容，脾气急躁容易生气，一点就着',
+  '火+水':'水火不容，脾气急躁容易生气，一点就着',
+  '火+金':'火金相遇，嘴上有功夫——表达能力好，口才佳，能说会道',
+  '金+火':'金火相遇，嘴上有功夫——表达能力好，口才佳，能说会道',
+  '水+木':'水生木——思维灵活，有创造力，学东西快，适应力强',
+  '木+水':'水润木——思维灵活，有创造力，学东西快，适应力强',
+  '木+火':'木生火——热情外向，有感染力，容易带动身边人',
+  '火+木':'火上浇木——热情外向，有感染力，容易带动身边人',
+  '火+土':'火生土——有热度但能落地，做事靠谱不虚浮',
+  '土+火':'土中藏火——有热度但能落地，做事靠谱不虚浮',
+  '土+金':'土生金——稳重有产出，踏实能干，积累型人格',
+  '金+土':'金入土——稳重有产出，踏实能干，积累型人格',
+  '金+水':'金生水——聪明理性，善于分析，逻辑清晰',
+  '水+金':'水生金——聪明理性，善于分析，逻辑清晰',
+  '水+土':'水土混杂——想法多但行动力差，容易拖延纠结',
+  '土+水':'水土混杂——想法多但行动力差，容易拖延纠结',
+  '木+土':'木克土——内心有冲劲但被现实限制，容易自我矛盾',
+  '土+木':'土中长木——内心有冲劲但被现实限制，容易自我矛盾',
+  '木+金':'金克木——有想法但容易被压制，表达受限',
+  '金+木':'金砍木——有想法但容易被压制，表达受限',
+};
+
+var NUM_PAIR_COMBO=[
+  [6,10,'火金相遇，嘴上有火——能言善辩，口才极好，表达能力一流','good'],
+  [7,10,'火金相遇，嘴上有火——能言善辩，口才极好，表达能力一流','good'],
+  [10,6,'火金相遇，嘴上有火——能言善辩，口才极好，表达能力一流','good'],
+  [10,7,'火金相遇，嘴上有火——能言善辩，口才极好，表达能力一流','good'],
+  [6,11,'火金相阻——想说却说不出，说不到重点，容易词不达意','warning'],
+  [7,11,'火金相阻——想说却说不出，说不到重点，容易词不达意','warning'],
+  [11,6,'火金相阻——想说却说不出，说不到重点，容易词不达意','warning'],
+  [11,7,'火金相阻——想说却说不出，说不到重点，容易词不达意','warning'],
+  [4,2,'直爽率性遇上爱动爱钻——行动力强但冲动，先做了再想',''],
+  [2,4,'直爽率性遇上爱动爱钻——行动力强但冲动，先做了再想',''],
+  [2,7,'水遇火——急脾气压不住，情绪上来容易跟人起冲突','warning'],
+  [7,2,'火遇水——急脾气压不住，情绪上来容易跟人起冲突','warning'],
+  [1,12,'一心一意+高格局=目标明确有心计，看人看事透彻',''],
+  [12,1,'高格局+一心一意=目标明确有心计，看人看事透彻',''],
+  [5,6,'执着倔犟+敏感多变=容易神经质，钻进去出不来','warning'],
+  [6,5,'敏感多变+执着倔犟=容易神经质，钻进去出不来','warning'],
+  [8,10,'心慈手软+简单天真=容易被骗被欺负的"傻好人"','warning'],
+  [10,8,'简单天真+心慈手软=容易被骗被欺负的"傻好人"','warning'],
+  [9,12,'追求完美+高格局=眼光高要求严，一般人入不了眼',''],
+  [12,9,'高格局+追求完美=眼光高要求严，一般人入不了眼',''],
+  [3,7,'不服输+正直感性=有正义感但刚硬，容易跟权威硬碰','warning'],
+  [7,3,'正直感性+不服输=有正义感但刚硬，容易跟权威硬碰','warning'],
+  [11,12,'想法多但说不出来——心里全明白，嘴上全卡住',''],
+  [12,11,'想法多但说不出来——心里全明白，嘴上全卡住',''],
+];
+
 // ==================== 性别状态 ====================
 var genderJishi = 'm';
 var genderBazi = 'm';
@@ -1156,6 +1222,117 @@ const LUNAR_INFO = [
   0x0d520
 ];
 
+
+// ===== 深层性格解读函数 =====
+function buildDeepPersonality(xianNums,houNums,gender){
+  var l=[];
+  l.push('<div style="margin-top:6px;padding:10px 14px;background:rgba(201,169,110,0.06);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;">');
+
+  // === A: 先天外在状态 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:0 0 6px;">\u300a\u5148\u5929\u5916\u5728\u72b6\u6001\u300b\u2014\u2014 \u6211\u7ed9\u522b\u4eba\u7684\u611f\u89c9</p>');
+  var xianSeen={},xianUniq=[];
+  for(var i=0;i<xianNums.length;i++){
+    var n=xianNums[i];
+    if(n<=0||n>12)continue;
+    if(!xianSeen[n]){xianSeen[n]=1;xianUniq.push(n);}
+    else xianSeen[n]++;
+  }
+  if(xianUniq.length===0){
+    l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u65e0\u5148\u5929\u6570\u636e</p>');
+  } else {
+    for(var ui=0;ui<xianUniq.length;ui++){
+      var un=xianUniq[ui],cnt=xianSeen[un];
+      var xianTrait=DEEP_TRAITS[un]||'';
+      var xianExtra=cnt>1?(' \u00d7'+cnt+' \uff0c\u8be5\u7279\u8d28\u52a0\u91cd') :'';
+      // numeric label for xian
+      var xianLabel='\u2588 '+un;
+      // 女性特殊
+      var genderNote='';
+      if(gender==='f'){
+        if(un===6)genderNote=' \u2014\u2014 \u5973\u4eba\u5e74\u6708\u89c16\uff0c\u5ac1\u7ed9\u8c01\u90fd\u540e\u6094\uff0c\u5bf9\u81ea\u5df1\u548c\u522b\u4eba\u8981\u6c42\u90fd\u9ad8';
+        if(un===9)genderNote=' \u2014\u2014 \u5973\u4eba\u89c19\uff0c\u6027\u683c\u5f3a\u52bf\uff0c\u4e8b\u4e1a\u5fc3\u91cd';
+      }
+      // color
+      var numClr=getNumColor(un);
+      l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="display:inline-block;min-width:24px;font-weight:700;font-size:19px;color:'+numClr+';vertical-align:middle;">'+un+'</span> <span style="font-size:13px;">'+xianTrait+xianExtra+'</span>'+genderNote+'</p>');
+    }
+  }
+
+  // === B: 后天内在状态 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u540e\u5929\u5185\u5728\u72b6\u6001\u300b\u2014\u2014 \u6211\u5185\u5fc3\u771f\u5b9e\u7684\u6837\u5b50</p>');
+  var houSeen={},houUniq=[];
+  for(var hi=0;hi<houNums.length;hi++){
+    var hn=houNums[hi];
+    if(hn<=0||hn>12)continue;
+    if(!houSeen[hn]){houSeen[hn]=1;houUniq.push(hn);}
+    else houSeen[hn]++;
+  }
+  if(houUniq.length===0){
+    l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u65e0\u540e\u5929\u6570\u636e</p>');
+  } else {
+    for(var hi2=0;hi2<houUniq.length;hi2++){
+      var hun=houUniq[hi2],hcnt=houSeen[hun];
+      var houTrait=DEEP_TRAITS[hun]||'';
+      var houExtra=hcnt>1?(' \u00d7'+hcnt+' \uff0c\u8be5\u7279\u8d28\u52a0\u91cd') :'';
+      var numClr2=getNumColor(hun);
+      l.push('<p style="margin:4px 0 4px 8px;line-height:1.6;"><span style="display:inline-block;min-width:24px;font-weight:700;font-size:19px;color:'+numClr2+';vertical-align:middle;">'+hun+'</span> <span style="font-size:13px;color:var(--ink2);">'+houTrait+houExtra+'</span></p>');
+    }
+  }
+
+  // === C: 数字组合解读 ===
+  l.push('<p style="font-weight:700;color:var(--gold-light);margin:12px 0 6px;">\u300a\u6570\u5b57\u7ec4\u5408\u89e3\u8bfb\u300b\u2014\u2014 \u6027\u683c\u7684\u4ea4\u7ec7\u4e0e\u51b2\u7a81</p>');
+  var comboFound=false;
+  // Check all adjacent pairs in xianTian
+  var allPairs=[];
+  for(var pi=0;pi<xianNums.length-1;pi++){
+    if(xianNums[pi]>0&&xianNums[pi]<=12&&xianNums[pi+1]>0&&xianNums[pi+1]<=12){
+      allPairs.push([xianNums[pi],xianNums[pi+1],'\u5148\u5929']);
+    }
+  }
+  // Year-Hour pair for BaZi (len>=4)
+  if(xianNums.length>=4&&xianNums[0]>0&&xianNums[0]<=12&&xianNums[xianNums.length-1]>0&&xianNums[xianNums.length-1]<=12){
+    allPairs.push([xianNums[0],xianNums[xianNums.length-1],'\u5148\u5929\u5e74\u65f6']);
+  }
+  // Also check houTian pairs
+  for(var pi2=0;pi2<houNums.length-1;pi2++){
+    if(houNums[pi2]>0&&houNums[pi2]<=12&&houNums[pi2+1]>0&&houNums[pi2+1]<=12){
+      allPairs.push([houNums[pi2],houNums[pi2+1],'\u540e\u5929']);
+    }
+  }
+  if(houNums.length>=4&&houNums[0]>0&&houNums[0]<=12&&houNums[houNums.length-1]>0&&houNums[houNums.length-1]<=12){
+    allPairs.push([houNums[0],houNums[houNums.length-1],'\u540e\u5929\u5e74\u65f6']);
+  }
+  for(var pi3=0;pi3<allPairs.length;pi3++){
+    var a=allPairs[pi3][0],b=allPairs[pi3][1],scope=allPairs[pi3][2];
+    // Check number-specific combos first
+    var found=false;
+    for(var nci=0;nci<NUM_PAIR_COMBO.length;nci++){
+      var nc=NUM_PAIR_COMBO[nci];
+      if(nc[0]===a&&nc[1]===b){
+        var cls=nc[3]||'';
+        var clsAttr=cls?' class="'+cls+'"':'';
+        l.push('<p'+clsAttr+' style="margin:4px 0 4px 8px;font-size:12px;">\u2192 '+a+'+'+b+'\uff1a'+nc[2]+'</p>');
+        found=true;comboFound=true;break;
+      }
+    }
+    if(!found){
+      // Fall back to element combo
+      var wxA=getWuXing(a),wxB=getWuXing(b);
+      var elemKey=wxA+'+'+wxB;
+      var elemDesc=ELEM_COMBO[elemKey];
+      if(elemDesc){
+        l.push('<p style="margin:4px 0 4px 8px;font-size:12px;">\u2192 '+a+'+'+b+'\uff1a'+elemDesc+'</p>');
+        comboFound=true;
+      }
+    }
+  }
+  if(!comboFound){
+    l.push('<p style="font-size:12px;color:var(--ink3);margin-left:8px;">\u6682\u65e0\u7279\u6b8a\u7ec4\u5408</p>');
+  }
+
+  l.push('</div>');
+  return l.join('\n');
+}
 function lunarGetLeapMonth(year) { return LUNAR_INFO[year-1900]&0xf; }
 function lunarGetMonthDays(year, month) { return (LUNAR_INFO[year-1900]&(0x10000>>month))?30:29; }
 function lunarGetLeapMonthDays(year) { return (LUNAR_INFO[year-1900]&0x10000)?30:29; }
@@ -2067,7 +2244,12 @@ function generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenS
       }
 
       // 性格参考
-      l.push('<p style="margin-top:6px;">● 性格：外表'+POLARITY_LABEL[nei]+'('+POLARITY[nei]+')，内在'+POLARITY_LABEL[neiHou]+'('+POLARITY[neiHou]+')。</p>');
+      l.push('<br><strong>性格解读：</strong>');
+      var jishiDeepXian=[nei];if(wai>0&&wai<=12)jishiDeepXian.push(wai);
+      var jishiDeepHou=[];if(neiHou>0&&neiHou<=12)jishiDeepHou.push(neiHou);if(waiHou>0&&waiHou<=12)jishiDeepHou.push(waiHou);
+      l.push(buildDeepPersonality(jishiDeepXian,jishiDeepHou,gender));
+      // 传统补充
+      l.push('<p style="margin-top:4px;font-size:11px;color:var(--ink3);">传统参考：外表'+POLARITY_LABEL[nei]+'('+POLARITY[nei]+')，内在'+POLARITY_LABEL[neiHou]+'('+POLARITY[neiHou]+')。</p>');
     }
 
     // 各维度综合速览
@@ -2745,7 +2927,11 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
   }
 
   // ==================== 3. 性格分析（依书：第七章 性格看法） ====================
-  l.push('<br><strong>三、性格分析：</strong>');
+  // ===== 深层性格解读 =====
+  l.push('<br><strong>深层性格解读：</strong>');
+  l.push('<p style="font-size:11px;color:var(--ink3);margin-bottom:4px;">\u5148\u5929=\u5916\u5728\u72b6\u6001\uff0c\u540e\u5929=\u5185\u5728\u72b6\u6001</p>');
+  l.push(buildDeepPersonality(xianAll,houAll,gender));
+  l.push('<br><strong>传统性格参考：</strong>');
 
   // 3.1 五行本性（依书：一、五行与性格）
   var wxBookPersonality={
