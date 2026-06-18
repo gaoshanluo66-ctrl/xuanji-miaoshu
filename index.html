@@ -53,8 +53,9 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-input, select, textarea, button { color: var(--text); font-family: inherit; }
-input::placeholder { color: var(--text4); opacity: 1; }
+input, select, textarea, button, option { color: var(--text); font-family: inherit; }
+input::placeholder, textarea::placeholder { color: var(--text4); opacity: 1; }
+.tab-content, .tab-content * { color-scheme: dark; }
 
 body {
   font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', 'Source Han Serif SC', serif;
@@ -373,9 +374,11 @@ body::after {
 .analysis-item .value { flex: 1; text-align: center; }
 
 /* ===== 结果 ===== */
-.result { font-size: 14px; line-height: 1.9; }
+.result { font-size: 14px; line-height: 1.9; color: var(--text); }
 .result p { margin: 4px 0; color: var(--text); }
 .result strong { color: var(--gold-light); }
+.result li { color: var(--text); }
+.result span { color: inherit; }
 .result .section-title {
   font-weight: 700;
   color: var(--gold);
