@@ -7,6 +7,7 @@
 <style>
 /* ===== 古风玄秘高级风格 — 五行主题 ===== */
 :root {
+  color-scheme: dark;
   /* 底色系 — 玄墨深色 */
   --bg-deep: #1a1410;
   --bg-main: #221c16;
@@ -52,6 +53,8 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+input, select, textarea, button { color: var(--text); font-family: inherit; }
+input::placeholder { color: var(--text4); opacity: 1; }
 
 body {
   font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', 'Source Han Serif SC', serif;
