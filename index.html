@@ -3564,8 +3564,8 @@ ctx.fillStyle="#999";ctx.font="8px sans-serif";ctx.textAlign="right";
 ctx.fillText("★大节点(后天) ·小节点(先天)  |  红线=当前年龄",W-padR,ly+2);
 }
 // ==================== 初始化 ====================
-setNow();
 window.addEventListener('load',function(){var lo=document.getElementById('loadingOverlay');if(lo){lo.style.opacity='0';lo.style.transition='opacity .3s';setTimeout(function(){lo.remove();},300);}});
+try{setNow();}catch(e){var lo2=document.getElementById('loadingOverlay');if(lo2){lo2.style.opacity='0';lo2.style.transition='opacity .3s';setTimeout(function(){lo2.remove();},300);}}
 document.addEventListener('click',function(e){
 var ba=document.getElementById('baziArchive');
 var ja=document.getElementById('jishiArchive');
