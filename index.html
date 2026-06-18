@@ -695,9 +695,15 @@ p.warning { color: var(--zhu-light) !important; }
 .archive-actions button:hover { border-color:var(--gold);color:var(--gold); }
 .archive-actions .del-btn:hover { border-color:var(--zhu);color:var(--zhu); }
 #baziArchive, #baziArchiveToggle { display:none; }
+/* 加载遮罩 */
+#loadingOverlay { position:fixed; inset:0; z-index:9999; background:var(--bg-deep); display:flex; flex-direction:column; align-items:center; justify-content:center; }
+#loadingOverlay .loader { width:40px; height:40px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; }
+#loadingOverlay p { margin-top:16px; color:var(--accent); font-size:16px; letter-spacing:4px; font-family:'Noto Serif SC',serif; }
+@keyframes spin { to{transform:rotate(360deg);} }
 </style>
 </head>
 <body>
+<div id="loadingOverlay"><div class="loader"></div><p>推 算 中 …</p></div>
 <div class="bagua-symbols">
   <span class="b-qian">☰</span>
   <span class="b-dui">☱</span>
@@ -3457,6 +3463,7 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
 
 // ==================== 初始化 ====================
 setNow();
+window.addEventListener('load',function(){var lo=document.getElementById('loadingOverlay');if(lo){lo.style.opacity='0';lo.style.transition='opacity .3s';setTimeout(function(){lo.remove();},300);}});
 </script>
 
 <!-- ===== 五行生克参考 ===== -->
