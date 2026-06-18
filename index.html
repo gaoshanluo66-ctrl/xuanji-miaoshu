@@ -2764,9 +2764,9 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     l.push('<p style="color:var(--qing);">● 早婚型，婚缘来得早。</p>');
   } else {
     l.push('<p style="color:var(--zhu);">● 晚婚型，婚缘来得晚。</p>');
-    if(wanPoint>0){
-      l.push('<p style="color:var(--zhu);">● 最晚'+wanPoint+'岁，还没结就得很晚了。</p>');
-    }
+  }
+  if(wanPoint>0){
+    l.push('<p style="color:var(--zhu);">● 最晚'+wanPoint+'岁，还没结就得很晚了。</p>');
   }
   l.push('<p style="font-size:11px;color:var(--ink3);">※ 按虚岁推算，上下不差一岁（有周岁虚岁之分，有的虚一两岁）。实际结合大运流年。</p>');
 
@@ -3079,6 +3079,83 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     for(var gi=0;gi<gejuLines.length;gi++){l.push(gejuLines[gi]);}
   }
   l.push('<p style="font-size:12px;color:var(--muted);">先天走向：'+dirDesc(xc)+'；后天走向：'+dirDesc(hc)+'</p>');
+
+  // ==================== 性格人品 ====================
+  l.push('<br><strong>性格人品：</strong>');
+
+  // 纯阴/纯阳性格
+  var chunYang=[1,3,11],chunYin=[6,8,10];
+  var cYg=0,cYn=0,totXY=0;
+  for(var i=0;i<len;i++){
+    if(xianAll[i]===0)continue;totXY++;
+    if(chunYang.indexOf(xianAll[i])>=0)cYg++;
+    if(chunYin.indexOf(xianAll[i])>=0)cYn++;
+  }
+
+  if(gender==='m'){
+    if(cYn>=totXY*0.6)l.push('<p>● 先天纯阴为主：桃花旺，异性缘好，易招桃花。性格偏柔内向，心思细腻，不擅主动表达。</p>');
+    else if(cYg>=totXY*0.6)l.push('<p>● 先天纯阳为主：性格有主见有个性，容易不服人，有排斥心理，特立独行。宁折不弯，不易妥协。</p>');
+    else if(cYn>cYg)l.push('<p>● 偏阴柔：性格偏内向细腻，有一定桃花缘。</p>');
+    else if(cYg>cYn)l.push('<p>● 偏阳刚：性格偏外向有主见，有自己的坚持。</p>');
+  } else {
+    if(cYn>=totXY*0.6)l.push('<p class="good">● 先天纯阴为主：女得纯阴为佳，性格柔顺得体，温婉大方，状态较好。</p>');
+    else if(cYg>=totXY*0.6)l.push('<p>● 先天纯阳为主：性格刚强有主见，偏男性化思维，独立能干，但婚姻需注意阴阳调和。</p>');
+    else if(cYn>cYg)l.push('<p class="good">● 偏阴柔：性格偏温婉，状态不错。</p>');
+    else if(cYg>cYn)l.push('<p>● 偏阳刚：性格偏独立自主，有事业心。</p>');
+  }
+
+  // 年时数字大小 → 靠不靠谱
+  var yearVals=[],shiVals=[];
+  for(var i=0;i<len;i++){
+    if(pillarNames[i].indexOf('年')===0&&xianAll[i]!==0)yearVals.push(xianAll[i]);
+    if(pillarNames[i].indexOf('时')===0&&xianAll[i]!==0)shiVals.push(xianAll[i]);
+  }
+
+  if(yearVals.length>0&&shiVals.length>0){
+    var yFirst=yearVals[0],yLast=yearVals[yearVals.length-1];
+    var sFirst=shiVals[0],sLast=shiVals[shiVals.length-1];
+
+    // 年上波动检测
+    var yWave=false;
+    if(yearVals.length>=3){
+      for(var i=1;i<yearVals.length-1;i++){
+        if((yearVals[i-1]>yearVals[i]&&yearVals[i]<yearVals[i+1])||(yearVals[i-1]<yearVals[i]&&yearVals[i]>yearVals[i+1])){yWave=true;break;}
+      }
+    }
+
+    // 年上12 + 时上1/2 = 吹牛逼
+    if(yLast===12&&(sFirst===1||sFirst===2)){
+      l.push('<p class="warning">● 年上12，日时1/2：说得很大吹得很大，实际不干事，典型"吹牛逼"之人，虎头蛇尾。</p>');
+    }
+    // 年大时小
+    else if(yFirst>=10&&sLast<=3){
+      l.push('<p class="warning">● 年上大数，时上小数：说得很大，做的不行，虎头蛇尾。嘴上功夫了得，执行力跟不上。</p>');
+    }
+    // 年小时大
+    else if(yFirst<=3&&sLast>=10){
+      l.push('<p class="good">● 年上小数，时上大数：看着不起眼不声张，实际能干大事，属于闷声做事、后发制人型。</p>');
+    }
+    // 年上波动
+    else if(yWave){
+      l.push('<p>● 年上数字大→小→大波动：阴阳不太调和，一下一下的，让人感觉不是很靠谱，但最终能成事。</p>');
+    }
+    // 一般情况：年大时也大
+    else if(yFirst>=10&&sLast>=10){
+      l.push('<p>● 年时皆大数：有大气魄，敢想敢干，说到做到，比较靠谱。</p>');
+    }
+    // 年小时也小
+    else if(yFirst<=3&&sLast<=3){
+      l.push('<p>● 年时皆小数：低调谨慎，不张扬，稳扎稳打型，靠得住。</p>');
+    }
+    // 年大时中
+    else if(yFirst>=10&&sLast>3&&sLast<10){
+      l.push('<p>● 年上大数，时上中数：有想法有格局，落地执行尚可，总体靠谱。</p>');
+    }
+    // 年中时大
+    else if(yFirst>3&&yFirst<10&&sLast>=10){
+      l.push('<p>● 年上中数，时上大数：起步稳健，越做越大，有后劲。</p>');
+    }
+  }
 
   // ==================== 8. 适合工作（依书：第十三章 工作/事业） ====================
   l.push('<br><strong>八、适合工作：</strong>');
