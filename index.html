@@ -715,6 +715,18 @@ p.warning { color: var(--zhu-light) !important; }
   <div class="subtitle">基于駱高山《玄机妙数》和《数绎乾坤》体系排盘</div>
 </div>
 
+<div id="topToolbar" style="position:fixed;top:10px;right:12px;z-index:100;display:flex;gap:6px;align-items:center;">
+  <div id="toolbarJishi">
+    <button class="btn btn-pdf" onclick="window.print()" style="padding:4px 10px;font-size:11px;">导出PDF</button>
+  </div>
+  <div id="toolbarBazi" style="display:none;">
+    <select id="baziExportLang" style="padding:4px 8px;border:1px solid var(--gold-border);border-radius:4px;font-size:11px;background:var(--bg-input);color:var(--text2);font-family:inherit;">
+      <option value="cn">纯中文</option><option value="bilingual">中英</option><option value="en">English</option>
+    </select>
+    <button class="btn btn-pdf" onclick="exportBaziPDF()" style="padding:4px 10px;font-size:11px;">导出PDF</button>
+  </div>
+</div>
+
 <div class="ad-banner" style="margin:12px 0 8px;padding:10px 16px;background:linear-gradient(135deg,rgba(201,169,110,0.12),rgba(201,169,110,0.04));border:1px solid rgba(201,169,110,0.25);border-radius:8px;text-align:center;">
   <span style="font-size:13px;color:var(--gold-light);letter-spacing:1px;">📢 微信：</span>
   <strong style="font-size:16px;color:var(--gold);letter-spacing:2px;user-select:all;">lfc76876</strong>
@@ -734,7 +746,6 @@ p.warning { color: var(--zhu-light) !important; }
 <!-- ===== 即时起卦 ===== -->
 <div id="modeJishi" class="tab-content active">
 
-<div style="display:flex;justify-content:flex-end;margin-bottom:4px;"><button class="btn btn-pdf" onclick="window.print()" style="padding:4px 10px;font-size:11px;">导出PDF</button></div>
   <div class="sub-tabs">
     <button class="sub-tab active" onclick="switchJishiMethod('rixia')">日时起卦</button>
     <button class="sub-tab" onclick="switchJishiMethod('baoshu')">报数起卦</button>
@@ -879,7 +890,6 @@ p.warning { color: var(--zhu-light) !important; }
 
 <!-- ===== 八字卦 ===== -->
 <div id="modeBazi" class="tab-content">
-<div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:4px;"><select id="baziExportLang" style="padding:4px 8px;border:1px solid var(--gold-border);border-radius:4px;font-size:11px;background:var(--bg-input);color:var(--text2);font-family:inherit;"><option value="cn">纯中文</option><option value="bilingual">中英</option><option value="en">English</option></select><button class="btn btn-pdf" onclick="exportBaziPDF()" style="padding:4px 10px;font-size:11px;">导出PDF</button></div>
 
   <div class="time-row" style="align-items:center;">
     <label style="min-width:auto;margin-right:4px;color:var(--text2);">日历</label>
@@ -1407,6 +1417,8 @@ function switchMainTab(tab) {
     document.querySelectorAll('.tab')[1].classList.add('active');
     document.getElementById('modeBazi').classList.add('active');
   }
+  document.getElementById('toolbarJishi').style.display=(tab==='jishi')?'block':'none';
+  document.getElementById('toolbarBazi').style.display=(tab==='bazi')?'block':'none';
 }
 
 function switchJishiMethod(method) {
