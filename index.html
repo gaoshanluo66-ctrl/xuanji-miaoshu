@@ -3058,7 +3058,7 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     // 生到顶
     if(c.upS===c.total)return{name:'富贵格局',desc:'一路向上，有人帮有人抬，当官命或富贵命，此生不会太差',cls:'good'};
     // 生克到顶
-    if(c.upTotal>c.downTotal&&c.downTotal===0)return{name:'富贵格局',desc:'向上走，上进能折腾'+(c.upK>0?'，有阻力但能扛住，大起大落':',顺畅'),',是富贵命',cls:'good'};
+    if(c.upTotal>c.downTotal&&c.downTotal===0)return{name:'富贵格局',desc:'向上走，上进能折腾'+(c.upK>0?'，有阻力但能扛住，大起大落':',顺畅')+',是富贵命',cls:'good'};
     // 生克到底
     if(c.downTotal>c.upTotal&&c.upTotal===0)return{name:'阿斗格局',desc:'向下走，随波逐流，佛系懒散，今朝有酒今朝醉，易啃老',cls:''};
     // 生上生下
