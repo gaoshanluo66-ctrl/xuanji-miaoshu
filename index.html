@@ -2283,7 +2283,7 @@ function doBaZi() {
       if(isJiaJue(xianAll[pi],xianAll[nx],houAll[pi],houAll[nx]))allTags.push({type:'sheng',text:'假绝:'+pillarNames[pi]+'-'+pillarNames[nx]});
     }
   }
-  var reading=generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,genderBazi);
+  var reading=generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,genderBazi,dayunAges);
   document.getElementById('baziResultText').innerHTML=reading;
   document.getElementById('btnSaveBazi').style.display='inline-block';
   renderBaziArchives();
@@ -2509,7 +2509,7 @@ function getDayunAge(pillar,xianNum,houNum,xianAll,houAll,dayCount){
 }
 
 // ==================== 八字断语生成（重构版 v3 — 依书修订） ====================
-function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,gender){
+function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCount,gender,dayunAges){
   try {
   var genderLabel=(gender==='m')?'男':'女';
   var l=[];
@@ -3323,7 +3323,7 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
 
   // 重大人生转折点：每柱最大岁数
   var pillarMax={};
-  for(var pi=0;pi<numP;pi++){
+  for(var pi=0;pi<xianAll.length;pi++){
     var pn=pillarNames[pi].replace(/[0-9]/g,'');
     if(!pillarMax[pn])pillarMax[pn]=0;
     var xA=dayunAges[pi].xian||[],hA=dayunAges[pi].hou||[];
