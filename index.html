@@ -2831,16 +2831,27 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     if(chunYin.indexOf(xianAll[i])>=0)ciCount++;
   }
   var gejuLines=[];
+  var zhengCount=0,xieCount=0;
+  for(var i=0;i<xianAll.length;i++){
+    if(xianAll[i]===1||xianAll[i]===4||xianAll[i]===7||xianAll[i]===10)zhengCount++;
+    else if(xianAll[i]!==0)xieCount++;
+  }
   if(cyCount===xianAll.length){
-    gejuLines.push('<p>● <strong>纯阳格局</strong>：八字全为纯阳数（1/3/11），刚健有力，有领导气质，但也易刚猛过甚。</p>');
+    gejuLines.push('<p>● <strong>纯阳格局</strong>：八字全为纯阳数（1/3/11），刚健有力有魄力，宁折不弯，但也易刚猛过甚、不善妥协。</p>');
   } else if(ciCount===xianAll.length){
-    gejuLines.push('<p>● <strong>纯阴格局</strong>：八字全为纯阴数（6/8/10），柔顺内敛，善于思考和谋划，但易优柔寡断。</p>');
+    gejuLines.push('<p>● <strong>纯阴格局</strong>：八字全为纯阴数（6/8/10），柔顺内敛善谋划，心思细腻，但易优柔寡断、缺乏行动力。</p>');
   } else if(cyCount>=ciCount+2){
-    gejuLines.push('<p>● 偏向<strong>阳刚格局</strong>：纯阳数居多，性格偏刚强外向。</p>');
+    gejuLines.push('<p>● 偏向<strong>阳刚格局</strong>：纯阳数'+(cyCount)+'个占多（1/3/11），性格偏刚强外向，敢闯敢干。</p>');
   } else if(ciCount>=cyCount+2){
-    gejuLines.push('<p>● 偏向<strong>阴柔格局</strong>：纯阴数居多，性格偏内敛细致。</p>');
+    gejuLines.push('<p>● 偏向<strong>阴柔格局</strong>：纯阴数'+(ciCount)+'个占多（6/8/10），性格偏内敛细致，善思考谋定后动。</p>');
   } else {
-    gejuLines.push('<p>● <strong>阴阳调和</strong>：纯阳纯阴数均衡，刚柔并济。</p>');
+    gejuLines.push('<p>● <strong>阴阳调和</strong>：纯阳'+cyCount+'个纯阴'+ciCount+'个，刚柔并济，能文能武。</p>');
+  }
+  // 四正八斜
+  if(zhengCount>=3){
+    gejuLines.push('<p>● <strong>四正为主</strong>：正数'+zhengCount+'个（1/4/7/10占多），为人正派守法讲原则，适合体制内或正式工作，但也容易被规矩框住。</p>');
+  } else if(xieCount>=3){
+    gejuLines.push('<p>● <strong>八斜为主</strong>：斜数'+xieCount+'个占多，思维灵活不按常理出牌，适合冷门偏门行业、自由职业。</p>');
   }
 
   // 7.2 领导格局（依书：11/12为大官/领导数，5龙也有管理能力）
@@ -2856,12 +2867,21 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
     } else {
       ldText='有领导格局';
     }
-    gejuLines.push('<p class="good">⊕ <strong>领导格局</strong>：'+lingdao.join('、')+'（11为公检法/副职，12为党政机关正职领导，'+ldText+'）</p>');
+    gejuLines.push('<p class="good">⊕ <strong>领导格局</strong>：'+lingdao.join('、')+' — 11为公检法/副职领导，12为党政机关正职领导，天生有管理统领之才。'+(lingdao.length>=2?'领导格局较强，适合走仕途或管理岗。':''));
   }
   // 龙(5)格局
   var hasLong=false;
   for(var i=0;i<xianAll.length;i++){if(xianAll[i]===5)hasLong=true;}
   if(hasLong)gejuLines.push('<p>● <strong>龙数入命</strong>：5为龙，能干大事业，有管理支配能力。成功则大，一旦失败也比较严重。</p>');
+
+  // 7.2b 147正数框架格局（1/4/7为正数，多则自框）
+  var zheng147=[];
+  for(var i=0;i<xianAll.length;i++){
+    if(xianAll[i]===1||xianAll[i]===4||xianAll[i]===7)zheng147.push(pillarNames[i]+xianAll[i]);
+  }
+  if(zheng147.length>=2){
+    gejuLines.push('<p>● <strong>147正数框架</strong>：'+zheng147.join('、')+' — 正数多，守原则有底线，自我约束力强，但也容易画地为牢，把自己框住，有天花板限制。</p>');
+  }
 
   // 7.3 五行流通
   if(presentWx.length>=3){
@@ -2892,6 +2912,22 @@ function generateBaZiReading(xianAll,houAll,analysis,allTags,pillarNames,dayCoun
   // 检测是否有正式工作特征（依书：1/4/7/10为正数=正式工作）
   if(zhengShu.length>0){
     l.push('<p>● 命带正数：'+zhengShu.join('、')+' → 适合<strong>正式工作</strong>（企事业单位、稳定职业），求的是职位上升。</p>');
+    // 147正数受克 → 工作不长久
+    var zheng147ShouKe=false;
+    for(var i=0;i<len;i++){
+      var n=xianAll[i];
+      if(n===1||n===4||n===7){
+        for(var j=0;j<len;j++){
+          if(i===j||xianAll[j]===0)continue;
+          var sk=getShengKe(getWuXing(n),getWuXing(xianAll[j]));
+          if(sk==='被克'){zheng147ShouKe=true;break;}
+        }
+        if(zheng147ShouKe)break;
+      }
+    }
+    if(zheng147ShouKe){
+      l.push('<p class="warning">⚠ 147正数受克：虽有正式工作之象，但干不长久，容易换工作或无法稳定。</p>');
+    }
   } else {
     l.push('<p>● 命无正数 → 适合<strong>自由工作</strong>，求的是做什么赚钱多，适合自谋出路。</p>');
   }
