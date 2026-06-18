@@ -903,7 +903,7 @@ p.warning { color: var(--zhu-light) !important; }
 
   <!-- 断语 -->
   <div class="result" id="resultText"></div>
-  <div style="text-align:right;margin-top:4px;" id="jishiSaveBtn" onclick="saveBeforeJishiArchive()"><button class="btn btn-secondary" style="font-size:11px;padding:4px 10px;opacity:0.6;">保存档案</button></div>
+  <div style="text-align:right;margin-top:4px;display:none;" id="jishiSaveBtn" onclick="saveBeforeJishiArchive()"><button class="btn btn-secondary" style="font-size:11px;padding:4px 10px;opacity:0.6;">保存档案</button></div>
 
   <!-- 类象参考 -->
   <div class="analysis" style="margin-top:12px;">
@@ -1636,6 +1636,7 @@ function doDivination() {
   showXiangRef(allNums,'xiangRef');
   var reading=generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenShiText,hunyinSub,zidingyiText,genderJishi,hasLing);
   document.getElementById('resultText').innerHTML=reading;
+  document.getElementById('jishiSaveBtn').style.display='block';
 }
 
 
@@ -1698,6 +1699,7 @@ function doShuziDivination() {
   if(wenShi==='zidingyi'){zidingyiText=getActiveZidingyi();if(!zidingyiText)zidingyiText='自定义问题';}
   var reading=generateShuziReading(nei,wai,neiHou,waiHou,analysis,allTags,wenShi,wenShiText,hunyinSub,zidingyiText,genderJishi,hasLing);
   document.getElementById('resultText').innerHTML=reading;
+  document.getElementById('jishiSaveBtn').style.display='block';
 }
 
 // ==================== 数字卦断语生成（增强版） ====================
