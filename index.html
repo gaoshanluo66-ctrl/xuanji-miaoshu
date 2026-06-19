@@ -3562,6 +3562,7 @@ gj.name='一般';gj.desc=name+'落点情况需结合整体判断。';
 return gj;
 }
 
+try {
 var xFlows=analyzeFlows(xianAll);
 var hFlows=analyzeFlows(houAll);
 var xLand=landingSummary(xFlows);
@@ -3678,6 +3679,10 @@ l.push('<p>→ 表面与内在有所不同：外在'+xGJ.name+'，内在偏'+hGJ
 		return s;
 	}
 	l.push(gejuRenHua(xGJ,hGJ,xc,hc,xUpDom,hDownDom,xDownDom,hUpDom,isRQMBQ));
+} catch(e) {
+console.error("落点法 error:", e);
+l.push("<p style=color:red>格局判断暂时无法生成，请稍后重试。</p>");
+}
 
 // --- 补充标注 ---
 if(uniqC<=2&&totN>=4)supp.push('<p>● <strong>和尚尼姑格局</strong>：数字单一，性格孤傲，对婚姻不利。</p>');
