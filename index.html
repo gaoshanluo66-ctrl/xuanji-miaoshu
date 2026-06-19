@@ -632,6 +632,7 @@ transition: all 0.2s;
 #numXiangPopup .nx-grid .nx-item b{color:var(--ink);font-weight:600;}
 #numXiangPopup .nx-sep{height:1px;background:var(--border);margin:8px 0;}
 #numXiangPopup .nx-block{margin-bottom:6px;}
+#numXiangPopup .nx-block-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;}
 #numXiangPopup .nx-block .nx-label{font-size:11px;color:var(--accent);font-weight:600;margin-bottom:2px;letter-spacing:1px;}
 #numXiangPopup .nx-block .nx-text{font-size:12px;color:var(--ink2);line-height:1.65;}
 .num-clickable{cursor:pointer;transition:transform .1s;display:inline-block;}
@@ -824,7 +825,7 @@ transition: all 0.2s;
 </div>
 </div>
 <div class="result" id="resultText"></div>
-<div style="text-align:right;margin-top:4px;display:inline-block;" id="jishiSaveBtn" onclick="saveBeforeJishiArchive()"><button class="btn btn-secondary" style="font-size:11px;padding:4px 10px;opacity:0.6;">保存记录</button></div>
+
 
 </div>
 <div id="modeBazi" class="tab-content">
@@ -1318,6 +1319,18 @@ daysPassed-=mDays;
 }
 return{year:year,month:month,day:daysPassed+1,leap:isLeap,leapMonth:leapM};
 }
+function lunarToSolar(lunarYear,lunarMonth,lunarDay,isLeap){
+var offset=0;
+for(var y=1900;y<lunarYear;y++)offset+=lunarGetYearDays(y);
+var leapM=lunarGetLeapMonth(lunarYear);
+for(var m=1;m<lunarMonth;m++){
+offset+=lunarGetMonthDays(lunarYear,m);
+if(leapM===m)offset+=lunarGetLeapMonthDays(lunarYear);
+}
+if(isLeap&&leapM===lunarMonth)offset+=lunarGetMonthDays(lunarYear,lunarMonth);
+offset+=lunarDay-1;
+return new Date(BASE_SOLAR.getTime()+offset*86400000);
+}
 function getTianGan(year) { return TIANGAN[(year-4)%10]; }
 function getDiZhiYear(year) { return DIZHI[((year-4)%12+12)%12]; }
 const JIEQI_DZ = [
@@ -1554,11 +1567,13 @@ h+='<div class="nx-item"><b>人物</b> '+(attr.renwu||'—')+'</div>';
 h+='<div class="nx-item"><b>身体</b> '+(attr.tiwei||'—')+'</div>';
 h+='</div>';
 h+='<div class="nx-sep"></div>';
+h+='<div class="nx-block-grid">';
 h+='<div class="nx-block"><div class="nx-label">性格</div><div class="nx-text">'+traitOne+'</div></div>';
-if(attr.wu&&attr.wu!=='—')h+='<div class="nx-block"><div class="nx-label">物象</div><div class="nx-text">'+attr.wu+'</div></div>';
 h+='<div class="nx-block"><div class="nx-label">含义</div><div class="nx-text">'+(attr.meaning||'')+'</div></div>';
+if(attr.wu&&attr.wu!=='—')h+='<div class="nx-block"><div class="nx-label">物象</div><div class="nx-text">'+attr.wu+'</div></div>';
 if(attr.nature)h+='<div class="nx-block"><div class="nx-label">特性</div><div class="nx-text">'+attr.nature+'</div></div>';
 if(attr.disease&&attr.disease!=='—')h+='<div class="nx-block"><div class="nx-label">易病</div><div class="nx-text">'+attr.disease+'</div></div>';
+h+='</div>';
 	// --- 读像：直播风格叙事解读 ---
 	h+='<div class="nx-sep"></div>';
 	h+='<div class="nx-block" style="background:rgba(139,115,85,.06);border-left:3px solid var(--gold);padding:8px 12px;border-radius:4px;">';
@@ -2207,7 +2222,8 @@ var lm=parseInt(document.getElementById('lunarMonth').value);
 var ld=parseInt(document.getElementById('lunarDay').value);
 if(!ly||!lm||!ld){alert('请输入完整的农历年月日');return;}
 lunar={year:ly,month:lm,day:ld,isLeap:false};
-solarYear=ly;solarMonth=lm;solarDay=ld;
+var solDate=lunarToSolar(ly,lm,ld,false);
+solarYear=solDate.getFullYear();solarMonth=solDate.getMonth()+1;solarDay=solDate.getDate();
 } else {
 var dateStr=document.getElementById('birthDate').value;
 if(!dateStr){alert('请选择出生日期');return;}
@@ -2224,9 +2240,6 @@ var rawDay=lunar.day;
 var dayCount=rawDay;
 document.getElementById('baziLunarDisplay').innerText=lunarDateStr(lunar);
 var baziYearDz, baziYear, yearGanZhi, monthGanZhi, dayGanZhi, dayTg, shichenGanZhi;
-if(calType==='lunar'){
-yearGanZhi=''; monthGanZhi=''; dayGanZhi=''; dayTg=''; shichenGanZhi='';
-} else {
 baziYearDz=getBaziYearDz(solarYear,solarMonth,solarDay);
 baziYear=solarYear;
 if(solarMonth*100+solarDay<204)baziYear=solarYear-1;
@@ -2235,7 +2248,6 @@ monthGanZhi=getBaziMonthGanZhi(solarYear,solarMonth,solarDay);
 dayGanZhi=getDayGanZhi(solarYear,solarMonth,solarDay);
 dayTg=dayGanZhi[0];
 shichenGanZhi=sc>0?getHourGanZhi(dayTg,sc):'未知';
-}
 var dayParts=[];
 if(rawDay<=12){dayParts=[rawDay];}
 else{
@@ -2258,7 +2270,7 @@ xianAll.push(0);houAll.push(-1);
 pillarNames.push('时');
 }
 var numP=pillarNames.length;
-document.getElementById('baziPillarsDisplay').innerText=(calType==='lunar'?'农历直读':yearGanZhi+' '+monthGanZhi+' '+dayGanZhi+(sc>0?' '+shichenGanZhi:' 时 ?'));
+document.getElementById('baziPillarsDisplay').innerText=yearGanZhi+' '+monthGanZhi+' '+dayGanZhi+(sc>0?' '+shichenGanZhi:' 时 ?');
 var dayunAges=[];
 for(var pi=0;pi<numP;pi++){
 if(xianAll[pi]===0)dayunAges.push({xian:[],hou:[]});
