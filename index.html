@@ -3561,6 +3561,10 @@ gj.name='一般';gj.desc=name+'落点情况需结合整体判断。';
 return gj;
 }
 
+var xianAll=[nei,wai];
+var houAll=(!hasLing)?[neiHou,waiHou]:[nei,wai];
+var xc=analyzeChain(xianAll);
+var hc=analyzeChain(houAll);
 var xFlows=analyzeFlows(xianAll);
 var hFlows=analyzeFlows(houAll);
 var xLand=landingSummary(xFlows);
