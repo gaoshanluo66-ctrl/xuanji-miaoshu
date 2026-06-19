@@ -1520,6 +1520,7 @@ var a=pairs[i][0],b=pairs[i][1];
 var wx1=getWuXing(a),wx2=getWuXing(b);
 var sk=getShengKe(wx1,wx2);
 var skCN=getShengKeCN(wx1,wx2);
+var fw=getForceWeight(a,b);
 result.push({
 label:labels[i],a:a,b:b,wxA:wx1,wxB:wx2,sk:sk,skCN:skCN,fw:fw,fwLabel:forceLabel(fw),
 chong:isLiuChong(a,b),jue:isBaJue(a,b),
@@ -3561,10 +3562,6 @@ gj.name='一般';gj.desc=name+'落点情况需结合整体判断。';
 return gj;
 }
 
-var xianAll=[nei,wai];
-var houAll=(!hasLing)?[neiHou,waiHou]:[nei,wai];
-var xc=analyzeChain(xianAll);
-var hc=analyzeChain(houAll);
 var xFlows=analyzeFlows(xianAll);
 var hFlows=analyzeFlows(houAll);
 var xLand=landingSummary(xFlows);
