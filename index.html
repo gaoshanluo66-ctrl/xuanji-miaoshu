@@ -1521,7 +1521,7 @@ var wx1=getWuXing(a),wx2=getWuXing(b);
 var sk=getShengKe(wx1,wx2);
 var skCN=getShengKeCN(wx1,wx2);
 result.push({
-label:labels[i],a:a,b:b,wxA:wx1,wxB:wx2,sk:sk,skCN:skCN,
+label:labels[i],a:a,b:b,wxA:wx1,wxB:wx2,sk:sk,skCN:skCN,fw:fw,fwLabel:forceLabel(fw),
 chong:isLiuChong(a,b),jue:isBaJue(a,b),
 fengliu:isFengLiu(a,b),anFengliu:isAnFengLiu(a,b)
 });
@@ -1855,8 +1855,10 @@ var wxNei=getWuXing(nei),wxWai=getWuXing(wai);
 var skNeiWai=getShengKe(wxNei,wxWai);
 var yinYangNei=nei%2===1?'阳':'阴',yinYangWai=wai%2===1?'阳':'阴';
 var isZhengNei=[1,4,7,10].indexOf(nei)>=0,isZhengWai=[1,4,7,10].indexOf(wai)>=0;
+var xianFW=getForceWeight(nei,wai);
 l.push('<br><strong>先天卦解读：</strong>');
 l.push('<p>内卦'+nei+'（'+wxNei+yinYangNei+POLARITY[nei]+'）= 上 / 自己  |  外卦'+wai+'（'+wxWai+yinYangWai+POLARITY[wai]+'）= 下 / 环境</p>');
+	l.push('<p style="margin-top:2px;font-size:13px;color:var(--gold);">☯ 先天磁力：'+forceLabel(xianFW)+'（权重'+xianFW.toFixed(1)+'）</p>');
 if(hasLing){
 var zeroIsNei=nei===0;
 var otherNum=zeroIsNei?wai:nei;
@@ -1899,10 +1901,12 @@ l.push('<p>○ <strong>上比合下</strong>（内比合外）：你与外部环
 }
 var skHou=null;
 if(!hasLing){
+var houFW=getForceWeight(neiHou,waiHou);
 l.push('<br><strong>后天卦解读：</strong>');
 var wxNeiH=getWuXing(neiHou),wxWaiH=getWuXing(waiHou);
 skHou=getShengKe(wxNeiH,wxWaiH);
 l.push('<p>后天裂变：内'+nei+'→'+neiHou+'('+wxNeiH+POLARITY[neiHou]+')，外'+wai+'→'+waiHou+'('+wxWaiH+POLARITY[waiHou]+')</p>');
+	l.push('<p style="margin-top:2px;font-size:13px;color:var(--gold);">☯ 后天磁力：'+forceLabel(houFW)+'（权重'+houFW.toFixed(1)+'）</p>');
 if(skHou==='生'){
 l.push('<p>⊕ <strong>后天 上生下</strong>：后期你依然处于输出/付出位，事情由你主导推进。</p>');
 } else if(skHou==='被生'){
