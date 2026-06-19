@@ -804,7 +804,7 @@ transition: all 0.2s;
 <div class="dice-label" id="cardLabel" style="margin-top:4px;">点击「抽牌」随机抽取两张</div>
 </div>
 <div class="gua-display" id="guaDisplay" style="margin-top:20px;">
-<div class="gua-title" id="guaMethodTitle" style="margin-bottom:8px;">日 时 起 卦</div>
+<div class="gua-title" id="guaMethodTitle" style="display:none;"></div>
 <div id="jishiGuaContent">
 <div style="display:flex;justify-content:center;align-items:center;gap:0;font-size:32px;font-weight:700;line-height:1.3;">
 <div id="jishiXianN1" style="width:48px;text-align:center;">--</div>
@@ -1636,11 +1636,9 @@ function switchJishiMethod(method) {
 document.querySelectorAll('#modeJishi .sub-tab').forEach(function(t){t.classList.remove('active');});
 document.querySelectorAll('#modeJishi > .shuzi-section').forEach(function(s){s.classList.remove('active');});
 var subtabs=document.querySelectorAll('#modeJishi > .sub-tabs > .sub-tab');
-var titles={'rixia':'日 时 起 卦','baoshu':'报 数 起 卦','shaizi':'骰 子 起 卦','puke':'扑 克 牌 起 卦'};
 var idxs={'rixia':0,'baoshu':1,'shaizi':2,'puke':3};
 subtabs[idxs[method]].classList.add('active');
 document.getElementById('jishi'+{'rixia':'Rixia','baoshu':'Baoshu','shaizi':'Shaizi','puke':'Puke'}[method]).classList.add('active');
-document.getElementById('guaMethodTitle').innerText=titles[method];
 }
 // ==================== 骰子和扑克牌 ====================
 var diceValues=[-1,-1],cardValues=[-1,-1],diceRolling=false;
@@ -1735,8 +1733,8 @@ var hasLing=nei===0||wai===0;
 var neiHou, waiHou;
 if(!hasLing){neiHou=getHouTian(nei);waiHou=getHouTian(wai);}
 else {neiHou=-1;waiHou=-1;}
-document.getElementById('jishiXianN1').innerHTML=numBtn(nei,28);
-document.getElementById('jishiXianN2').innerHTML=numBtn(wai,28);
+document.getElementById('jishiXianN1').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(nei)+'</div>'+numBtn(nei,22);
+document.getElementById('jishiXianN2').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(wai)+'</div>'+numBtn(wai,22);
 if(hasLing){
 document.getElementById('jishiHouRow').style.display='none';
 document.getElementById('neiNum').innerHTML=numBtn(nei,24)+' ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+')';
@@ -1745,8 +1743,8 @@ document.getElementById('waiNum').innerHTML=numBtn(wai,24)+' ('+getDizhi(wai)+' 
 document.getElementById('jishiHouRow').style.display='flex';
 document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+') → <span style="color:'+getNumColor(neiHou)+';">'+neiHou+'</span> ('+getDizhi(neiHou)+' '+getWuXing(neiHou)+' '+POLARITY[neiHou]+')';
 document.getElementById('waiNum').innerHTML='<span style="color:'+getNumColor(wai)+';font-weight:600;">'+wai+'</span> ('+getDizhi(wai)+' '+getWuXing(wai)+' '+POLARITY[wai]+') → <span style="color:'+getNumColor(waiHou)+';">'+waiHou+'</span> ('+getDizhi(waiHou)+' '+getWuXing(waiHou)+' '+POLARITY[waiHou]+')';
-document.getElementById('jishiHouN1').innerHTML=numBtn(neiHou,28);
-document.getElementById('jishiHouN2').innerHTML=numBtn(waiHou,28);
+document.getElementById('jishiHouN1').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(neiHou)+'</div>'+numBtn(neiHou,22);
+document.getElementById('jishiHouN2').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(waiHou)+'</div>'+numBtn(waiHou,22);
 }
 var allNums=hasLing?[nei,wai]:[nei,wai,neiHou,waiHou];
 var pairs=hasLing?[[nei,wai]]:[[nei,wai],[neiHou,waiHou]];
@@ -1793,8 +1791,8 @@ var hasLing=nei===0||wai===0;
 var neiHou, waiHou;
 if(!hasLing){neiHou=getHouTian(nei);waiHou=getHouTian(wai);}
 else {neiHou=-1;waiHou=-1;}
-document.getElementById('jishiXianN1').innerHTML=numBtn(nei,28);
-document.getElementById('jishiXianN2').innerHTML=numBtn(wai,28);
+document.getElementById('jishiXianN1').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(nei)+'</div>'+numBtn(nei,22);
+document.getElementById('jishiXianN2').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(wai)+'</div>'+numBtn(wai,22);
 if(hasLing){
 document.getElementById('jishiHouRow').style.display='none';
 document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+')';
@@ -1803,8 +1801,8 @@ document.getElementById('waiNum').innerHTML='<span style="color:'+getNumColor(wa
 document.getElementById('jishiHouRow').style.display='flex';
 document.getElementById('neiNum').innerHTML='<span style="color:'+getNumColor(nei)+';font-weight:600;">'+nei+'</span> ('+getDizhi(nei)+' '+getWuXing(nei)+' '+POLARITY[nei]+') → <span style="color:'+getNumColor(neiHou)+';">'+neiHou+'</span> ('+getDizhi(neiHou)+' '+getWuXing(neiHou)+' '+POLARITY[neiHou]+')';
 document.getElementById('waiNum').innerHTML='<span style="color:'+getNumColor(wai)+';font-weight:600;">'+wai+'</span> ('+getDizhi(wai)+' '+getWuXing(wai)+' '+POLARITY[wai]+') → <span style="color:'+getNumColor(waiHou)+';">'+waiHou+'</span> ('+getDizhi(waiHou)+' '+getWuXing(waiHou)+' '+POLARITY[waiHou]+')';
-document.getElementById('jishiHouN1').innerHTML=numBtn(neiHou,28);
-document.getElementById('jishiHouN2').innerHTML=numBtn(waiHou,28);
+document.getElementById('jishiHouN1').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(neiHou)+'</div>'+numBtn(neiHou,22);
+document.getElementById('jishiHouN2').innerHTML='<div style="font-size:11px;font-weight:500;color:var(--accent);line-height:1.2;">'+getWuXing(waiHou)+'</div>'+numBtn(waiHou,22);
 }
 var allNums=hasLing?[nei,wai]:[nei,wai,neiHou,waiHou];
 var pairs=hasLing?[[nei,wai]]:[[nei,wai],[neiHou,waiHou]];
