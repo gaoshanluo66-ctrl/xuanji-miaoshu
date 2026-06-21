@@ -2841,8 +2841,10 @@ function getMajorTurningPoints(xianAll,houAll,pillarNames){
 }
 // ==================== 环境互照（数字对调看物象） ====================
 function getEnvCrossView(xianAll,houAll,pillarNames,roomLabels){
-	var envWu={1:'水景/鱼缸/低洼处',2:'水井/沙地/下水道',3:'石头/火源/虎形摆件',4:'绿植/竹子/木家具',5:'花草/果树/园林',6:'红色物/电子设备',7:'灯火/电线/观音像',8:'平地/轮胎/羊形摆件',9:'电杆/门框/猴形摆件',10:'道路/车辆/金属物',11:'铁塔/信号塔/金属架',12:'大河/大面积水域'};
+	var envWu={1:'水景/鱼缸',2:'水井/沙地/下水道',3:'石头/火源/虎形',4:'绿植/竹子/木家具',5:'花草/果树',6:'红色物/电子设备',7:'灯火/电线/观音像',8:'平地/轮胎/羊形',9:'电杆/门框/猴形',10:'道路/车辆/金属物',11:'铁塔/信号塔/金属架',12:'大河/大面积水域'};
 	var envFw={1:'正北',2:'北偏东',3:'东北',4:'正东',5:'东南',6:'南偏东',7:'正南',8:'南偏西',9:'西南',10:'正西',11:'西北',12:'北偏西'};
+	// 被克五行 → 身体影响
+	var wxBody={水:'肾、睡眠、内分泌',火:'眼睛、心脏',金:'肺、呼吸道、皮肤',木:'肝胆、四肢',土:'脾胃、消化'};
 	var html='';var queJiao=[];
 	for(var pi=0;pi<xianAll.length-1;pi++){
 		var a=xianAll[pi],b=xianAll[pi+1];
@@ -2853,21 +2855,39 @@ function getEnvCrossView(xianAll,houAll,pillarNames,roomLabels){
 		var aWu=envWu[a]||'',bWu=envWu[b]||'';
 		var aWx=getWuXing(a),bWx=getWuXing(b);
 		var sk=getShengKe(aWx,bWx);
-		// 只讲结果：A方位宜见B类物品
+		// 只讲结果
 		var label=room||(pillarNames[pi]+'与'+pillarNames[pi+1]);
-		var line='<p>● <strong>'+label+'</strong>：'+aFw+'方宜见'+bWu+'类物品；'+bFw+'方宜见'+aWu+'类物品';
-		// 克→缺角（阴阳同极=重克才记）
-		if(sk==='克'){var fw=getForceWeight(a,b);if(fw>=1.0)queJiao.push(bFw+'方');}
-		else if(sk==='被克'){var fw2=getForceWeight(b,a);if(fw2>=1.0)queJiao.push(aFw+'方');}
+		var line='<p>● <strong>'+label+'</strong>：'+aFw+'方有'+bWu+'类物品，'+bFw+'方有'+aWu+'类物品';
+		// 相克 → 身体影响 + 缺角判断
+		if(sk==='克'){
+			var fw=getForceWeight(a,b);
+			line+='。⊗ '+aWx+'克'+bWx+'，注意'+wxBody[bWx];
+			if(fw>=1.0)queJiao.push(bFw+'方');
+		} else if(sk==='被克'){
+			var fw2=getForceWeight(b,a);
+			line+='。⊗ '+bWx+'克'+aWx+'，注意'+wxBody[aWx];
+			if(fw2>=1.0)queJiao.push(aFw+'方');
+		} else if(sk==='生'||sk==='被生'){
+			line+='，五行相生';
+		}
 		// 后天
 		if(aH!==-1&&bH!==-1){
 			var aHFw=envFw[aH]||'',bHFw=envFw[bH]||'';
 			var aHWu=envWu[aH]||'',bHWu=envWu[bH]||'';
 			var aHWx=getWuXing(aH),bHWx=getWuXing(bH);
 			var skH=getShengKe(aHWx,bHWx);
-			line+='。后天：'+aHFw+'方宜见'+bHWu+'类物品；'+bHFw+'方宜见'+aHWu+'类物品';
-			if(skH==='克'){var fwH=getForceWeight(aH,bH);if(fwH>=1.0)queJiao.push(bHFw+'方');}
-			else if(skH==='被克'){var fwH2=getForceWeight(bH,aH);if(fwH2>=1.0)queJiao.push(aHFw+'方');}
+			line+='。后天：'+aHFw+'方有'+bHWu+'类物品，'+bHFw+'方有'+aHWu+'类物品';
+			if(skH==='克'){
+				var fwH=getForceWeight(aH,bH);
+				line+='；⊗ '+aHWx+'克'+bHWx+'，注意'+wxBody[bHWx];
+				if(fwH>=1.0)queJiao.push(bHFw+'方');
+			} else if(skH==='被克'){
+				var fwH2=getForceWeight(bH,aH);
+				line+='；⊗ '+bHWx+'克'+aHWx+'，注意'+wxBody[aHWx];
+				if(fwH2>=1.0)queJiao.push(aHFw+'方');
+			} else if(skH==='生'||skH==='被生'){
+				line+='，五行相生';
+			}
 		}
 		html+=line+'。</p>';
 	}
