@@ -2841,7 +2841,7 @@ function getMajorTurningPoints(xianAll,houAll,pillarNames){
 }
 // ==================== 环境互照（数字对调看物象） ====================
 function getEnvCrossView(xianAll,houAll,pillarNames,roomLabels){
-	var envWu={1:'水沟/坑洞/鱼缸',2:'水井/沙地/水池/下水道',3:'火源/猫/石头/虎形',4:'大树/竹子/木家具',5:'花草/果树/园林',6:'电脑/电视/红色物/蛇形',7:'发光物/电线/灯火/观音',8:'土坑/平地/轮胎/羊形',9:'高山/电杆/门框/猴形',10:'道路/车辆/金属/鸡形',11:'铁塔/信号塔/金属架/狗形',12:'大河/大海/大面积水域/猪形'};
+	var envWu={1:'水景/鱼缸/低洼处',2:'水井/沙地/下水道',3:'石头/火源/虎形摆件',4:'绿植/竹子/木家具',5:'花草/果树/园林',6:'红色物/电子设备',7:'灯火/电线/观音像',8:'平地/轮胎/羊形摆件',9:'电杆/门框/猴形摆件',10:'道路/车辆/金属物',11:'铁塔/信号塔/金属架',12:'大河/大面积水域'};
 	var envFw={1:'正北',2:'北偏东',3:'东北',4:'正东',5:'东南',6:'南偏东',7:'正南',8:'南偏西',9:'西南',10:'正西',11:'西北',12:'北偏西'};
 	var html='';var queJiao=[];
 	for(var pi=0;pi<xianAll.length-1;pi++){
@@ -2853,24 +2853,27 @@ function getEnvCrossView(xianAll,houAll,pillarNames,roomLabels){
 		var aWu=envWu[a]||'',bWu=envWu[b]||'';
 		var aWx=getWuXing(a),bWx=getWuXing(b);
 		var sk=getShengKe(aWx,bWx);
-		// 先天对调
-		html+='<p>● <strong>'+pillarNames[pi]+'⇄'+pillarNames[pi+1]+'</strong>'+(room?'（'+room+'）':'')+'：'+aFw+'（'+a+'位）→ '+bWu+'（'+b+'物），'+bFw+'（'+b+'位）→ '+aWu+'（'+a+'物）';
-		if(sk==='克'){var fw=getForceWeight(a,b);if(fw>=1.0)queJiao.push(bFw+'位（'+b+'被'+a+'重克）');}
-		else if(sk==='被克'){var fw2=getForceWeight(b,a);if(fw2>=1.0)queJiao.push(aFw+'位（'+a+'被'+b+'重克）');}
+		// 只讲结果：A方位宜见B类物品
+		var label=room||(pillarNames[pi]+'与'+pillarNames[pi+1]);
+		var line='<p>● <strong>'+label+'</strong>：'+aFw+'方宜见'+bWu+'类物品；'+bFw+'方宜见'+aWu+'类物品';
+		// 克→缺角（阴阳同极=重克才记）
+		if(sk==='克'){var fw=getForceWeight(a,b);if(fw>=1.0)queJiao.push(bFw+'方');}
+		else if(sk==='被克'){var fw2=getForceWeight(b,a);if(fw2>=1.0)queJiao.push(aFw+'方');}
 		// 后天
 		if(aH!==-1&&bH!==-1){
 			var aHFw=envFw[aH]||'',bHFw=envFw[bH]||'';
 			var aHWu=envWu[aH]||'',bHWu=envWu[bH]||'';
 			var aHWx=getWuXing(aH),bHWx=getWuXing(bH);
 			var skH=getShengKe(aHWx,bHWx);
-			html+='<br> 后天：'+aHFw+'（'+aH+'位）→ '+bHWu+'（'+bH+'物），'+bHFw+'（'+bH+'位）→ '+aHWu+'（'+aH+'物）';
-			if(skH==='克'){var fwH=getForceWeight(aH,bH);if(fwH>=1.0)queJiao.push('后天'+bHFw+'位（'+bH+'被'+aH+'重克）');}
-			else if(skH==='被克'){var fwH2=getForceWeight(bH,aH);if(fwH2>=1.0)queJiao.push('后天'+aHFw+'位（'+aH+'被'+bH+'重克）');}
+			line+='。后天：'+aHFw+'方宜见'+bHWu+'类物品；'+bHFw+'方宜见'+aHWu+'类物品';
+			if(skH==='克'){var fwH=getForceWeight(aH,bH);if(fwH>=1.0)queJiao.push(bHFw+'方');}
+			else if(skH==='被克'){var fwH2=getForceWeight(bH,aH);if(fwH2>=1.0)queJiao.push(aHFw+'方');}
 		}
-		html+='</p>';
+		html+=line+'。</p>';
 	}
 	if(queJiao.length>0){
-		html+='<p class="warning">⚠ 缺角提示：'+queJiao.join('、')+'，对应方位易缺角。</p>';
+		var uq=[];for(var qi=0;qi<queJiao.length;qi++){if(uq.indexOf(queJiao[qi])<0)uq.push(queJiao[qi]);}
+		html+='<p class="warning">⚠ 缺角注意：'+uq.join('、')+'受克较重，易出现缺角或不规则。</p>';
 	}
 	return html;
 }
