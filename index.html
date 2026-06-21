@@ -2288,18 +2288,9 @@ l.push('</p>');
 	if(keM.length>0)l.push('<p class="warning">⚠ 慎月：'+keM.join('、')+' → 不宜重大决策。</p>');
 	}
 	}
-	l.push('<br><strong>环境风水提示：</strong>');
-	var envWu2={1:'水沟、坑洞、河渠、酒瓶、鱼缸',2:'水井、沙地、水池',3:'火源、猫、石头、白色物品',4:'大树、竹子、木制家具',5:'花草、果树、园林',6:'电脑、电视、红色物品',7:'发光物、电线、观音像',8:'土坑、平地、轮胎',9:'高山、电杆、门框',10:'道路、车辆、金属器物',11:'铁塔、信号塔',12:'大河、大海、大面积水域'};
-	var envFw2={1:'正北',2:'北偏东',3:'东北',4:'正东',5:'东南',6:'南偏东',7:'正南',8:'南偏西',9:'西南',10:'正西',11:'西北',12:'北偏西'};
-	if(nei>0&&nei<=12)l.push('<p>● <strong>内卦'+nei+'（自己·'+envFw2[nei]+'）</strong>：所在环境/自身气场对应 '+envWu2[nei]+'。</p>');
-	if(wai>0&&wai<=12)l.push('<p>● <strong>外卦'+wai+'（环境·'+envFw2[wai]+'）</strong>：外界环境/对方气场对应 '+envWu2[wai]+'。</p>');
-	var envSk2=getShengKe(wxNei,wxWai);
-	if(envSk2==='被生')l.push('<p class="good">● 外生内：外部环境滋养你，居住/工作环境对你有利。</p>');
-	else if(envSk2==='被克')l.push('<p class="warning">● 外克内：外部环境克制你，注意居住/工作环境的煞气影响。</p>');
-	else if(envSk2==='生')l.push('<p>● 内生外：你滋养环境，适合在熟悉的地方发展。</p>');
 	var jiXianAll=[nei,wai];
 	var jiHouAll=hasLing?[neiHou,waiHou]:[-1,-1];
-	l.push('<br><strong>环境互照（数字对调看物象）：</strong>');
+	l.push('<br><strong>环境风水提示：</strong>');
 	l.push(getEnvCrossView(jiXianAll,jiHouAll,['内卦','外卦'],null));
 var hasChong=false,hasJue=false,hasFengliu=false;
 analysis.forEach(function(a){if(a.chong)hasChong=true;if(a.jue)hasJue=true;if(a.fengliu||a.anFengliu)hasFengliu=true;});
@@ -4451,41 +4442,8 @@ for(var i=0;i<xianAll.length;i++){if(uniqueNums.indexOf(xianAll[i])<0)uniqueNums
 for(var i=0;i<houAll.length;i++){if(houAll[i]!==-1&&uniqueNums.indexOf(houAll[i])<0)uniqueNums.push(houAll[i]);}
 l.push('<p style="margin-top:6px;font-size:11px;color:var(--ink3);">● 八字中出现的关键流年数字：'+uniqueNums.sort(function(a,b){return a-b;}).join('、')+'。对应生肖年份：1鼠(2020)、2牛(2021)、3虎(2022)、4兔(2023)、5龙(2024)、6蛇(2025)、7马(2026)、8羊(2027)、9猴(2028)、10鸡(2029)、11狗(2030)、12猪(2031)——遇到这些年份运势会有明显变化。</p>');
 
-	// ==================== 环境风水提示（依书：9.10 环境天眼通） ====================
-	l.push('<br><strong>环境风水提示：</strong>');
-	var envWu={1:'水沟、坑洞、河渠、酒瓶、鱼缸',2:'水井、沙地、水池、低洼处',3:'火源、猫、石头、白色物品、虎形摆件',4:'大树、竹子、木制家具、兔形物品',5:'花草、果树、龙形摆件、园林',6:'电脑、电视、红色物品、蛇形图案',7:'发光物、电线、观音像、马形物品',8:'土坑、平地、坟地、轮胎、羊形摆件',9:'高山、电杆、门框、猴形物品',10:'道路、车辆、金属器物、鸡形摆件',11:'铁塔、信号塔、狗形物品、金属架构',12:'大河、大海、猪形摆件、大面积水域'};
-	var envFangwei={1:'正北',2:'北偏东',3:'东北',4:'正东',5:'东南',6:'南偏东',7:'正南',8:'南偏西',9:'西南',10:'正西',11:'西北',12:'北偏西'};
-	var envItems=[];
-	for(var evi=0;evi<Math.min(len,2);evi++){
-		var evn=xianAll[evi];
-		if(evn===0)continue;
-		envItems.push({num:evn,pillar:pillarNames[evi],wu:envWu[evn]||'',fw:envFangwei[evn]||''});
-	}
-	if(envItems.length>0){
-		for(var evj=0;evj<envItems.length;evj++){
-			var ev=envItems[evj];
-			l.push('<p>● <strong>'+ev.pillar+'柱'+ev.num+'（'+ev.fw+'方位）</strong>：周围可能有 '+ev.wu+'。</p>');
-		}
-	}
-	var outerEnv=[],innerEnv=[];
-	if(xianAll[0]!==0)outerEnv.push({num:xianAll[0],label:'年柱(外)'});
-	if(len>=4&&xianAll[len-1]!==0)outerEnv.push({num:xianAll[len-1],label:'时柱(外)'});
-	if(xianAll[1]!==0)innerEnv.push({num:xianAll[1],label:'月柱(内)'});
-	if(len>=3&&xianAll[2]!==0)innerEnv.push({num:xianAll[2],label:'日柱(内)'});
-	var envSummary='';
-	for(var oi=0;oi<outerEnv.length;oi++){
-		var on2=outerEnv[oi].num;
-		for(var ii=0;ii<innerEnv.length;ii++){
-			var in2=innerEnv[ii].num;
-			if(on2===in2||on2===0||in2===0)continue;
-			var envSk=getShengKe(getWuXing(on2),getWuXing(in2));
-			if(envSk==='生')envSummary+='外环境生内环境，周围环境滋养住宅/自身，风水有利。';
-			else if(envSk==='克')envSummary+='外环境克内环境，外部煞气冲克住宅，需注意。';
-		}
-	}
-	if(envSummary)l.push('<p>● 外内环境关系：'+envSummary+'</p>');
 	var baziRooms=[];for(var ri=0;ri<xianAll.length-1;ri++){baziRooms.push(ri===0?'客厅':'卧室');}
-	l.push('<br><strong>环境互照（数字对调看物象）：</strong>');
+	l.push('<br><strong>环境风水提示：</strong>');
 	l.push(getEnvCrossView(xianAll,houAll,pillarNames,baziRooms));
 
 
