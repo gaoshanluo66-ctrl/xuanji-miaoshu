@@ -1295,10 +1295,33 @@ for(var i=0x8000;i>0x8;i>>=1){sum+=(info&i)?1:0;}
 if(lunarGetLeapMonth(year)>0){sum+=lunarGetLeapMonthDays(year);}
 return sum;
 }
-var BASE_SOLAR = new Date(1900,0,31);
+// 纯天数→公历日期，避免时区导致的偏差
+function daysToGregorian(totalDays){
+var y=1900;
+while(true){
+var isLeapY=(y%4===0&&y%100!==0)||y%400===0;
+var diy=isLeapY?366:365;
+if(totalDays<diy)break;
+totalDays-=diy;y++;
+}
+var md=[31,28,31,30,31,30,31,31,30,31,30,31];
+if((y%4===0&&y%100!==0)||y%400===0)md[1]=29;
+var m=0;
+while(totalDays>=md[m]){totalDays-=md[m];m++;}
+return new Date(y,m,totalDays+1);
+}
+function gregorianToDays(date){
+var y=date.getFullYear(),m=date.getMonth(),d=date.getDate();
+var total=0;
+for(var yy=1900;yy<y;yy++)total+=((yy%4===0&&yy%100!==0)||yy%400===0)?366:365;
+var md=[31,28,31,30,31,30,31,31,30,31,30,31];
+if((y%4===0&&y%100!==0)||y%400===0)md[1]=29;
+for(var mm=0;mm<m;mm++)total+=md[mm];
+return total+d-1;
+}
 function solarToLunar(date) {
 var target=new Date(date.getFullYear(),date.getMonth(),date.getDate());
-var offset=Math.round((target-BASE_SOLAR)/86400000);
+var offset=gregorianToDays(target)-30;
 if(offset<0)return{year:0,month:0,day:0,leap:false,leapMonth:0};
 var year=1900,daysPassed=offset;
 while(year<2100){var yd=lunarGetYearDays(year);if(daysPassed<yd)break;daysPassed-=yd;year++;}
@@ -1329,7 +1352,7 @@ if(leapM===m)offset+=lunarGetLeapMonthDays(lunarYear);
 }
 if(isLeap&&leapM===lunarMonth)offset+=lunarGetMonthDays(lunarYear,lunarMonth);
 offset+=lunarDay-1;
-return new Date(BASE_SOLAR.getTime()+offset*86400000);
+return daysToGregorian(offset+30);
 }
 function getTianGan(year) { return TIANGAN[(year-4)%10]; }
 function getDiZhiYear(year) { return DIZHI[((year-4)%12+12)%12]; }
@@ -2355,7 +2378,6 @@ if(!ly||!lm||!ld){alert('请输入完整的农历年月日');return;}
 lunar={year:ly,month:lm,day:ld,isLeap:false};
 var solDate=lunarToSolar(ly,lm,ld,false);
 solarYear=solDate.getFullYear();solarMonth=solDate.getMonth()+1;solarDay=solDate.getDate();
-document.getElementById('baziPillarsDisplay').innerText='[调试] 农历转公历: '+solarYear+'-'+solarMonth+'-'+solarDay;
 } else {
 var dateStr=document.getElementById('birthDate').value;
 if(!dateStr){alert('请选择出生日期');return;}
