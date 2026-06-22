@@ -2355,6 +2355,7 @@ if(!ly||!lm||!ld){alert('请输入完整的农历年月日');return;}
 lunar={year:ly,month:lm,day:ld,isLeap:false};
 var solDate=lunarToSolar(ly,lm,ld,false);
 solarYear=solDate.getFullYear();solarMonth=solDate.getMonth()+1;solarDay=solDate.getDate();
+document.getElementById('baziPillarsDisplay').innerText='[调试] 农历转公历: '+solarYear+'-'+solarMonth+'-'+solarDay;
 } else {
 var dateStr=document.getElementById('birthDate').value;
 if(!dateStr){alert('请选择出生日期');return;}
