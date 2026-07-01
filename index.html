@@ -1535,13 +1535,13 @@ SCROLL_WHEELS[id]=w;return w;
 function gw(id){return SCROLL_WHEELS[id];}
 function initAllWheels(){
 var n=new Date();var nl=solarToLunar(n);
-createScrollWheel('whJYear',_yearOpts(1900,2099),n.getFullYear());
+createScrollWheel('whJYear',_yearOpts(1949,2099),n.getFullYear());
 createScrollWheel('whJMonth',_numOpts(1,12),n.getMonth()+1);
 createScrollWheel('whJDay',_numOpts(1,31),n.getDate());
-createScrollWheel('whBSolYear',_yearOpts(1900,2099),n.getFullYear());
+createScrollWheel('whBSolYear',_yearOpts(1949,2099),n.getFullYear());
 createScrollWheel('whBSolMonth',_numOpts(1,12),n.getMonth()+1);
 createScrollWheel('whBSolDay',_numOpts(1,31),n.getDate());
-createScrollWheel('whBLunYear',_yearOpts(1900,2100),nl&&nl.year?nl.year:n.getFullYear());
+createScrollWheel('whBLunYear',_yearOpts(1949,2100),nl&&nl.year?nl.year:n.getFullYear());
 createScrollWheel('whBLunMonth',_numOpts(1,12),nl&&nl.month?nl.month:1);
 createScrollWheel('whBLunDay',_numOpts(1,30),nl&&nl.day?nl.day:1);
 updateAllDp();
@@ -1554,7 +1554,7 @@ var t=document.getElementById('dpTitle');
 var row=document.getElementById('dpWheelsRow');
 var la=document.getElementById('dpLeapArea');
 row.innerHTML='<div class="sw-wheel" id="dpYW"><div class="sw-highlight"></div><div class="sw-scroll" id="dpYW_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="dpMW"><div class="sw-highlight"></div><div class="sw-scroll" id="dpMW_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="dpDW"><div class="sw-highlight"></div><div class="sw-scroll" id="dpDW_scr"></div></div><span class="sw-label">日</span>';
-var curY,curM,curD,yrFrom=1900,yrTo=2100,dayMax=31;
+var curY,curM,curD,yrFrom=1949,yrTo=2100,dayMax=31;
 if(type==='jishi'){t.textContent='选择公历日期';curY=gw('whJYear').gv();curM=gw('whJMonth').gv();curD=gw('whJDay').gv();yrTo=2099;la.style.display='none';}
 else if(type==='baziSolar'){t.textContent='选择公历日期';curY=gw('whBSolYear').gv();curM=gw('whBSolMonth').gv();curD=gw('whBSolDay').gv();yrTo=2099;la.style.display='none';}
 else if(type==='baziLunar'){t.textContent='选择农历日期';curY=gw('whBLunYear').gv();curM=gw('whBLunMonth').gv();curD=gw('whBLunDay').gv();la.style.display='flex';updateDpLeapBtn();}
