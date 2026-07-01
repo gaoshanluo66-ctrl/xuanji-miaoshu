@@ -689,6 +689,28 @@ transition: all 0.2s;
 /* 闰月按钮加大 */
 #lunarLeapToggle{padding:4px 8px!important;font-size:12px!important;margin:0 2px;border-radius:4px!important;min-width:32px;}
 
+
+/* === 日期弹出选择器 === */
+.dp-display{display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border:1.5px solid var(--gold-border);border-radius:6px;background:var(--bg-input);color:var(--text);font-size:13px;cursor:pointer;white-space:nowrap;user-select:none;vertical-align:middle;transition:border-color .15s;}
+.dp-display:hover,.dp-display:active{border-color:var(--gold);}
+.dp-arrow{color:var(--text4);font-size:9px;margin-left:2px;}
+.dp-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.dp-overlay.show{display:flex;}
+.dp-backdrop{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);}
+.dp-sheet{position:relative;background:var(--bg-card);border-radius:16px 16px 0 0;width:100%;max-width:500px;padding:16px 16px 24px;animation:dpSlideUp .25s ease;box-shadow:0 -4px 30px rgba(0,0,0,0.4);}
+@keyframes dpSlideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.dp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.dp-title{font-size:15px;font-weight:700;color:var(--gold-light);letter-spacing:2px;}
+.dp-close-btn{background:none;border:none;color:var(--text4);font-size:20px;cursor:pointer;padding:0 4px;line-height:1;}
+.dp-wheels-row{display:flex;justify-content:center;align-items:center;gap:6px;margin-bottom:12px;}
+.dp-wheels-row .sw-wheel{width:58px;}
+.dp-leap-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.dp-leap-wrap .sw-label{font-size:9px;}
+.dp-leap-btn{padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:var(--bg-input);color:var(--text4);cursor:pointer;min-width:32px;font-family:inherit;transition:all .15s;}
+.dp-leap-btn.active{background:var(--gold)!important;color:var(--bg-deep)!important;border-color:var(--gold)!important;font-weight:700;}
+.dp-confirm{width:100%;padding:12px;border:none;border-radius:8px;font-size:15px;font-weight:700;background:var(--gold);color:var(--bg-deep);cursor:pointer;font-family:inherit;letter-spacing:2px;transition:opacity .15s;}
+.dp-confirm:active{opacity:.85;}
+
 </style>
 </head>
 <body>
@@ -751,7 +773,7 @@ transition: all 0.2s;
 </div>
 <div id="jishiRixia" class="shuzi-section active">
 <div class="btn-group" style="margin:0;">
-<span class="sw-group" id="jishiWheels"><div class="sw-wheel" id="whJYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whJYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whJMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whJMonth_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="whJDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whJDay_scr"></div></div><span class="sw-label">日</span></span>
+<span class="dp-display" id="jishiDp" onclick="openDp('jishi')"><span id="jishiDpVal">--</span><span class="dp-arrow">▾</span></span><span class="sw-group" id="jishiWheels" style="display:none;"><div class="sw-wheel" id="whJYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whJYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whJMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whJMonth_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="whJDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whJDay_scr"></div></div><span class="sw-label">日</span></span>
 <select id="shichenSelect" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
 <option value="0">自动时辰</option>
 <option value="1">子时</option><option value="2">丑时</option><option value="3">寅时</option><option value="4">卯时</option><option value="5">辰时</option><option value="6">巳时</option><option value="7">午时</option><option value="8">未时</option><option value="9">申时</option><option value="10">酉时</option><option value="11">戌时</option><option value="12">亥时</option>
@@ -882,10 +904,10 @@ transition: all 0.2s;
 </select>
 <label style="color:var(--text);">日期</label>
 <div id="baziSolarInput">
-<span class="sw-group" id="baziSolWheels"><div class="sw-wheel" id="whBSolYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whBSolMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolMonth_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="whBSolDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolDay_scr"></div></div><span class="sw-label">日</span></span>
+<span class="dp-display" id="baziSolDp" onclick="openDp('baziSolar')"><span id="baziSolDpVal">--</span><span class="dp-arrow">▾</span></span><span class="sw-group" id="baziSolWheels" style="display:none;"><div class="sw-wheel" id="whBSolYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whBSolMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolMonth_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="whBSolDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolDay_scr"></div></div><span class="sw-label">日</span></span>
 </div>
 <div id="baziLunarInput" style="display:none;">
-<span class="sw-group" id="baziLunWheels"><div class="sw-wheel" id="whBLunYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whBLunMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunMonth_scr"></div></div><button id="lunarLeapToggle" type="button" onclick="toggleLunarLeap()" style="padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:var(--bg-input);color:var(--text4);cursor:pointer;line-height:1.4;min-width:32px;margin:0 2px;" title="切换闰月">闰</button><span class="sw-label">月</span><div class="sw-wheel" id="whBLunDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunDay_scr"></div></div><span class="sw-label">日</span></span>
+<span class="dp-display" id="baziLunDp" onclick="openDp('baziLunar')"><span id="baziLunDpVal">--</span><span class="dp-arrow">▾</span></span><span class="sw-group" id="baziLunWheels" style="display:none;"><div class="sw-wheel" id="whBLunYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whBLunMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunMonth_scr"></div></div><button id="lunarLeapToggle" type="button" onclick="toggleLunarLeap()" style="padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:var(--bg-input);color:var(--text4);cursor:pointer;line-height:1.4;min-width:32px;margin:0 2px;" title="切换闰月">闰</button><span class="sw-label">月</span><div class="sw-wheel" id="whBLunDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunDay_scr"></div></div><span class="sw-label">日</span></span>
 </div>
 <label style="color:var(--text);">时辰</label>
 <select id="baziShichenSelect" style="padding:6px 10px;border:1px solid var(--gold-border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -1522,7 +1544,41 @@ createScrollWheel('whBSolDay',_numOpts(1,31),n.getDate());
 createScrollWheel('whBLunYear',_yearOpts(1900,2100),nl&&nl.year?nl.year:n.getFullYear());
 createScrollWheel('whBLunMonth',_numOpts(1,12),nl&&nl.month?nl.month:1);
 createScrollWheel('whBLunDay',_numOpts(1,30),nl&&nl.day?nl.day:1);
+updateAllDp();
 }
+
+var _dpActive=null;var _dpLeap=false;
+function openDp(type){
+_dpActive=type;_dpLeap=false;
+var t=document.getElementById('dpTitle');
+var row=document.getElementById('dpWheelsRow');
+var la=document.getElementById('dpLeapArea');
+row.innerHTML='<div class="sw-wheel" id="dpYW"><div class="sw-highlight"></div><div class="sw-scroll" id="dpYW_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="dpMW"><div class="sw-highlight"></div><div class="sw-scroll" id="dpMW_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="dpDW"><div class="sw-highlight"></div><div class="sw-scroll" id="dpDW_scr"></div></div><span class="sw-label">日</span>';
+var curY,curM,curD,yrFrom=1900,yrTo=2100,dayMax=31;
+if(type==='jishi'){t.textContent='选择公历日期';curY=gw('whJYear').gv();curM=gw('whJMonth').gv();curD=gw('whJDay').gv();yrTo=2099;la.style.display='none';}
+else if(type==='baziSolar'){t.textContent='选择公历日期';curY=gw('whBSolYear').gv();curM=gw('whBSolMonth').gv();curD=gw('whBSolDay').gv();yrTo=2099;la.style.display='none';}
+else if(type==='baziLunar'){t.textContent='选择农历日期';curY=gw('whBLunYear').gv();curM=gw('whBLunMonth').gv();curD=gw('whBLunDay').gv();la.style.display='flex';updateDpLeapBtn();}
+createScrollWheel('dpYW',_yearOpts(yrFrom,yrTo),curY);
+createScrollWheel('dpMW',_numOpts(1,12),curM);
+createScrollWheel('dpDW',_numOpts(1,dayMax),curD);
+if(curD>dayMax)gw('dpDW').sv(dayMax,true);
+document.getElementById('dpOverlay').classList.add('show');
+}
+function closeDp(){document.getElementById('dpOverlay').classList.remove('show');_dpActive=null;}
+function toggleDpLeap(){_dpLeap=!_dpLeap;updateDpLeapBtn();}
+function updateDpLeapBtn(){var b=document.getElementById('dpLeapBtn');if(_dpLeap){b.textContent='闰✓';b.classList.add('active');}else{b.textContent='闰';b.classList.remove('active');}}
+function confirmDp(){
+var y=gw('dpYW').gv(),m=gw('dpMW').gv(),d=gw('dpDW').gv();
+if(_dpActive==='jishi'){gw('whJYear').sv(y,true);gw('whJMonth').sv(m,true);gw('whJDay').sv(d,true);updateJishiDp();}
+else if(_dpActive==='baziSolar'){gw('whBSolYear').sv(y,true);gw('whBSolMonth').sv(m,true);gw('whBSolDay').sv(d,true);updateBaziSolDp();}
+else if(_dpActive==='baziLunar'){gw('whBLunYear').sv(y,true);gw('whBLunMonth').sv(m,true);gw('whBLunDay').sv(d,true);lunarIsLeap=_dpLeap;updateLunarLeapUI();updateBaziLunDp();}
+closeDp();
+}
+function updateJishiDp(){var el=document.getElementById('jishiDpVal');if(el)el.textContent=gw('whJYear').gv()+'年'+gw('whJMonth').gv()+'月'+gw('whJDay').gv()+'日';}
+function updateBaziSolDp(){var el=document.getElementById('baziSolDpVal');if(el)el.textContent=gw('whBSolYear').gv()+'年'+gw('whBSolMonth').gv()+'月'+gw('whBSolDay').gv()+'日';}
+function updateBaziLunDp(){var el=document.getElementById('baziLunDpVal');if(el){var m=gw('whBLunMonth').gv();el.textContent=gw('whBLunYear').gv()+'年'+(lunarIsLeap?'闰':'')+m+'月'+gw('whBLunDay').gv()+'日';}}
+function updateAllDp(){updateJishiDp();updateBaziSolDp();updateBaziLunDp();}
+
 // ==================== 滚轮组件结束 ====================
 
 // ==================== 五行生克 ====================
@@ -1876,11 +1932,13 @@ gw('whBLunYear').sv(nowLunar.year,true);
 gw('whBLunMonth').sv(nowLunar.month,true);
 lunarIsLeap=nowLunar.leap||false;updateLunarLeapUI();
 gw('whBLunDay').sv(nowLunar.day,true);
+updateBaziLunDp();
 }
 } else {
 gw('whBSolYear').sv(now.getFullYear(),true);
 gw('whBSolMonth').sv(now.getMonth()+1,true);
 gw('whBSolDay').sv(now.getDate(),true);
+updateBaziSolDp();
 }
 var sc=getShichenFromTime(now.getHours(),now.getMinutes());
 document.getElementById('baziShichenSelect').value=sc;
@@ -1891,6 +1949,7 @@ var now=new Date();
 gw('whJYear').sv(now.getFullYear(),true);
 gw('whJMonth').sv(now.getMonth()+1,true);
 gw('whJDay').sv(now.getDate(),true);
+updateJishiDp();
 document.getElementById('shichenSelect').value='0';
 doDivination();
 }
@@ -2726,12 +2785,14 @@ gw('whBLunYear').sv(parseInt(a.lunarYear),true);
 gw('whBLunMonth').sv(parseInt(a.lunarMonth),true);
 lunarIsLeap=a.lunarIsLeap||false;updateLunarLeapUI();
 gw('whBLunDay').sv(parseInt(a.lunarDay),true);
+updateBaziLunDp();
 } else {
 if(a.birthDate){
 var rp=a.birthDate.split('-');
 gw('whBSolYear').sv(parseInt(rp[0]),true);
 gw('whBSolMonth').sv(parseInt(rp[1]),true);
 gw('whBSolDay').sv(parseInt(rp[2]),true);
+updateBaziSolDp();
 }
 }
 document.getElementById('baziShichenSelect').value=a.sc;
@@ -4867,5 +4928,22 @@ if(!inJa&&!inBtn2)ja.style.display='none';
 <span class="wx-tag jin">金</span>
 </div>
 <script>document.addEventListener("DOMContentLoaded",function(){initAllWheels();});</script>
+
+<div id="dpOverlay" class="dp-overlay">
+<div class="dp-backdrop" onclick="closeDp()"></div>
+<div class="dp-sheet" onclick="event.stopPropagation()">
+<div class="dp-header">
+<span class="dp-title" id="dpTitle">选择日期</span>
+<span class="dp-close-btn" onclick="closeDp()">✕</span>
+</div>
+<div class="dp-wheels-row" id="dpWheelsRow"></div>
+<div style="text-align:center;margin-bottom:12px;" id="dpLeapArea" class="dp-leap-wrap">
+<button class="dp-leap-btn" id="dpLeapBtn" onclick="toggleDpLeap()">闰</button>
+<span class="sw-label">月</span>
+</div>
+<button class="dp-confirm" onclick="confirmDp()">确 认</button>
+</div>
+</div>
+
 </body>
 </html>
