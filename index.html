@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>数字体系起卦工具</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>数字体系起卦工具 v3.1</title>
 <style>
 :root {
 color-scheme: dark;
@@ -74,7 +77,7 @@ position: fixed;
 top: 50%; left: 50%;
 transform: translate(-50%,-50%);
 width: 460px; height: 460px;
-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 460'%3E%3Ccircle cx='230' cy='230' r='210' fill='none' stroke='rgba(255,255,255,0.06)' stroke-width='1'/%3E%3Ccircle cx='230' cy='230' r='190' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='0.5'/%3E%3Cpolygon points='230,40 397,161 333,351 127,351 63,161' fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='1'/%3E%3Cpolygon points='230,40 333,351 63,161 397,161 127,351' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='0.8'/%3E%3Ccircle cx='230' cy='40' r='4' fill='rgba(255,255,255,0.12)'/%3E%3Ccircle cx='397' cy='161' r='4' fill='rgba(255,255,255,0.12)'/%3E%3Ccircle cx='333' cy='351' r='4' fill='rgba(255,255,255,0.12)'/%3E%3Ccircle cx='127' cy='351' r='4' fill='rgba(255,255,255,0.12)'/%3E%3Ccircle cx='63' cy='161' r='4' fill='rgba(255,255,255,0.12)'/%3E%3C/svg%3E");
+background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NjAgNDYwIj4KPGNpcmNsZSBjeD0iMjMwIiBjeT0iMjMwIiByPSIyMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjA2KSIgc3Ryb2tlLXdpZHRoPSIxIi8+CjxjaXJjbGUgY3g9IjIzMCIgY3k9IjIzMCIgcj0iMTkwIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wNCkiIHN0cm9rZS13aWR0aD0iMC41Ii8+Cjxwb2x5Z29uIHBvaW50cz0iMjMwLDQwIDM5NywxNjEgMzMzLDM1MSAxMjcsMzUxIDYzLDE2MSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMDcpIiBzdHJva2Utd2lkdGg9IjEiLz4KPHBvbHlnb24gcG9pbnRzPSIyMzAsNDAgMzMzLDM1MSA2MywxNjEgMzk3LDE2MSAxMjcsMzUxIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiIHN0cm9rZS13aWR0aD0iMC44Ii8+CjxjaXJjbGUgY3g9IjIzMCIgY3k9IjQwIiByPSI0IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTIpIi8+CjxjaXJjbGUgY3g9IjM5NyIgY3k9IjE2MSIgcj0iNCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEyKSIvPgo8Y2lyY2xlIGN4PSIzMzMiIGN5PSIzNTEiIHI9IjQiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xMikiLz4KPGNpcmNsZSBjeD0iMTI3IiBjeT0iMzUxIiByPSI0IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTIpIi8+CjxjaXJjbGUgY3g9IjYzIiBjeT0iMTYxIiByPSI0IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMTIpIi8+Cjwvc3ZnPg==");
 background-size: contain;
 background-repeat: no-repeat;
 background-position: center;
@@ -490,7 +493,7 @@ padding: 12px 8px 32px;
 font-size: 14px;
 max-width: 100%;
 }
-body::before { width: 260px; height: 260px; opacity: 0.3; }
+body::before { width: 220px; height: 220px; opacity: 0.4; }
 .header-area { padding: 8px 0 16px; }
 .header-area h1 { font-size: 1.3em; letter-spacing: 4px; }
 .header-area .subtitle { font-size: 11px; letter-spacing: 2px; }
@@ -541,6 +544,7 @@ font-size: 11px;
 #baziCombinedDisplay > div { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 #resultText, #baziResultText { font-size: 14px; line-height: 1.7; }
 #resultText p, #baziResultText p { margin: 4px 0; }
+#btnSaveJishi, #jishiSaveBtn2, #btnSaveBazi { min-height: 44px; min-width: 80px; }
 .special-tags { gap: 4px; }
 .special-tag { padding: 4px 8px; font-size: 11px; }
 .lunar-row { flex-wrap: wrap; gap: 8px; }
@@ -556,6 +560,27 @@ gap: 8px;
 padding: 10px;
 }
 .archive-info { width: 100%; }
+#jishiSaveDialog > div, #baziSaveDialog > div { max-width: 92vw; margin: 0 4vw; }
+#jishiSaveDialog input, #baziSaveDialog input { font-size: 16px; }
+#baziArchive, #jishiArchive { max-width: 96vw !important; left: 2vw !important; right: 2vw !important; top: 38px !important; transform: none !important; -webkit-overflow-scrolling: touch; }
+.archive-remark input { font-size: 13px; }
+#jishiSaveDialog, #baziSaveDialog {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important;
+  right: 0 !important; bottom: 0 !important;
+  z-index: 1000 !important;
+}
+#jishiSaveDialog > div, #baziSaveDialog > div {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--gold-border) !important;
+  border-radius: 10px !important;
+  padding: 20px 18px !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6) !important;
+}
+#jishiSaveDialog input, #baziSaveDialog input {
+  padding: 10px !important;
+  font-size: 16px !important;
+}
 .archive-item .btn {
 width: 100%;
 text-align: center;
@@ -607,6 +632,10 @@ transition: all 0.2s;
 .archive-name { font-size:14px;font-weight:700;color:var(--text); }
 .archive-name input { background:transparent;border:none;border-bottom:1px dashed var(--border);color:var(--text);font-size:14px;font-weight:700;font-family:inherit;width:120px;outline:none; }
 .archive-name input:focus { border-bottom-color:var(--gold); }
+.archive-remark { margin-bottom:4px; }
+.archive-remark input { background:transparent;border:none;border-bottom:2px solid var(--gold-border);color:var(--gold-light);font-size:14px;font-weight:700;font-family:inherit;width:100%;outline:none; }
+.archive-remark input:focus { border-bottom-color:var(--gold); }
+.archive-remark input::placeholder { color:var(--text4);font-weight:400;font-size:12px; }
 .archive-meta { font-size:11px;color:var(--ink3);margin-top:2px; }
 .archive-actions { display:flex;gap:6px;flex-shrink:0; }
 .archive-actions button { padding:4px 10px;font-size:11px;border-radius:4px;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--bg-input);color:var(--text2);transition:all 0.15s; }
@@ -662,7 +691,7 @@ transition: all 0.2s;
 <div class="header-area">
 <img src="bagua-bg.webp" alt="logo" class="logo-img">
 <h1>数字体系起卦工具</h1>
-<div class="subtitle">基于駱高山《玄机妙数》和《数绎乾坤》体系排盘</div>
+<div class="subtitle">基于駱高山《玄机妙数》和《数绎乾坤》体系排盘 <span style="color:var(--gold-light);font-weight:700;">v3.1.2</span></div>
 </div>
 <div id="topToolbar" style="position:fixed;top:10px;left:12px;right:12px;z-index:100;display:flex;gap:6px;align-items:center;justify-content:space-between;pointer-events:none;">
 <div style="display:flex;gap:6px;align-items:center;pointer-events:auto;">
@@ -706,7 +735,7 @@ transition: all 0.2s;
 </div>
 <div id="jishiRixia" class="shuzi-section active">
 <div class="btn-group" style="margin:0;">
-<input type="date" id="solarDate" min="1900-01-01" max="2099-12-31" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;width:140px;">
+<span style="display:inline-flex;align-items:center;gap:2px;"><input type="number" id="solarYear" placeholder="年" min="1900" max="2099" style="width:56px;padding:8px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text3);font-size:11px;">年</span><input type="number" id="solarMonth" placeholder="月" min="1" max="12" style="width:44px;padding:8px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text3);font-size:11px;">月</span><input type="number" id="solarDay" placeholder="日" min="1" max="31" style="width:44px;padding:8px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text3);font-size:11px;">日</span></span>
 <select id="shichenSelect" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
 <option value="0">自动时辰</option>
 <option value="1">子时</option><option value="2">丑时</option><option value="3">寅时</option><option value="4">卯时</option><option value="5">辰时</option><option value="6">巳时</option><option value="7">午时</option><option value="8">未时</option><option value="9">申时</option><option value="10">酉时</option><option value="11">戌时</option><option value="12">亥时</option>
@@ -922,6 +951,10 @@ transition: all 0.2s;
 </div>
 </div>
 <script>
+// ===== 兼容补丁：老手机不支持 padStart =====
+if(!String.prototype.padStart){String.prototype.padStart=function(l,s){s=s||' ';var t=String(this);while(t.length<l)t=s+t;return t;};}
+// ===== 错误兜底 =====
+window.onerror=function(msg,url,line){console.error('JS Error:',msg,'at line',line);return false;};
 (function(){var lo=document.getElementById("loadingOverlay");if(lo)lo.remove();})();// ==================== 常量 ====================
 const DIZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const TIANGAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
@@ -1825,8 +1858,9 @@ doBaZi();
 }
 function setNow() {
 var now=new Date();
-var y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
-document.getElementById('solarDate').value=y+'-'+m+'-'+d;
+document.getElementById('solarYear').value=now.getFullYear();
+document.getElementById('solarMonth').value=now.getMonth()+1;
+document.getElementById('solarDay').value=now.getDate();
 document.getElementById('shichenSelect').value='0';
 doDivination();
 }
@@ -1841,10 +1875,11 @@ container.innerHTML=html;
 }
 // ==================== 即时起卦：日时起卦 ====================
 function doDivination() {
-var dateStr=document.getElementById('solarDate').value;
-if(!dateStr){alert('请选择日期');return;}
-var parts=dateStr.split('-');
-var solarDate=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
+var y=parseInt(document.getElementById('solarYear').value);
+var m=parseInt(document.getElementById('solarMonth').value);
+var d=parseInt(document.getElementById('solarDay').value);
+if(!y||!m||!d){alert('请填写完整的年月日');return;}
+var solarDate=new Date(y,m-1,d);
 var lunar=solarToLunar(solarDate);
 if(!lunar||!lunar.year){document.getElementById('lunarDateDisplay').innerText='暂不支持该年份';return;}
 var scSelect=document.getElementById('shichenSelect'),sc=parseInt(scSelect.value);
@@ -2635,9 +2670,9 @@ var a=archives[i];
 var genderLabel=a.gender==='m'?'男':'女';
 h+='<div class="archive-item">'+
 '<div class="archive-info" onclick="replayBaziArchive('+a.id+')">'+
+'<div class="archive-remark" onclick="event.stopPropagation();"><input value="'+_esc(a.remark||'')+'" onchange="remarkBaziArchive('+a.id+',this.value)" onclick="event.stopPropagation();" placeholder="\u5907\u6ce8\uff1a\u8c01\u7684\u516b\u5b57\uff0c\u770b\u4ec0\u4e48"></div>'+
 '<div class="archive-name" onclick="event.stopPropagation();"><input value="'+_esc(a.name||'')+'" onchange="renameBaziArchive('+a.id+',this.value)" onclick="event.stopPropagation();" title="点击编辑名称"></div>'+
 '<div class="archive-meta">'+a.label+' · '+genderLabel+' · '+a.scLabel+' · '+a.time+'</div>'+
-'<div class="archive-remark" onclick="event.stopPropagation();"><input value="'+_esc(a.remark||'')+'" onchange="remarkBaziArchive('+a.id+',this.value)" onclick="event.stopPropagation();" placeholder="\u5907\u6ce8\uff1a\u8c01\u7684\u516b\u5b57\uff0c\u770b\u4ec0\u4e48" style="background:transparent;border:none;border-bottom:1px dashed var(--border);color:var(--ink3);font-size:11px;font-family:inherit;width:200px;outline:none;"></div>'+
 '</div>'+
 '<div class="archive-actions">'+
 '<button onclick="replayBaziArchive('+a.id+')">查看</button>'+
@@ -2724,7 +2759,7 @@ gender:genderJishi,
 time:new Date().toLocaleString(),
 name:'',
 remark:remark?remark.value:'',
-solarDate:document.getElementById('solarDate').value,
+solarDate:document.getElementById('solarYear').value+'-'+String(document.getElementById('solarMonth').value).padStart(2,'0')+'-'+String(document.getElementById('solarDay').value).padStart(2,'0'),
 birthYear:(function(){var be=document.getElementById('jishiBirthYear');return be?parseInt(be.value)||null:null;})(),
 lunarDisplay:document.getElementById('lunarDateDisplay').innerText,
 dayNumDisplay:document.getElementById('dayNumDisplay').innerText,
@@ -2754,9 +2789,9 @@ var genderLabel=a.gender==='m'?'\u7537':'\u5973';
 var wenShiLabel=a.wenShiText||a.wenShi||'\u7efc\u5408';
 h+='<div class="archive-item">'+
 '<div class="archive-info" onclick="replayJishiArchive('+a.id+')">'+
+'<div class="archive-remark" onclick="event.stopPropagation();"><input value="'+_esc(a.remark||'')+'" onchange="remarkJishiArchive('+a.id+',this.value)" onclick="event.stopPropagation();" placeholder="\u5907\u6ce8\uff1a\u8c01\u7684\u5366\uff0c\u770b\u4ec0\u4e48"></div>'+
 '<div class="archive-name" onclick="event.stopPropagation();"><input value="'+_esc(a.name||'')+'" onchange="renameJishiArchive('+a.id+',this.value)" onclick="event.stopPropagation();" title="\u70b9\u51fb\u7f16\u8f91\u540d\u79f0"></div>'+
 '<div class="archive-meta">'+a.lunarDisplay+' \u3001'+genderLabel+' \u95ee\u4e8b\uff1a'+wenShiLabel+' \u65e5\u671f\uff1a'+a.time+'</div>'+
-'<div class="archive-remark" onclick="event.stopPropagation();"><input value="'+_esc(a.remark||'')+'" onchange="remarkJishiArchive('+a.id+',this.value)" onclick="event.stopPropagation();" placeholder="\u5907\u6ce8\uff1a\u8c01\u7684\u5366\uff0c\u770b\u4ec0\u4e48" style="background:transparent;border:none;border-bottom:1px dashed var(--border);color:var(--ink3);font-size:11px;font-family:inherit;width:200px;outline:none;"></div>'+
 '</div>'+
 '<div class="archive-actions">'+
 '<button onclick="replayJishiArchive('+a.id+')">\u67e5\u770b</button>'+
