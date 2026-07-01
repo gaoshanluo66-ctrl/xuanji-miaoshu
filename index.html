@@ -673,6 +673,22 @@ transition: all 0.2s;
 #numXiangPopup .nx-grid{gap:2px 12px;}
 }
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* === 滚轮选择器 === */
+.sw-group{display:inline-flex;align-items:center;gap:3px;vertical-align:middle;}
+.sw-label{color:var(--text4);font-size:10px;width:14px;text-align:center;flex-shrink:0;}
+.sw-wheel{position:relative;width:54px;height:120px;overflow:hidden;border-radius:8px;border:1px solid var(--gold-border);background:var(--bg-input);flex-shrink:0;}
+.sw-wheel::before,.sw-wheel::after{content:'';position:absolute;left:0;right:0;height:42px;z-index:2;pointer-events:none;}
+.sw-wheel::before{top:0;background:linear-gradient(to bottom,var(--bg-input) 30%,transparent);}
+.sw-wheel::after{bottom:0;background:linear-gradient(to top,var(--bg-input) 30%,transparent);}
+.sw-highlight{position:absolute;top:50%;left:1px;right:1px;height:36px;transform:translateY(-50%);border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);background:rgba(201,169,110,0.06);pointer-events:none;z-index:1;border-radius:2px;}
+.sw-scroll{height:100%;overflow-y:auto;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;padding:42px 0;scrollbar-width:none;-ms-overflow-style:none;}
+.sw-scroll::-webkit-scrollbar{display:none;}
+.sw-option{height:36px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;font-size:14px;color:var(--text4);cursor:pointer;user-select:none;transition:color .12s,font-size .12s,font-weight .12s;}
+.sw-option.sw-active{color:var(--gold-light);font-size:16px;font-weight:700;}
+/* 闰月按钮加大 */
+#lunarLeapToggle{padding:4px 8px!important;font-size:12px!important;margin:0 2px;border-radius:4px!important;min-width:32px;}
+
 </style>
 </head>
 <body>
@@ -735,7 +751,7 @@ transition: all 0.2s;
 </div>
 <div id="jishiRixia" class="shuzi-section active">
 <div class="btn-group" style="margin:0;">
-<span style="display:inline-flex;align-items:center;gap:2px;"><input type="number" id="solarYear" placeholder="年" min="1900" max="2099" style="width:56px;padding:8px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text3);font-size:11px;">年</span><input type="number" id="solarMonth" placeholder="月" min="1" max="12" style="width:44px;padding:8px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text3);font-size:11px;">月</span><input type="number" id="solarDay" placeholder="日" min="1" max="31" style="width:44px;padding:8px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text3);font-size:11px;">日</span></span>
+<span class="sw-group" id="jishiWheels"><div class="sw-wheel" id="whJYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whJYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whJMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whJMonth_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="whJDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whJDay_scr"></div></div><span class="sw-label">日</span></span>
 <select id="shichenSelect" style="padding:8px;border:1.5px solid var(--border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
 <option value="0">自动时辰</option>
 <option value="1">子时</option><option value="2">丑时</option><option value="3">寅时</option><option value="4">卯时</option><option value="5">辰时</option><option value="6">巳时</option><option value="7">午时</option><option value="8">未时</option><option value="9">申时</option><option value="10">酉时</option><option value="11">戌时</option><option value="12">亥时</option>
@@ -866,10 +882,10 @@ transition: all 0.2s;
 </select>
 <label style="color:var(--text);">日期</label>
 <div id="baziSolarInput">
-<span style="display:inline-flex;align-items:center;gap:2px;"><input type="number" id="baziSolarYear" placeholder="年" min="1900" max="2099" style="width:52px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">年</span><input type="number" id="baziSolarMonth" placeholder="月" min="1" max="12" style="width:40px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">月</span><input type="number" id="baziSolarDay" placeholder="日" min="1" max="31" style="width:40px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">日</span></span>
+<span class="sw-group" id="baziSolWheels"><div class="sw-wheel" id="whBSolYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whBSolMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolMonth_scr"></div></div><span class="sw-label">月</span><div class="sw-wheel" id="whBSolDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whBSolDay_scr"></div></div><span class="sw-label">日</span></span>
 </div>
 <div id="baziLunarInput" style="display:none;">
-<span style="display:inline-flex;align-items:center;gap:2px;"><input type="number" id="lunarYear" placeholder="年" min="1900" max="2100" style="width:52px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">年</span><input type="number" id="lunarMonth" placeholder="月" min="1" max="12" style="width:40px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><button id="lunarLeapToggle" type="button" onclick="toggleLunarLeap()" style="padding:2px 4px;border:1px solid var(--border);border-radius:3px;font-size:9px;background:var(--bg-input);color:var(--text4);cursor:pointer;line-height:1.2;" title="切换闰月">闰</button><span style="color:var(--text4);font-size:10px;">月</span><input type="number" id="lunarDay" placeholder="日" min="1" max="30" style="width:40px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">日</span></span>
+<span class="sw-group" id="baziLunWheels"><div class="sw-wheel" id="whBLunYear"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunYear_scr"></div></div><span class="sw-label">年</span><div class="sw-wheel" id="whBLunMonth"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunMonth_scr"></div></div><button id="lunarLeapToggle" type="button" onclick="toggleLunarLeap()" style="padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:var(--bg-input);color:var(--text4);cursor:pointer;line-height:1.4;min-width:32px;margin:0 2px;" title="切换闰月">闰</button><span class="sw-label">月</span><div class="sw-wheel" id="whBLunDay"><div class="sw-highlight"></div><div class="sw-scroll" id="whBLunDay_scr"></div></div><span class="sw-label">日</span></span>
 </div>
 <label style="color:var(--text);">时辰</label>
 <select id="baziShichenSelect" style="padding:6px 10px;border:1px solid var(--gold-border);border-radius:6px;font-size:13px;background:var(--bg-input);color:var(--text);font-family:inherit;">
@@ -1468,6 +1484,47 @@ if(lunar.leap)s+='闰';
 s+=monthNames[lunar.month-1]+'月'+dayNames[lunar.day];
 return s;
 }
+// ==================== 滚轮选择器组件 ====================
+var SCROLL_WHEELS={};
+function _yearOpts(f,t){var a=[];for(var y=f;y<=t;y++)a.push(y);return a;}
+function _numOpts(f,t){var a=[];for(var i=f;i<=t;i++)a.push(i);return a;}
+function createScrollWheel(id,values,defVal,onChg,optH){
+optH=optH||36;
+var ct=document.getElementById(id);if(!ct)return null;
+var se=ct.querySelector('.sw-scroll');if(!se)return null;
+var h='';for(var i=0;i<values.length;i++){h+='<div class="sw-option" data-val="'+values[i]+'" data-idx="'+i+'">'+values[i]+'</div>';}
+se.innerHTML=h;
+var ops=se.querySelectorAll('.sw-option');
+var ci=values.indexOf(defVal);if(ci<0)ci=0;
+var st=null;
+var w={
+values:values,ci:ci,
+gv:function(){return this.values[this.ci];},
+gi:function(){return this.ci;},
+sv:function(v,silent){var ix=this.values.indexOf(v);if(ix>=0){this.ci=ix;se.scrollTop=ix*optH;this._hl();if(!silent&&onChg)onChg(v,ix);}},
+so:function(nv,kv){var ov=this.gv();this.values=nv;var h2='';for(var i=0;i<nv.length;i++){h2+='<div class="sw-option" data-val="'+nv[i]+'" data-idx="'+i+'">'+nv[i]+'</div>';}se.innerHTML=h2;ops=se.querySelectorAll('.sw-option');if(kv!==undefined&&nv.indexOf(kv)>=0)this.sv(kv,true);else if(nv.indexOf(ov)>=0)this.sv(ov,true);else{this.ci=0;se.scrollTop=0;this._hl();}},
+_hl:function(){for(var i=0;i<ops.length;i++)ops[i].classList.toggle('sw-active',i===this.ci);},
+_snap:function(){var st2=se.scrollTop;var ix=Math.round(st2/optH);if(ix<0)ix=0;if(ix>=this.values.length)ix=this.values.length-1;var tt=ix*optH;if(Math.abs(se.scrollTop-tt)>2)se.scrollTo({top:tt,behavior:'smooth'});if(ix!==this.ci){this.ci=ix;this._hl();if(onChg)onChg(this.values[ix],ix);}}
+};
+se.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){w._snap();},120);},{passive:true});
+se.scrollTop=ci*optH;w._hl();if(onChg)onChg(values[ci],ci);
+SCROLL_WHEELS[id]=w;return w;
+}
+function gw(id){return SCROLL_WHEELS[id];}
+function initAllWheels(){
+var n=new Date();var nl=solarToLunar(n);
+createScrollWheel('whJYear',_yearOpts(1900,2099),n.getFullYear());
+createScrollWheel('whJMonth',_numOpts(1,12),n.getMonth()+1);
+createScrollWheel('whJDay',_numOpts(1,31),n.getDate());
+createScrollWheel('whBSolYear',_yearOpts(1900,2099),n.getFullYear());
+createScrollWheel('whBSolMonth',_numOpts(1,12),n.getMonth()+1);
+createScrollWheel('whBSolDay',_numOpts(1,31),n.getDate());
+createScrollWheel('whBLunYear',_yearOpts(1900,2100),nl&&nl.year?nl.year:n.getFullYear());
+createScrollWheel('whBLunMonth',_numOpts(1,12),nl&&nl.month?nl.month:1);
+createScrollWheel('whBLunDay',_numOpts(1,30),nl&&nl.day?nl.day:1);
+}
+// ==================== 滚轮组件结束 ====================
+
 // ==================== 五行生克 ====================
 function getShengKe(wx1,wx2) {
 if(wx1===wx2)return'比合';
@@ -1785,24 +1842,17 @@ function onBaziCalChange() {
 var type=document.getElementById('baziCalType').value;
 document.getElementById('baziSolarInput').style.display=(type==='solar'?'block':'none');
 document.getElementById('baziLunarInput').style.display=(type==='lunar'?'block':'none');
-var sy=document.getElementById('baziSolarYear'),sm=document.getElementById('baziSolarMonth'),sd=document.getElementById('baziSolarDay');
-if(sy){sy.required=(type==='solar');sm.required=(type==='solar');sd.required=(type==='solar');}
-var ly=document.getElementById('lunarYear'),lm=document.getElementById('lunarMonth'),ld=document.getElementById('lunarDay');
-if(ly){ly.required=(type==='lunar');lm.required=(type==='lunar');ld.required=(type==='lunar');}
 if(type==='lunar')initLunarInputs();
 }
 var lunarIsLeap=false;
 function initLunarInputs(){
-var ly=document.getElementById('lunarYear'),lm=document.getElementById('lunarMonth'),ld=document.getElementById('lunarDay');
-if(!ly.value){
+var wy=gw('whBLunYear');if(!wy||wy.gv())return;
 var nowLunar=solarToLunar(new Date());
 if(nowLunar&&nowLunar.year){
-ly.value=nowLunar.year;
-lm.value=nowLunar.month;
-lunarIsLeap=nowLunar.leap||false;
-updateLunarLeapUI();
-ld.value=nowLunar.day;
-}
+wy.sv(nowLunar.year,true);
+gw('whBLunMonth').sv(nowLunar.month,true);
+lunarIsLeap=nowLunar.leap||false;updateLunarLeapUI();
+gw('whBLunDay').sv(nowLunar.day,true);
 }
 }
 function toggleLunarLeap(){
@@ -1822,15 +1872,15 @@ var now=new Date();
 if(calType==='lunar'){
 var nowLunar=solarToLunar(now);
 if(nowLunar&&nowLunar.year){
-document.getElementById('lunarYear').value=nowLunar.year;
-document.getElementById('lunarMonth').value=nowLunar.month;
+gw('whBLunYear').sv(nowLunar.year,true);
+gw('whBLunMonth').sv(nowLunar.month,true);
 lunarIsLeap=nowLunar.leap||false;updateLunarLeapUI();
-document.getElementById('lunarDay').value=nowLunar.day;
+gw('whBLunDay').sv(nowLunar.day,true);
 }
 } else {
-document.getElementById('baziSolarYear').value=now.getFullYear();
-document.getElementById('baziSolarMonth').value=now.getMonth()+1;
-document.getElementById('baziSolarDay').value=now.getDate();
+gw('whBSolYear').sv(now.getFullYear(),true);
+gw('whBSolMonth').sv(now.getMonth()+1,true);
+gw('whBSolDay').sv(now.getDate(),true);
 }
 var sc=getShichenFromTime(now.getHours(),now.getMinutes());
 document.getElementById('baziShichenSelect').value=sc;
@@ -1838,9 +1888,9 @@ doBaZi();
 }
 function setNow() {
 var now=new Date();
-document.getElementById('solarYear').value=now.getFullYear();
-document.getElementById('solarMonth').value=now.getMonth()+1;
-document.getElementById('solarDay').value=now.getDate();
+gw('whJYear').sv(now.getFullYear(),true);
+gw('whJMonth').sv(now.getMonth()+1,true);
+gw('whJDay').sv(now.getDate(),true);
 document.getElementById('shichenSelect').value='0';
 doDivination();
 }
@@ -1855,10 +1905,10 @@ container.innerHTML=html;
 }
 // ==================== 即时起卦：日时起卦 ====================
 function doDivination() {
-var y=parseInt(document.getElementById('solarYear').value);
-var m=parseInt(document.getElementById('solarMonth').value);
-var d=parseInt(document.getElementById('solarDay').value);
-if(!y||!m||!d){alert('请填写完整的年月日');return;}
+var y=gw('whJYear')?gw('whJYear').gv():0;
+var m=gw('whJMonth')?gw('whJMonth').gv():0;
+var d=gw('whJDay')?gw('whJDay').gv():0;
+if(!y||!m||!d){alert('请选择完整的年月日');return;}
 var solarDate=new Date(y,m-1,d);
 var lunar=solarToLunar(solarDate);
 if(!lunar||!lunar.year){document.getElementById('lunarDateDisplay').innerText='暂不支持该年份';return;}
@@ -2442,19 +2492,19 @@ function doBaZi() {
 var calType=document.getElementById('baziCalType').value;
 var lunar,solarYear,solarMonth,solarDay;
 if(calType==='lunar'){
-var ly=parseInt(document.getElementById('lunarYear').value);
-var lm=parseInt(document.getElementById('lunarMonth').value);
-var ld=parseInt(document.getElementById('lunarDay').value);
+var ly=gw('whBLunYear').gv();
+var lm=gw('whBLunMonth').gv();
+var ld=gw('whBLunDay').gv();
 var isLeap=lunarIsLeap;
-if(!ly||!lm||!ld){alert('请输入完整的农历年月日');return;}
+if(!ly||!lm||!ld){alert('请选择完整的农历年月日');return;}
 lunar={year:ly,month:lm,day:ld,isLeap:isLeap};
 var solDate=lunarToSolar(ly,lm,ld,isLeap);
 solarYear=solDate.getFullYear();solarMonth=solDate.getMonth()+1;solarDay=solDate.getDate();
 } else {
-var by=parseInt(document.getElementById('baziSolarYear').value);
-var bm=parseInt(document.getElementById('baziSolarMonth').value);
-var bd=parseInt(document.getElementById('baziSolarDay').value);
-if(!by||!bm||!bd){alert('请填写完整的出生年月日');return;}
+var by=gw('whBSolYear').gv();
+var bm=gw('whBSolMonth').gv();
+var bd=gw('whBSolDay').gv();
+if(!by||!bm||!bd){alert('请选择完整的出生年月日');return;}
 solarYear=by;solarMonth=bm;solarDay=bd;
 var solarDate=new Date(solarYear,solarMonth-1,solarDay);
 lunar=solarToLunar(solarDate);
@@ -2619,13 +2669,14 @@ var calType=document.getElementById('baziCalType').value;
 var remark=document.getElementById('baziArchiveRemark');
 var data={id:Date.now(),calType:calType,gender:genderBazi,time:new Date().toLocaleString(),name:'',remark:remark?remark.value:''};
 if(calType==='lunar'){
-data.lunarYear=document.getElementById('lunarYear').value;
-data.lunarMonth=document.getElementById('lunarMonth').value;
-data.lunarDay=document.getElementById('lunarDay').value;
+data.lunarYear=gw('whBLunYear').gv();
+data.lunarMonth=gw('whBLunMonth').gv();
+data.lunarDay=gw('whBLunDay').gv();
 data.lunarIsLeap=lunarIsLeap;
 data.label='农历'+data.lunarYear+'年'+(data.lunarIsLeap?'闰':'')+data.lunarMonth+'月'+data.lunarDay;
 } else {
-data.birthDate=document.getElementById('baziSolarYear').value+'-'+String(document.getElementById('baziSolarMonth').value).padStart(2,'0')+'-'+String(document.getElementById('baziSolarDay').value).padStart(2,'0');
+var _by=gw('whBSolYear').gv(),_bm=gw('whBSolMonth').gv(),_bd=gw('whBSolDay').gv();
+data.birthDate=_by+'-'+String(_bm).padStart(2,'0')+'-'+String(_bd).padStart(2,'0');
 data.label=data.birthDate;
 }
 data.sc=parseInt(document.getElementById('baziShichenSelect').value);
@@ -2671,16 +2722,16 @@ var a=null;for(var i=0;i<archives.length;i++){if(archives[i].id===id){a=archives
 if(!a)return;
 document.getElementById('baziCalType').value=a.calType;onBaziCalChange();
 if(a.calType==='lunar'){
-document.getElementById('lunarYear').value=a.lunarYear;
-document.getElementById('lunarMonth').value=a.lunarMonth;
+gw('whBLunYear').sv(parseInt(a.lunarYear),true);
+gw('whBLunMonth').sv(parseInt(a.lunarMonth),true);
 lunarIsLeap=a.lunarIsLeap||false;updateLunarLeapUI();
-document.getElementById('lunarDay').value=a.lunarDay;
+gw('whBLunDay').sv(parseInt(a.lunarDay),true);
 } else {
 if(a.birthDate){
 var rp=a.birthDate.split('-');
-document.getElementById('baziSolarYear').value=parseInt(rp[0]);
-document.getElementById('baziSolarMonth').value=parseInt(rp[1]);
-document.getElementById('baziSolarDay').value=parseInt(rp[2]);
+gw('whBSolYear').sv(parseInt(rp[0]),true);
+gw('whBSolMonth').sv(parseInt(rp[1]),true);
+gw('whBSolDay').sv(parseInt(rp[2]),true);
 }
 }
 document.getElementById('baziShichenSelect').value=a.sc;
@@ -2744,7 +2795,7 @@ gender:genderJishi,
 time:new Date().toLocaleString(),
 name:'',
 remark:remark?remark.value:'',
-solarDate:document.getElementById('solarYear').value+'-'+String(document.getElementById('solarMonth').value).padStart(2,'0')+'-'+String(document.getElementById('solarDay').value).padStart(2,'0'),
+solarDate:(function(){var y=gw('whJYear').gv(),m=gw('whJMonth').gv(),d=gw('whJDay').gv();return y+'-'+String(m).padStart(2,'0')+'-'+String(d).padStart(2,'0');})(),
 birthYear:(function(){var be=document.getElementById('jishiBirthYear');return be?parseInt(be.value)||null:null;})(),
 lunarDisplay:document.getElementById('lunarDateDisplay').innerText,
 dayNumDisplay:document.getElementById('dayNumDisplay').innerText,
@@ -2887,7 +2938,8 @@ html+=content;
 if(analysisGrid)html+='<h3>'+_t('生克分析',lang)+'</h3>'+analysisGrid.innerHTML;
 if(xiangRef)html+='<h3>'+_t('类象参考',lang)+'</h3>'+xiangRef.innerHTML;
 }
-html+='</body></html>';
+html+='<script>document.addEventListener("DOMContentLoaded",function(){initAllWheels();});</script>
+</body></html>';
 var w=window.open('','_blank','width=900,height=700');
 w.document.write(html);w.document.close();
 setTimeout(function(){w.print();},500);
@@ -4815,5 +4867,6 @@ if(!inJa&&!inBtn2)ja.style.display='none';
 <span class="wx-tag huo">火</span><span class="wx-arrow ke">→</span>
 <span class="wx-tag jin">金</span>
 </div>
+<script>document.addEventListener("DOMContentLoaded",function(){initAllWheels();});</script>
 </body>
 </html>
