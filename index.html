@@ -706,7 +706,7 @@ transition: all 0.2s;
 .dp-wheels-row .sw-wheel{width:58px;}
 .dp-leap-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
 .dp-leap-wrap .sw-label{font-size:9px;}
-.dp-leap-btn{padding:4px 8px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:var(--bg-input);color:var(--text4);cursor:pointer;min-width:32px;font-family:inherit;transition:all .15s;}
+.dp-leap-btn{padding:8px 14px;border:1.5px solid var(--gold-border);border-radius:6px;font-size:15px;background:var(--bg-input);color:var(--text3);cursor:pointer;min-width:44px;font-family:inherit;transition:all .15s;font-weight:600;letter-spacing:1px;}
 .dp-leap-btn.active{background:var(--gold)!important;color:var(--bg-deep)!important;border-color:var(--gold)!important;font-weight:700;}
 .dp-confirm{width:100%;padding:12px;border:none;border-radius:8px;font-size:15px;font-weight:700;background:var(--gold);color:var(--bg-deep);cursor:pointer;font-family:inherit;letter-spacing:2px;transition:opacity .15s;}
 .dp-confirm:active{opacity:.85;}
@@ -1566,7 +1566,7 @@ document.getElementById('dpOverlay').classList.add('show');
 }
 function closeDp(){document.getElementById('dpOverlay').classList.remove('show');_dpActive=null;}
 function toggleDpLeap(){_dpLeap=!_dpLeap;updateDpLeapBtn();}
-function updateDpLeapBtn(){var b=document.getElementById('dpLeapBtn');if(_dpLeap){b.textContent='闰✓';b.classList.add('active');}else{b.textContent='闰';b.classList.remove('active');}}
+function updateDpLeapBtn(){var b=document.getElementById('dpLeapBtn');if(_dpLeap){b.textContent='闰月✓';b.classList.add('active');}else{b.textContent='闰月';b.classList.remove('active');}}
 function confirmDp(){
 var y=gw('dpYW').gv(),m=gw('dpMW').gv(),d=gw('dpDW').gv();
 if(_dpActive==='jishi'){gw('whJYear').sv(y,true);gw('whJMonth').sv(m,true);gw('whJDay').sv(d,true);updateJishiDp();}
@@ -4938,7 +4938,7 @@ if(!inJa&&!inBtn2)ja.style.display='none';
 </div>
 <div class="dp-wheels-row" id="dpWheelsRow"></div>
 <div style="text-align:center;margin-bottom:12px;" id="dpLeapArea" class="dp-leap-wrap">
-<button class="dp-leap-btn" id="dpLeapBtn" onclick="toggleDpLeap()">闰</button>
+<button class="dp-leap-btn" id="dpLeapBtn" onclick="toggleDpLeap()">闰月</button>
 <span class="sw-label">月</span>
 </div>
 <button class="dp-confirm" onclick="confirmDp()">确 认</button>
