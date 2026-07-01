@@ -866,7 +866,7 @@ transition: all 0.2s;
 </select>
 <label style="color:var(--text);">日期</label>
 <div id="baziSolarInput">
-<input type="date" id="birthDate" min="1900-01-01" max="2099-12-31" style="padding:6px 8px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;color-scheme:dark;">
+<span style="display:inline-flex;align-items:center;gap:2px;"><input type="number" id="baziSolarYear" placeholder="年" min="1900" max="2099" style="width:52px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">年</span><input type="number" id="baziSolarMonth" placeholder="月" min="1" max="12" style="width:40px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">月</span><input type="number" id="baziSolarDay" placeholder="日" min="1" max="31" style="width:40px;padding:6px 4px;border:1px solid var(--gold-border);border-radius:6px;font-size:12px;background:var(--bg-input);color:var(--text);font-family:inherit;text-align:center;"><span style="color:var(--text4);font-size:10px;">日</span></span>
 </div>
 <div id="baziLunarInput" style="display:none;gap:4px;align-items:center;">
 <select id="lunarYear" onchange="updateLunarMonthOptions();updateLunarDayOptions();" style="padding:8px;border:1px solid var(--gold-border);border-radius:6px;font-size:14px;background:var(--bg-input);color:var(--text);font-family:inherit;width:80px;"></select>
@@ -1790,7 +1790,8 @@ function onBaziCalChange() {
 var type=document.getElementById('baziCalType').value;
 document.getElementById('baziSolarInput').style.display=(type==='solar'?'block':'none');
 document.getElementById('baziLunarInput').style.display=(type==='lunar'?'flex':'none');
-document.getElementById('birthDate').required=(type==='solar');
+var sy=document.getElementById('baziSolarYear'),sm=document.getElementById('baziSolarMonth'),sd=document.getElementById('baziSolarDay');
+if(sy){sy.required=(type==='solar');sm.required=(type==='solar');sd.required=(type==='solar');}
 if(type==='lunar')initLunarSelectors();
 }
 function initLunarSelectors(){
@@ -1849,8 +1850,9 @@ updateLunarDayOptions();
 document.getElementById('lunarDay').value=nowLunar.day;
 }
 } else {
-var y=now.getFullYear(),m=String(now.getMonth()+1).padStart(2,'0'),d=String(now.getDate()).padStart(2,'0');
-document.getElementById('birthDate').value=y+'-'+m+'-'+d;
+document.getElementById('baziSolarYear').value=now.getFullYear();
+document.getElementById('baziSolarMonth').value=now.getMonth()+1;
+document.getElementById('baziSolarDay').value=now.getDate();
 }
 var sc=getShichenFromTime(now.getHours(),now.getMinutes());
 document.getElementById('baziShichenSelect').value=sc;
@@ -2471,10 +2473,11 @@ lunar={year:ly,month:lm,day:ld,isLeap:isLeap};
 var solDate=lunarToSolar(ly,lm,ld,isLeap);
 solarYear=solDate.getFullYear();solarMonth=solDate.getMonth()+1;solarDay=solDate.getDate();
 } else {
-var dateStr=document.getElementById('birthDate').value;
-if(!dateStr){alert('请选择出生日期');return;}
-var parts=dateStr.split('-');
-solarYear=parseInt(parts[0]);solarMonth=parseInt(parts[1]);solarDay=parseInt(parts[2]);
+var by=parseInt(document.getElementById('baziSolarYear').value);
+var bm=parseInt(document.getElementById('baziSolarMonth').value);
+var bd=parseInt(document.getElementById('baziSolarDay').value);
+if(!by||!bm||!bd){alert('请填写完整的出生年月日');return;}
+solarYear=by;solarMonth=bm;solarDay=bd;
 var solarDate=new Date(solarYear,solarMonth-1,solarDay);
 lunar=solarToLunar(solarDate);
 if(!lunar||!lunar.year){document.getElementById('baziLunarDisplay').innerText='暂不支持该年份';return;}
@@ -2643,7 +2646,7 @@ data.lunarMonth=document.getElementById('lunarMonth').value;
 data.lunarDay=document.getElementById('lunarDay').value;
 data.label='农历'+data.lunarYear+'年'+(data.lunarMonth>100?'闰':'')+(data.lunarMonth>100?data.lunarMonth-100:data.lunarMonth)+'月'+data.lunarDay;
 } else {
-data.birthDate=document.getElementById('birthDate').value;
+data.birthDate=document.getElementById('baziSolarYear').value+'-'+String(document.getElementById('baziSolarMonth').value).padStart(2,'0')+'-'+String(document.getElementById('baziSolarDay').value).padStart(2,'0');
 data.label=data.birthDate;
 }
 data.sc=parseInt(document.getElementById('baziShichenSelect').value);
@@ -2696,7 +2699,12 @@ document.getElementById('lunarMonth').value=a.lunarMonth;
 updateLunarDayOptions();
 document.getElementById('lunarDay').value=a.lunarDay;
 } else {
-document.getElementById('birthDate').value=a.birthDate;
+if(a.birthDate){
+var rp=a.birthDate.split('-');
+document.getElementById('baziSolarYear').value=parseInt(rp[0]);
+document.getElementById('baziSolarMonth').value=parseInt(rp[1]);
+document.getElementById('baziSolarDay').value=parseInt(rp[2]);
+}
 }
 document.getElementById('baziShichenSelect').value=a.sc;
 setGender('bazi',a.gender);
