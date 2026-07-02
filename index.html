@@ -1534,16 +1534,18 @@ SCROLL_WHEELS[id]=w;return w;
 }
 function gw(id){return SCROLL_WHEELS[id];}
 function initAllWheels(){
-var n=new Date();var nl=solarToLunar(n);
-createScrollWheel('whJYear',_yearOpts(1930,2099),n.getFullYear());
-createScrollWheel('whJMonth',_numOpts(1,12),n.getMonth()+1);
-createScrollWheel('whJDay',_numOpts(1,31),n.getDate());
-createScrollWheel('whBSolYear',_yearOpts(1930,2099),n.getFullYear());
-createScrollWheel('whBSolMonth',_numOpts(1,12),n.getMonth()+1);
-createScrollWheel('whBSolDay',_numOpts(1,31),n.getDate());
-createScrollWheel('whBLunYear',_yearOpts(1930,2100),nl&&nl.year?nl.year:n.getFullYear());
-createScrollWheel('whBLunMonth',_numOpts(1,12),nl&&nl.month?nl.month:1);
-createScrollWheel('whBLunDay',_numOpts(1,30),nl&&nl.day?nl.day:1);
+var defY=1949,defM=10,defD=1;
+var defL=solarToLunar(new Date(defY,defM-1,defD));
+createScrollWheel('whJYear',_yearOpts(1930,2099),defY);
+createScrollWheel('whJMonth',_numOpts(1,12),defM);
+createScrollWheel('whJDay',_numOpts(1,31),defD);
+createScrollWheel('whBSolYear',_yearOpts(1930,2099),defY);
+createScrollWheel('whBSolMonth',_numOpts(1,12),defM);
+createScrollWheel('whBSolDay',_numOpts(1,31),defD);
+createScrollWheel('whBLunYear',_yearOpts(1930,2100),defL&&defL.year?defL.year:defY);
+createScrollWheel('whBLunMonth',_numOpts(1,12),defL&&defL.month?defL.month:defM);
+createScrollWheel('whBLunDay',_numOpts(1,30),defL&&defL.day?defL.day:defD);
+lunarIsLeap=defL&&defL.leap||false;updateLunarLeapUI();
 updateAllDp();
 }
 
